@@ -1,0 +1,6 @@
+#The closest the player can be to 0,0
+Radius: 500
+#Message to send to the player when they are too close to spawn
+TooCloseMessage: '&3You must be at least&r&a 500&r&3 blocks from spawn'
+#Max homes a player can have
+MaxHomes: 3

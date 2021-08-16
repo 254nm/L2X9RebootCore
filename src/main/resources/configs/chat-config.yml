@@ -1,0 +1,7 @@
+#How long before a player can chat again (In seconds)
+Cooldown: 3
+#Blocked words
+Blocked:
+  - "discord"
+  - "."
+  - "dot"

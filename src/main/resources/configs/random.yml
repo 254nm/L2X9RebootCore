@@ -1,0 +1,11 @@
+#The max range to spawn the player
+Range: 500
+#World name to spawn the player in
+World: 'world'
+#Blocks to not spawn the player on
+Blocks:
+  - 'STATIONARY_LAVA'
+  - 'water'
+  - 'lava'
+  - 'air'
+  - 'cactus'
