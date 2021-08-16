@@ -52,7 +52,7 @@ public final class L2X9RebootCore extends JavaPlugin {
     }
 
     @Override
-    public void onEnable() {//test
+    public void onEnable() {//test2
         instance = this;
         managers = new ArrayList<>();
         violationManagers = new ArrayList<>();
