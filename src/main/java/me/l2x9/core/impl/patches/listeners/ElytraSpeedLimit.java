@@ -12,6 +12,9 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ElytraSpeedLimit implements Listener {
     private int disableTPS = 15;
 
@@ -53,10 +56,10 @@ public class ElytraSpeedLimit implements Listener {
             PlayerInventory inventory = player.getInventory();
             if (inventory.firstEmpty() == -1) {
                 player.getWorld().dropItemNaturally(player.getLocation(), chestPlate);
-            } else {
-                inventory.setItem(inventory.firstEmpty(), chestPlate);
-            }
-            chestPlate.setType(Material.AIR);
+            } else inventory.setItem(inventory.firstEmpty(), chestPlate);
+            ItemStack[] buffer = inventory.getArmorContents();
+            buffer[2] = null;
+            inventory.setArmorContents(buffer);
         }
     }
 }
