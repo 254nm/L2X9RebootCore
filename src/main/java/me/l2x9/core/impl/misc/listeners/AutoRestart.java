@@ -39,6 +39,6 @@ public class AutoRestart {
                 });
                 thread.start();
             }
-        }, 28800000, 28800000);
+        }, 43200000 /* 12 hours */, 43200000);
     }
 }
