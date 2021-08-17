@@ -1,6 +1,6 @@
 package me.l2x9.core;
 
-import me.l2x9.core.util.ConfigCreator;
+import me.l2x9.core.boiler.util.ConfigCreator;
 
 public abstract class Manager {
 

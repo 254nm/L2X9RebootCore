@@ -1,5 +1,7 @@
 package me.l2x9.core;
 
+import me.l2x9.core.L2X9RebootCore;
+
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 

@@ -2,16 +2,16 @@ package me.l2x9.core;
 
 import com.mattmalec.pterodactyl4j.PteroBuilder;
 import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
-import me.l2x9.core.chat.ChatManager;
-import me.l2x9.core.command.CommandManager;
-import me.l2x9.core.event.EventBus;
-import me.l2x9.core.event.listener.PlayerJoinListener;
-import me.l2x9.core.home.HomeManager;
-import me.l2x9.core.misc.MiscManager;
-import me.l2x9.core.patches.PatchManager;
-import me.l2x9.core.randomspawn.RandomSpawnManager;
-import me.l2x9.core.tablist.TabManager;
-import me.l2x9.core.util.ConfigCreator;
+import me.l2x9.core.impl.chat.ChatManager;
+import me.l2x9.core.impl.command.CommandManager;
+import me.l2x9.core.boiler.event.EventBus;
+import me.l2x9.core.boiler.event.listener.PlayerJoinListener;
+import me.l2x9.core.impl.home.HomeManager;
+import me.l2x9.core.impl.misc.MiscManager;
+import me.l2x9.core.impl.patches.PatchManager;
+import me.l2x9.core.impl.randomspawn.RandomSpawnManager;
+import me.l2x9.core.impl.tablist.TabManager;
+import me.l2x9.core.boiler.util.ConfigCreator;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -52,7 +52,7 @@ public final class L2X9RebootCore extends JavaPlugin {
     }
 
     @Override
-    public void onEnable() {//test2
+    public void onEnable() {
         instance = this;
         managers = new ArrayList<>();
         violationManagers = new ArrayList<>();
@@ -96,7 +96,7 @@ public final class L2X9RebootCore extends JavaPlugin {
         getServer().getPluginManager().registerEvents(listener, this);
     }
 
-    public void registerListener(me.l2x9.core.event.Listener listener) {
+    public void registerListener(me.l2x9.core.boiler.event.Listener listener) {
         EVENT_BUS.subscribe(listener);
     }
 }
