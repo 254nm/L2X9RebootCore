@@ -1,6 +1,6 @@
-name: L2X9RebootCore
+name: ${project.name}
 version: ${project.version}
-main: ftp.sh.core.L2X9RebootCore
+main: ${mainClass}
 authors: [ 254n_m ]
 description: All of the plugins for thr l2x9 reboot
 commands:
