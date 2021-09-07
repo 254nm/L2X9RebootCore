@@ -43,6 +43,7 @@ public class PatchManager extends Manager {
         plugin.registerListener(new PacketFly());
         plugin.registerListener(new MapLag(this));
         plugin.registerListener(new NoCom());
+        plugin.registerListener(new Speed());
         WitherLag lag = new WitherLag();
         plugin.registerListener(lag);
     }

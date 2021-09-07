@@ -36,7 +36,7 @@ public class NoCom implements Listener {
                 Point playerPoint = new Point((int) player.getLocation().getX(), (int) player.getLocation().getZ());
                 Point packetPoint = new Point(position.getX(), position.getZ());
                 if (playerPoint.distance(packetPoint) > Bukkit.getServer().getViewDistance() * 16) {
-                    event.setPacket(new PacketPlayOutBlockChange(world, new BlockPosition(player.getLocation().getX(), player.getLocation().getX(), player.getLocation().getX())));
+                    event.setCancelled(true);
                 }
             } catch (Throwable t) {
             }
