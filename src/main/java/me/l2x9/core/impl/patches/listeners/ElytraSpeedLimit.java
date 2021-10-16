@@ -12,9 +12,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class ElytraSpeedLimit implements Listener {
     private int disableTPS = 15;
 
@@ -30,7 +27,7 @@ public class ElytraSpeedLimit implements Listener {
             Utils.log("&3Prevented&r&a " + player.getName() + " &r&3from going too fast with an elytra");
         }
         if (disableTPS <= 0) return;
-        double tps = ((CraftServer)Bukkit.getServer()).getHandle().getServer().recentTps[0];
+        double tps = ((CraftServer) Bukkit.getServer()).getHandle().getServer().recentTps[0];
         if (tps < disableTPS) {
             event.setCancelled(true);
             player.setGliding(false);
@@ -43,9 +40,9 @@ public class ElytraSpeedLimit implements Listener {
     private double calcSpeed(PlayerMoveEvent event) {
         Location from = event.getFrom();
         Location to = event.getTo();
-        double distX = to.getX() - from.getX();
-        double distZ = to.getZ() - from.getZ();
-        return Math.hypot(distX, distZ);
+        double hypotX = to.getX() - from.getX();
+        double hypotZ = to.getZ() - from.getZ();
+        return Math.hypot(hypotX, hypotZ);
     }
 
     private void removeElytra(Player player) {
