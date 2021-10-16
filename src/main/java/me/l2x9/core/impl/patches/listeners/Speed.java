@@ -42,8 +42,4 @@ public class Speed implements Listener {
             PacketPlayInFlying packet = (PacketPlayInFlying) event.getPacket();
         }
     }
-
-    private Location constructLoc(PacketPlayInFlying packet) {
-
-    }
 }

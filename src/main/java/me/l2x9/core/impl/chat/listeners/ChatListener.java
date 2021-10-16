@@ -50,6 +50,7 @@ public class ChatListener implements Listener {
         Bukkit.getLogger().info(message);
         for (Player online : Bukkit.getOnlinePlayers()) {
             ChatInfo info = manager.getInfo(online);
+            if (info == null) continue;
             if (info.isIgnoring(chatter.getUniqueId()) || info.isToggledChat()) continue;
             online.sendMessage(message);
         }
