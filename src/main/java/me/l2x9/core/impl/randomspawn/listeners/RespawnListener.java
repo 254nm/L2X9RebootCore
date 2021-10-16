@@ -10,10 +10,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RespawnListener implements Listener {
-    private final Random rand = new Random();
+    private final ThreadLocalRandom rand = ThreadLocalRandom.current();
     private final RandomSpawnManager main;
 
     public RespawnListener(RandomSpawnManager main) {

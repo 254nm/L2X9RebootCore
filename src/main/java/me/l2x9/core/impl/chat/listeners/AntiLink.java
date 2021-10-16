@@ -30,6 +30,7 @@ public class AntiLink implements Listener {
             try {
                 PacketPlayOutChat packet = (PacketPlayOutChat) event.getPacket();
                 IChatBaseComponent message = (IChatBaseComponent) messageF.get(packet);
+                if (message == null) return;
                 List<String> list = manager.getConfig().getConfig().getStringList("Blocked");
                 for (String word : list) {
                     if (message.toPlainText().contains(word)) {
@@ -38,7 +39,6 @@ public class AntiLink implements Listener {
                     }
                 }
             } catch (Throwable t) {
-                t.printStackTrace();
             }
         }
     }
