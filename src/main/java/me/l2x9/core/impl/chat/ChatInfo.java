@@ -47,6 +47,9 @@ public class ChatInfo {
     public void ignorePlayer(UUID player) {
         ignoring.add(player);
     }
+    public void unignorePlayer(UUID player) {
+        ignoring.remove(player);
+    }
 
     public void saveIgnores() {
         File ignoreList = new File(manager.getIgnoresFolder(), player.getName().concat(".lst"));

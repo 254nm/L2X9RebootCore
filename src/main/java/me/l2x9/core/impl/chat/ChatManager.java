@@ -1,9 +1,6 @@
 package me.l2x9.core.impl.chat;
 
-import me.l2x9.core.impl.chat.commands.IgnoreCommand;
-import me.l2x9.core.impl.chat.commands.MessageCommand;
-import me.l2x9.core.impl.chat.commands.ReplyCommand;
-import me.l2x9.core.impl.chat.commands.ToggleChatCommand;
+import me.l2x9.core.impl.chat.commands.*;
 import me.l2x9.core.impl.chat.listeners.AntiLink;
 import me.l2x9.core.impl.chat.listeners.ChatListener;
 import me.l2x9.core.impl.chat.listeners.JoinLeaveListener;
@@ -50,6 +47,7 @@ public class ChatManager extends Manager {
         plugin.getCommand("msg").setExecutor(new MessageCommand(this));
         plugin.getCommand("reply").setExecutor(new ReplyCommand(this));
         plugin.getCommand("togglechat").setExecutor(new ToggleChatCommand(this));
+        plugin.getCommand("unignore").setExecutor(new UnIgnoreCommand(this));
         if (!Bukkit.getOnlinePlayers().isEmpty()) Bukkit.getOnlinePlayers().forEach(this::registerPlayer);
 
     }
