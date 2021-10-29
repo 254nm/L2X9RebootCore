@@ -9,7 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-//Sign test2
+//Sign test3
 public class UnIgnoreCommand implements CommandExecutor {
     private final ChatManager manager;
 
