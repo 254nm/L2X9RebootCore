@@ -1,14 +1,14 @@
 package me.l2x9.core.impl.home;
 
-import me.l2x9.core.boiler.util.IOUtil;
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
+import me.l2x9.core.boiler.util.ConfigCreator;
+import me.l2x9.core.boiler.util.IOUtil;
 import me.l2x9.core.impl.home.commands.DelHomeCommand;
 import me.l2x9.core.impl.home.commands.HomeCommand;
 import me.l2x9.core.impl.home.commands.SetHomeCommand;
 import me.l2x9.core.impl.home.listeners.JoinListener;
 import me.l2x9.core.impl.home.util.HomeUtil;
-import me.l2x9.core.boiler.util.ConfigCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 
@@ -48,9 +48,9 @@ public class HomeManager extends Manager {
         homes = homeUtil.getHomes();
         if (!Bukkit.getOnlinePlayers().isEmpty()) Bukkit.getOnlinePlayers().forEach(p -> homeUtil.loadHomes(p));
         plugin.registerListener(new JoinListener(this));
-        plugin.getCommand("home").setExecutor(new HomeCommand(this));
-        plugin.getCommand("sethome").setExecutor(new SetHomeCommand(this));
-        plugin.getCommand("delhome").setExecutor(new DelHomeCommand(this));
+        plugin.registerCommand("home", new HomeCommand(this));
+        plugin.registerCommand("sethome", new SetHomeCommand(this));
+        plugin.registerCommand("delhome", new DelHomeCommand(this));
     }
 
     @Override

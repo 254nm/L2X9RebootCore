@@ -1,7 +1,7 @@
 package me.l2x9.core;
 
-import me.l2x9.core.boiler.event.listener.Join;
-import me.l2x9.core.boiler.event.listener.Leave;
+import me.l2x9.core.impl.misc.listeners.Join;
+import me.l2x9.core.impl.misc.listeners.Leave;
 import me.l2x9.core.impl.chat.ChatManager;
 import me.l2x9.core.impl.command.CommandManager;
 import me.l2x9.core.boiler.event.EventBus;

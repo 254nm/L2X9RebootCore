@@ -4,25 +4,7 @@ main: ${mainClass}
 authors: [ 254n_m ]
 description: All of the plugins for thr l2x9 reboot
 commands:
-  home:
-  sethome:
-  delhome:
-  aef:
-  crash:
-  discord:
-  help:
-  open:
-  say:
-  spawn:
-  speed:
-  uptime:
-  uuid:
-  world:
-  ignore:
-  unignore:
   msg:
     aliases: [message, whisper, tell, w]
   reply:
     aliases: [r]
-  togglechat:
-  etop:

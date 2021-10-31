@@ -27,7 +27,7 @@ public class AutoRestart {
                                 player.kickPlayer(ChatColor.GREEN + "El servidor se está reiniciando");
                             } else player.kickPlayer(ChatColor.GREEN + "The server is restarting");
                         }
-                        Bukkit.getConsoleSender().getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart");
+                        Bukkit.getServer().shutdown();
                         timer.cancel();
                     });
                 });

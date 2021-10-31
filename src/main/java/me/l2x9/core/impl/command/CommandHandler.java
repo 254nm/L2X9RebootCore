@@ -43,7 +43,7 @@ public class CommandHandler implements TabExecutor {
 
     private void addCommand(BaseCommand command) {
         commands.add(command);
-        plugin.getCommand(command.getName()).setExecutor(this);
+        plugin.registerCommand(command.getName(),this);
     }
 
     @Override

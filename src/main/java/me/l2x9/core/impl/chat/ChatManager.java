@@ -43,11 +43,11 @@ public class ChatManager extends Manager {
         plugin.registerListener(new ChatListener(this));
         plugin.registerListener(new JoinLeaveListener(this));
         plugin.registerListener(new AntiLink(this));
-        plugin.getCommand("ignore").setExecutor(new IgnoreCommand(this));
+        plugin.registerCommand ("ignore",new IgnoreCommand(this));
         plugin.getCommand("msg").setExecutor(new MessageCommand(this));
         plugin.getCommand("reply").setExecutor(new ReplyCommand(this));
-        plugin.getCommand("togglechat").setExecutor(new ToggleChatCommand(this));
-        plugin.getCommand("unignore").setExecutor(new UnIgnoreCommand(this));
+        plugin.registerCommand("togglechat",new ToggleChatCommand(this));
+        plugin.registerCommand("unignore",new UnIgnoreCommand(this));
         if (!Bukkit.getOnlinePlayers().isEmpty()) Bukkit.getOnlinePlayers().forEach(this::registerPlayer);
 
     }
