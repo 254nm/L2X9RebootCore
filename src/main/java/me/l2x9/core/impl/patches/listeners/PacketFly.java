@@ -19,8 +19,9 @@ public class PacketFly implements Listener {
         if (y == -1D) return;
         double yDelta = loc.getY() - y;
         if (Math.abs(yDelta) > 20) {
+//            event.setCancelled(true);
+//            player.teleport(loc);
             event.setCancelled(true);
-            player.teleport(loc);
         }
     }
 }
