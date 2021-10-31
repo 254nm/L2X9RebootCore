@@ -1,5 +1,7 @@
 package me.l2x9.core;
 
+import me.l2x9.core.boiler.event.listener.Join;
+import me.l2x9.core.boiler.event.listener.Leave;
 import me.l2x9.core.impl.chat.ChatManager;
 import me.l2x9.core.impl.command.CommandManager;
 import me.l2x9.core.boiler.event.EventBus;
@@ -54,6 +56,8 @@ public final class L2X9RebootCore extends JavaPlugin {
         creator = new ConfigCreator(getName());
         creator.makeConfig(null, "config.yml", "config");
         registerListener(new PlayerJoinListener());
+        getServer().getPluginManager().registerEvents(new Join(), this); // this is the leave one
+        getServer().getPluginManager().registerEvents(new Leave(), this); // this is the join one lol
         registerManagers();
     }
 
