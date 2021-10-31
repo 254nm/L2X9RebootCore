@@ -1,17 +1,15 @@
 package me.l2x9.core;
 
-import me.l2x9.core.impl.misc.listeners.Join;
-import me.l2x9.core.impl.misc.listeners.Leave;
-import me.l2x9.core.impl.chat.ChatManager;
-import me.l2x9.core.impl.command.CommandManager;
 import me.l2x9.core.boiler.event.EventBus;
 import me.l2x9.core.boiler.event.listener.PlayerJoinListener;
+import me.l2x9.core.boiler.util.ConfigCreator;
+import me.l2x9.core.impl.chat.ChatManager;
+import me.l2x9.core.impl.command.CommandManager;
 import me.l2x9.core.impl.home.HomeManager;
 import me.l2x9.core.impl.misc.MiscManager;
 import me.l2x9.core.impl.patches.PatchManager;
 import me.l2x9.core.impl.randomspawn.RandomSpawnManager;
 import me.l2x9.core.impl.tablist.TabManager;
-import me.l2x9.core.boiler.util.ConfigCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -38,6 +36,11 @@ public final class L2X9RebootCore extends JavaPlugin {
         return instance;
     }
 
+    public boolean isDebug() {
+        if (System.getProperty("l2x9coredebug") == null) return false;
+        return Boolean.parseBoolean(System.getProperty("l2x9coredebug"));
+    }
+
     public long getStartTime() {
         return startTime;
     }
@@ -60,8 +63,6 @@ public final class L2X9RebootCore extends JavaPlugin {
         creator = new ConfigCreator(getName());
         creator.makeConfig(null, "config.yml", "config");
         registerListener(new PlayerJoinListener());
-        getServer().getPluginManager().registerEvents(new Join(), this); // this is the leave one
-        getServer().getPluginManager().registerEvents(new Leave(), this); // this is the join one lol
         registerManagers();
     }
 
@@ -100,10 +101,11 @@ public final class L2X9RebootCore extends JavaPlugin {
     public void registerListener(me.l2x9.core.boiler.event.Listener listener) {
         EVENT_BUS.subscribe(listener);
     }
+
     public void registerCommand(String name, CommandExecutor... commands) {
         for (CommandExecutor command : commands) {
             CraftServer cs = (CraftServer) Bukkit.getServer();
-           cs.getCommandMap().register(name, new org.bukkit.command.Command(name) {
+            cs.getCommandMap().register(name, new org.bukkit.command.Command(name) {
                 @Override
                 public boolean execute(CommandSender sender, String commandLabel, String[] args) {
                     command.onCommand(sender, this, commandLabel, args);
