@@ -19,6 +19,7 @@ commands:
   uuid:
   world:
   ignore:
+  unignore:
   msg:
     aliases: [message, whisper, tell, w]
   reply:

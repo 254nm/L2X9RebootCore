@@ -1,7 +1,5 @@
 package me.l2x9.core;
 
-import com.mattmalec.pterodactyl4j.PteroBuilder;
-import com.mattmalec.pterodactyl4j.client.entities.PteroClient;
 import me.l2x9.core.impl.chat.ChatManager;
 import me.l2x9.core.impl.command.CommandManager;
 import me.l2x9.core.boiler.event.EventBus;
@@ -25,7 +23,6 @@ public final class L2X9RebootCore extends JavaPlugin {
     public static EventBus EVENT_BUS = new EventBus();
     private static L2X9RebootCore instance;
     private final long startTime = System.currentTimeMillis();
-    private final PteroClient pterodactylAPI = PteroBuilder.createClient("https://panel.racismis.cool/", "A2PZGrG78ZU7zHrWPmGZxYqErfeVpr534APuMXsaMRGs1C67");
     private ScheduledExecutorService service;
     private List<ViolationManager> violationManagers;
     private List<Manager> managers;
@@ -33,10 +30,6 @@ public final class L2X9RebootCore extends JavaPlugin {
 
     public static L2X9RebootCore getInstance() {
         return instance;
-    }
-
-    public PteroClient getPterodactylAPI() {
-        return pterodactylAPI;
     }
 
     public long getStartTime() {
