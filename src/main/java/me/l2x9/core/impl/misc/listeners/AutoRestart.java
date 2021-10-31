@@ -15,7 +15,7 @@ public class AutoRestart {
             @Override
             public void run() {
                 Thread thread = new Thread(() -> {
-                    Bukkit.broadcastMessage(ChatColor.RED + "Server restarting in 5 seconds...");
+                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6[&3l2&bx9&6] Server restarting in 5 seconds..."));
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {
@@ -27,6 +27,7 @@ public class AutoRestart {
                                 player.kickPlayer(ChatColor.GREEN + "El servidor se está reiniciando");
                             } else player.kickPlayer(ChatColor.GREEN + "The server is restarting");
                         }
+                        Bukkit.getConsoleSender().getServer().dispatchCommand(Bukkit.getConsoleSender(), "restart");
                         timer.cancel();
                     });
                 });
