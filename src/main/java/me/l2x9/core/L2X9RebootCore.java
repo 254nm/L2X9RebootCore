@@ -11,11 +11,14 @@ import me.l2x9.core.impl.patches.PatchManager;
 import me.l2x9.core.impl.randomspawn.RandomSpawnManager;
 import me.l2x9.core.impl.tablist.TabManager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public final class L2X9RebootCore extends JavaPlugin {
+    private BukkitRunnable messages;
     public static EventBus EVENT_BUS = new EventBus();
     private static L2X9RebootCore instance;
     private final long startTime = System.currentTimeMillis();
@@ -64,6 +68,12 @@ public final class L2X9RebootCore extends JavaPlugin {
         creator.makeConfig(null, "config.yml", "config");
         registerListener(new PlayerJoinListener());
         registerManagers();
+
+        (messages = new BukkitRunnable() {
+            public void run() {
+                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6[&3l2&bx9&6] Join the discord! https://discord.gg/pmHrKHhR7C"));
+            }
+        }).runTaskTimer((Plugin)this, 600*20, 600*20);
     }
 
     private void registerManagers() {

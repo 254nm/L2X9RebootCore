@@ -18,15 +18,12 @@ public class SayCommand extends BaseCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length > 0) {
-            String configMessage = config.getString("Prefix");
+            String configMessage = "&6[&3l2&bx9&6] {message}";
             StringBuilder builder = new StringBuilder();
             for (String arg : args) {
                 builder.append(arg.concat(" "));
             }
-            Bukkit.getServer().broadcastMessage(
-                    ChatColor.translateAlternateColorCodes(
-                            '&',
-                            configMessage.replace("{message}", builder.toString())));
+            Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', configMessage.replace("{message}", builder.toString())));
         } else {
             sendErrorMessage(sender, "Message cannot be blank");
         }

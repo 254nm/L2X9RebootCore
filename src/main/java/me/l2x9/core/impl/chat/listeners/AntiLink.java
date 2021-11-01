@@ -6,6 +6,7 @@ import me.l2x9.core.boiler.event.Listener;
 import me.l2x9.core.boiler.event.events.PacketEvent;
 import net.minecraft.server.v1_12_R1.IChatBaseComponent;
 import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
+import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -32,12 +33,12 @@ public class AntiLink implements Listener {
                 IChatBaseComponent message = (IChatBaseComponent) messageF.get(packet);
                 if (message == null) return;
                 List<String> list = manager.getConfig().getConfig().getStringList("Blocked");
-                for (String word : list) {
-                    if (message.toPlainText().contains(word)) {
-                        event.setCancelled(true);
-                        break;
+                    for (String word : list) {
+                        if (message.toPlainText().contains(word)) {
+                            event.setCancelled(true);
+                            break;
+                        }
                     }
-                }
             } catch (Throwable t) {
             }
         }

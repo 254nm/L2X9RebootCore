@@ -52,7 +52,8 @@ public class TabManager extends Manager {
                 replace("%tps%", Utils.getTPSColor(tps) + tps).
                 replace("%players%", Bukkit.getOnlinePlayers().size() + "")).
                 replace("%ping%", ping + "").
-                replace("%uptime%", Utils.getFormattedInterval(System.currentTimeMillis() - startTime));
+                replace("%uptime%", Utils.getFormattedInterval(System.currentTimeMillis() - startTime)
+        );
     }
 
     private int getPing(Player player) {
