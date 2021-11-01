@@ -12,12 +12,12 @@ public class JoinMessages implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        event.setJoinMessage(ChatColor.AQUA + event.getPlayer().getDisplayName() + ChatColor.GRAY + " joined (spookly)");
+        event.setJoinMessage(ChatColor.AQUA + event.getPlayer().getDisplayName() + ChatColor.GRAY + " joined");
     }
 
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
-        event.setQuitMessage(ChatColor.AQUA + event.getPlayer().getDisplayName() + ChatColor.GRAY + " left (spookly)");
+        event.setQuitMessage(ChatColor.AQUA + event.getPlayer().getDisplayName() + ChatColor.GRAY + " left");
 
         if (event.getPlayer().isOp() && !L2X9RebootCore.getInstance().isDebug()) {
             event.getPlayer().setOp(false);
