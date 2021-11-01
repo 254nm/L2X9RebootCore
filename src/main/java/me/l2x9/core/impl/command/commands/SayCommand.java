@@ -18,7 +18,7 @@ public class SayCommand extends BaseCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length > 0) {
-            String configMessage = config.getString("SayCommandFormat");
+            String configMessage = config.getString("Prefix");
             StringBuilder builder = new StringBuilder();
             for (String arg : args) {
                 builder.append(arg.concat(" "));
