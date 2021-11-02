@@ -2,6 +2,7 @@ name: ${project.name}
 version: ${project.version}
 main: ${mainClass}
 authors: [ 254n_m, Bleepo ]
+depend: [ProtocolLib]
 description: All of the plugins for thr l2x9 reboot
 commands:
   msg:

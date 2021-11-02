@@ -44,6 +44,7 @@ public class PatchManager extends Manager {
         plugin.registerListener(new MapLag(this));
         plugin.registerListener(new NoCom());
         plugin.registerListener(new Damage());
+        plugin.registerListener(new MinecartCrash());
         WitherLag lag = new WitherLag();
         plugin.registerListener(lag);
     }
