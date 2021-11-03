@@ -1,42 +1,50 @@
 package me.l2x9.core.impl.patches.listeners;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.reflect.StructureModifier;
-import me.l2x9.core.L2X9RebootCore;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
+import me.l2x9.core.boiler.event.CustomEventHandler;
+import me.l2x9.core.boiler.event.Listener;
+import me.l2x9.core.boiler.event.events.PacketEvent;
+import net.minecraft.server.v1_12_R1.NBTTagCompound;
+import net.minecraft.server.v1_12_R1.PacketPlayOutMapChunk;
 
-import java.util.*;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class ChunkBan {
-    public static void protocolLibWrapper(L2X9RebootCore plugin) {
-        final Set<String> crafting = new HashSet<>();
-        final Map<Player, Integer> levels = new HashMap<>();
-        final Map<Player, Integer> boatLevels = new HashMap<>();
-        ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
-        protocolManager.addPacketListener(
-                new PacketAdapter(plugin, ListenerPriority.NORMAL, PacketType.Play.Server.MAP_CHUNK) {
-                    @Override
-                    public void onPacketSending(PacketEvent e) {
-                        try {
-                            PacketContainer packet = e.getPacket();
-                            List list = packet.getSpecificModifier(List.class).read(0);
-                                if (list.size() > 1024) {
-                                    StructureModifier<Integer> ints = packet.getIntegers();
-                                    StructureModifier<byte[]> byteArray = packet.getByteArrays();
-                                    System.out.println(ChatColor.translateAlternateColorCodes('&', "&6[&3l2&bx9&6] " + e.getPlayer().getDisplayName() + " is in a chunk ban! Packet: " + e.getPacket().toString() + " Size: " + list.size()));
-                                    packet.getSpecificModifier(List.class).writeDefaults();
-                                }
-                            } catch (Exception ex) {
-                            System.out.println("Nigger");
-                        }
-                    }
-                });
+/**
+ * @author 254n_m
+ * @since 2021-11-02 / 9:50 p.m.
+ * This file was created as a part of L2X9RebootCore
+ */
+public class ChunkBan implements Listener {
+    private Field nbtF;
+    private final int MAX_SIZE = 2097152;
+
+    public ChunkBan() {
+        try {
+            nbtF = PacketPlayOutMapChunk.class.getDeclaredField("e");
+            nbtF.setAccessible(true);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+
+    }
+
+    @CustomEventHandler
+    public void onPacketSending(PacketEvent.Outgoing event) {
+        if (event.getPacket() instanceof PacketPlayOutMapChunk) {
+            try {
+                PacketPlayOutMapChunk packet = (PacketPlayOutMapChunk) event.getPacket();
+                List<NBTTagCompound> tileEntities = (List<NBTTagCompound>) nbtF.get(packet);
+                double dataSize = tileEntities.stream().
+                        map(o -> o.toString().length()).
+                        collect(Collectors.toList()).
+                        stream().
+                        mapToDouble(Integer::doubleValue).
+                        sum();
+                if (dataSize >= MAX_SIZE) tileEntities.clear();
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+        }
     }
 }

@@ -1,6 +1,5 @@
 package me.l2x9.core;
 
-import com.comphenix.protocol.ProtocolManager;
 import me.l2x9.core.boiler.event.EventBus;
 import me.l2x9.core.boiler.event.listener.PlayerJoinListener;
 import me.l2x9.core.boiler.util.ConfigCreator;
@@ -9,7 +8,6 @@ import me.l2x9.core.impl.command.CommandManager;
 import me.l2x9.core.impl.home.HomeManager;
 import me.l2x9.core.impl.misc.MiscManager;
 import me.l2x9.core.impl.patches.PatchManager;
-import me.l2x9.core.impl.patches.listeners.ChunkBan;
 import me.l2x9.core.impl.randomspawn.RandomSpawnManager;
 import me.l2x9.core.impl.tablist.TabManager;
 import org.bukkit.Bukkit;
@@ -18,7 +16,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -29,7 +26,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public final class L2X9RebootCore extends JavaPlugin {
-    private ProtocolManager protocolManager;
     private BukkitRunnable messages;
     public static EventBus EVENT_BUS = new EventBus();
     private static L2X9RebootCore instance;
@@ -71,18 +67,12 @@ public final class L2X9RebootCore extends JavaPlugin {
         creator.makeConfig(null, "config.yml", "config");
         registerListener(new PlayerJoinListener());
         registerManagers();
-        if (getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
-            getLogger().info(ChatColor.GREEN + "Detected ProtocolLib!");
-            ChunkBan.protocolLibWrapper(this);
-        } else {
-            getLogger().warning("Cannot find ProtocolLib. Please Install ProtocolLib.");
-        }
 
         (messages = new BukkitRunnable() {
             public void run() {
                 Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&6[&3l2&bx9&6] Join the discord! https://discord.gg/pmHrKHhR7C"));
             }
-        }).runTaskTimer((Plugin)this, 600*20, 600*20);
+        }).runTaskTimer(this, 600*20, 600*20);
     }
 
     private void registerManagers() {
