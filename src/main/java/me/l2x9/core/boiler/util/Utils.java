@@ -2,15 +2,19 @@ package me.l2x9.core.boiler.util;
 
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.World;
+import org.bukkit.*;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.SpawnEggMeta;
 
 import java.text.DecimalFormat;
 import java.util.logging.Level;
+
+import static me.l2x9.core.ConfigManager.config;
 
 public class Utils {
     private static final DecimalFormat format = new DecimalFormat("#.##");
@@ -59,7 +63,7 @@ public class Utils {
 
     public static void log(String message, Manager manager) {
         message = translateChars(message);
-        message = "[" + manager.getName() + "]" + message;
+        message = "&6[&3l2&bx9&6]" + message;
         L2X9RebootCore.getInstance().getLogger().log(Level.INFO, message);
     }
 
@@ -80,3 +84,4 @@ public class Utils {
                 + " &r&3Z:&r&a " + format.format(z);
     }
 }
+
