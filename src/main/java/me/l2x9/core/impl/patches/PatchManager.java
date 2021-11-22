@@ -50,6 +50,7 @@ public class PatchManager extends Manager {
         plugin.registerListener(new AntiIllegals());
         WitherLag lag = new WitherLag();
         plugin.registerListener(lag);
+        new LightLag();
     }
 
     @Override
