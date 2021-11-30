@@ -5,6 +5,7 @@ import me.l2x9.core.boiler.event.listener.PlayerJoinListener;
 import me.l2x9.core.boiler.util.ConfigCreator;
 import me.l2x9.core.impl.chat.ChatManager;
 import me.l2x9.core.impl.command.CommandManager;
+import me.l2x9.core.impl.patches.listeners.MeCommand;
 import me.l2x9.core.impl.home.HomeManager;
 import me.l2x9.core.impl.misc.MiscManager;
 import me.l2x9.core.impl.patches.PatchManager;
@@ -87,6 +88,7 @@ public final class L2X9RebootCore extends JavaPlugin {
         registerListener(new PlayerJoinListener());
         registerManagers();
         redstonePerChunk.clear();
+        getServer().getPluginManager().registerEvents(new MeCommand(), this);
 
         runnable = new BukkitRunnable() {
             @Override
