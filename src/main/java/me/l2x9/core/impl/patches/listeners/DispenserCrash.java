@@ -18,7 +18,11 @@ public class DispenserCrash implements Listener {
         if (!hasShulker(dispenser)) return;
         if (height == 255 || height <= 1) {
             event.setCancelled(true);
-            String players = String.join(" ", dispenser.getLocation().getWorld().getNearbyEntities(dispenser.getLocation(), 60, 60, 60).stream().filter(e -> e instanceof Player).map(p -> "&r&a " + p.getName() + "&r&3,&r ").toArray(String[]::new));
+            String players = String.join(" ", dispenser.getLocation().getWorld().getNearbyEntities(dispenser.getLocation(), 60, 60, 60).
+                    stream().
+                    filter(e -> e instanceof Player).
+                    map(p -> "&r&a " + p.getName() + "&r&3,&r ").
+                    toArray(String[]::new));
             Utils.log("&3Prevented a dispenser crash in " + Utils.formatLocation(dispenser.getLocation()) + "&r&3 nearby players&r&a " + players);
         }
     }

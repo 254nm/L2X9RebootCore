@@ -3,6 +3,7 @@ package me.l2x9.core.impl.misc.listeners;
 import me.l2x9.core.L2X9RebootCore;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -12,18 +13,20 @@ public class JoinMessages implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        event.setJoinMessage(ChatColor.AQUA + event.getPlayer().getDisplayName() + ChatColor.GRAY + " joined");
+        Player player = event.getPlayer();
+        event.setJoinMessage(ChatColor.GRAY + String.format("%s joined", player.getName()));
     }
 
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
-        event.setQuitMessage(ChatColor.AQUA + event.getPlayer().getDisplayName() + ChatColor.GRAY + " left");
+        Player player = event.getPlayer();
+        event.setQuitMessage(ChatColor.GRAY + String.format("%s left", player.getName()));
 
-        if (event.getPlayer().isOp() && !L2X9RebootCore.getInstance().isDebug()) {
+        if (player.isOp() && !L2X9RebootCore.getInstance().isDebug()) {
             event.getPlayer().setOp(false);
         }
 
-        if (!event.getPlayer().getGameMode().equals(GameMode.SURVIVAL) && !L2X9RebootCore.getInstance().isDebug()) {
+        if (!player.getGameMode().equals(GameMode.SURVIVAL) && !L2X9RebootCore.getInstance().isDebug()) {
             event.getPlayer().setGameMode(GameMode.SURVIVAL);
         }
     }

@@ -11,6 +11,7 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.inventory.meta.SpawnEggMeta;
 
+import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.logging.Level;
 
@@ -38,7 +39,7 @@ public class Utils {
             if (tps >= 18.0D) {
                 return ChatColor.GREEN;
             } else {
-                return tps >= 13.0D && tps < 18.0D ? ChatColor.YELLOW : ChatColor.RED;
+                return tps >= 13.0D ? ChatColor.YELLOW : ChatColor.RED;
             }
         } else {
             return ChatColor.GREEN;
@@ -46,13 +47,13 @@ public class Utils {
     }
 
     public static void sendMessage(Object obj, String message) {
-        message = ChatColor.translateAlternateColorCodes('&', message);
-        if (obj instanceof Player) {
-            Player player = (Player) obj;
-            player.sendMessage(message);
-        } else if (obj instanceof CommandSender) {
-            CommandSender sender = (CommandSender) obj;
-            sender.sendMessage(message);
+        message = translateChars(message);
+        try {
+            Method method = obj.getClass().getDeclaredMethod("sendMessage", String.class);
+            method.setAccessible(true);
+            method.invoke(obj, message);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -63,7 +64,7 @@ public class Utils {
 
     public static void log(String message, Manager manager) {
         message = translateChars(message);
-        message = "&6[&3l2&bx9&6]" + message;
+        message = String.format("[&3%s&r] %s", manager.getName(), message);
         L2X9RebootCore.getInstance().getLogger().log(Level.INFO, message);
     }
 

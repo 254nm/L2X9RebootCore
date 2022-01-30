@@ -7,11 +7,12 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class HomeUtil {
     private final File homesFolder;
-    private final HashMap<UUID, List<Home>> homes;
+    private final HashMap<UUID, ArrayList<Home>> homes;
 
     public HomeUtil(File homesFolder) {
         this.homesFolder = homesFolder;
@@ -22,7 +23,7 @@ public class HomeUtil {
         return homesFolder;
     }
 
-    public HashMap<UUID, List<Home>> getHomes() {
+    public HashMap<UUID, ArrayList<Home>> getHomes() {
         return homes;
     }
 
@@ -52,7 +53,7 @@ public class HomeUtil {
         for (File data : homesFolder.listFiles()) {
             if (!data.isDirectory()) continue;
             if (!data.getName().equals(player.getUniqueId().toString())) continue;
-            List<Home> homeList = new ArrayList<>();
+            ArrayList<Home> homeList = new ArrayList<>();
             for (File mapFile : data.listFiles()) {
                 if (!getFileExtension(mapFile).equals(".map")) continue;
                 homeList.add(parseHome(mapFile));
@@ -81,14 +82,12 @@ public class HomeUtil {
             serialized[0] = owner.toString();
             serialized[1] = x + "::" + y + "::" + z + "::" + world;
             serialized[2] = name;
-            for (String str : serialized) {
-                fw.write(str + "\n");
-            }
+            for (String str : serialized) fw.write(str + "\n");
             if (homes.containsKey(owner)) {
-                List<Home> homeList = new ArrayList<>(homes.get(owner));
+                ArrayList<Home> homeList = new ArrayList<>(homes.get(owner));
                 homeList.add(home);
                 homes.replace(owner, homeList);
-            } else homes.put(owner, Collections.singletonList(home));
+            } else homes.put(owner, new ArrayList<>(Collections.singletonList(home)));
             fw.flush();
             fw.close();
         } catch (Throwable t) {

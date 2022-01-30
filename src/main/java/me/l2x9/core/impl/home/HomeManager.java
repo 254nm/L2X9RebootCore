@@ -13,12 +13,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 public class HomeManager extends Manager {
-    private HashMap<UUID, List<Home>> homes;
+    private HashMap<UUID, ArrayList<Home>> homes;
     private Configuration config;
     private HomeUtil homeUtil;
 
@@ -30,7 +31,7 @@ public class HomeManager extends Manager {
         return homeUtil;
     }
 
-    public HashMap<UUID, List<Home>> getHomes() {
+    public HashMap<UUID, ArrayList<Home>> getHomes() {
         return homes;
     }
 

@@ -5,8 +5,10 @@ import me.l2x9.core.boiler.util.IOUtil;
 import me.l2x9.core.Manager;
 import me.l2x9.core.boiler.util.ConfigCreator;
 import me.l2x9.core.boiler.util.Utils;
+import net.minecraft.server.v1_12_R1.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
@@ -46,27 +48,18 @@ public class TabManager extends Manager {
     }
 
     public String parsePlaceHolders(String input, Player player) {
-        String tps = String.valueOf(format.format(((CraftServer)Bukkit.getServer()).getHandle().getServer().recentTps[0]));
+        String tps = String.valueOf(format.format(((CraftServer) Bukkit.getServer()).getHandle().getServer().recentTps[0]));
         int ping = getPing(player);
         return Utils.translateChars(input.
-                replace("%tps%", Utils.getTPSColor(tps) + tps).
-                replace("%players%", Bukkit.getOnlinePlayers().size() + "")).
+                        replace("%tps%", Utils.getTPSColor(tps) + tps).
+                        replace("%players%", Bukkit.getOnlinePlayers().size() + "")).
                 replace("%ping%", ping + "").
                 replace("%uptime%", Utils.getFormattedInterval(System.currentTimeMillis() - startTime)
-        );
+                );
     }
 
     private int getPing(Player player) {
-        try {
-            String ver = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-            Class<?> craftPlayer = Class.forName("org.bukkit.craftbukkit." + ver + ".entity.CraftPlayer");
-            Object handle = craftPlayer.getMethod("getHandle", new Class[0]).invoke(player);
-            Field pingF = handle.getClass().getDeclaredField("ping");
-            pingF.setAccessible(true);
-            return (int) pingF.get(handle);
-        } catch (Throwable t) {
-            t.printStackTrace();
-            return -1;
-        }
+        EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
+        return nmsPlayer.ping;
     }
 }

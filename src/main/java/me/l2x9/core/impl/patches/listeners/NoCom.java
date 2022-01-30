@@ -16,7 +16,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class NoCom implements Listener {
-    private final List<EnumPlayerDigType> validActions = Arrays.asList(EnumPlayerDigType.ABORT_DESTROY_BLOCK, EnumPlayerDigType.START_DESTROY_BLOCK, EnumPlayerDigType.STOP_DESTROY_BLOCK);
+    private final List<EnumPlayerDigType> validActions = Arrays.asList(
+            EnumPlayerDigType.ABORT_DESTROY_BLOCK,
+            EnumPlayerDigType.START_DESTROY_BLOCK,
+            EnumPlayerDigType.STOP_DESTROY_BLOCK);
     private Field outPosF;
     private Field posF;
     private Field actionF;

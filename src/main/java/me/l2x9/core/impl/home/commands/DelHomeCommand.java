@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DelHomeCommand implements CommandExecutor {
@@ -22,13 +23,13 @@ public class DelHomeCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            List<Home> homes = main.getHomes().getOrDefault(player.getUniqueId(), null);
+            ArrayList<Home> homes = main.getHomes().getOrDefault(player.getUniqueId(), null);
             File playerFolder = new File(main.getHomeUtil().getHomesFolder(), player.getUniqueId().toString());
             if (args.length < 1) {
                 Utils.sendMessage(player, "&3Please include the name of a home to delete");
                 return true;
             }
-            Home home = getByName(args[0], homes);
+            Home home =  homes.stream().filter(h -> h.getName().equals(args[0])).findFirst().orElse(null);
             if (home == null) {
                 Utils.sendMessage(player, "&3Home&r&a " + args[0] + "&r&3 was not found");
                 return true;
@@ -43,12 +44,5 @@ public class DelHomeCommand implements CommandExecutor {
             }
         } else Utils.sendMessage(sender, "&3You must be a player to use this command");
         return true;
-    }
-
-    private Home getByName(String name, List<Home> homes) {
-        for (Home home : homes) {
-            if (home.getName().equalsIgnoreCase(name)) return home;
-        }
-        return null;
     }
 }
