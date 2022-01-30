@@ -18,10 +18,10 @@ public class LeverRateLimit extends ViolationManager implements Listener {
         if (event.getClickedBlock() == null) return;
         if (event.getClickedBlock().getType() == Material.LEVER) {
             Player player = event.getPlayer();
-            increment(player.getUniqueId());
-            if (getVLS(player.getUniqueId()) > 20) {
+            increment(player.hashCode());
+            if (getVLS(player.hashCode()) > 20) {
                 player.kickPlayer("Fuck off degen");
-                remove(player.getUniqueId());
+                remove(player.hashCode());
             }
         }
     }

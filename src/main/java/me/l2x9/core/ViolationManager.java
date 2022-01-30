@@ -6,36 +6,44 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class ViolationManager {
-    private final ConcurrentHashMap<UUID, Integer> map;
+    private final ConcurrentHashMap<Integer, Integer> map;
     private final int addAmount;
+    private int removeAmount;
 
     public ViolationManager(int addAmount) {
         this.addAmount = addAmount;
+        this.removeAmount = addAmount;
+        map = new ConcurrentHashMap<>();
+        L2X9RebootCore.getInstance().registerViolationManager(this);
+    }
+    public ViolationManager(int addAmount, int removeAmount) {
+        this.addAmount = addAmount;
+        this.removeAmount = removeAmount;
         map = new ConcurrentHashMap<>();
         L2X9RebootCore.getInstance().registerViolationManager(this);
     }
 
     public void decrementAll() {
         map.forEach((key, val) -> {
-            if (val <= 0) {
+            if (val <= removeAmount) {
                 map.remove(key);
                 return;
             }
-            map.replace(key, val - addAmount);
+            map.replace(key, val - removeAmount);
         });
     }
 
-    public void increment(UUID uuid) {
+    public void increment(int uuid) {
         if (!map.containsKey(uuid)) {
             map.put(uuid, 0);
         } else map.replace(uuid, map.get(uuid) + addAmount);
     }
 
-    public int getVLS(UUID id) {
+    public int getVLS(int id) {
         return map.getOrDefault(id, -1);
     }
 
-    public void remove(UUID id) {
+    public void remove(int id) {
         map.remove(id);
     }
 }
