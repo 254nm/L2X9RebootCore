@@ -34,7 +34,7 @@ public class Redstone extends ViolationManager implements Listener {
         } else {
             increment(block.getChunk().hashCode());
             int vls = getVLS(block.getChunk().hashCode());
-            if (getVLS(block.getChunk().hashCode()) > 20000) {
+            if (vls > 20000) {
                 if (shouldBreakBlock()) event.getBlock().breakNaturally();
                 event.setNewCurrent(0);
             }
