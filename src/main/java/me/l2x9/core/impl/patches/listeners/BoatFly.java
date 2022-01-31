@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class BoatFly implements Listener {
     private final ArrayList<Player> list = new ArrayList<>();
     int time;
+    //TODO Rewrite this dogshit code
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
