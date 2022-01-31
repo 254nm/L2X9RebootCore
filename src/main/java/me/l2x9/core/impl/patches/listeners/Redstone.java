@@ -28,11 +28,11 @@ public class Redstone extends ViolationManager implements Listener {
     public void onRedstoneEvent(BlockRedstoneEvent event) {
         int disableTPS = 8;
         Block block = event.getBlock();
-        if (server.recentTps[0] < disableTPS) {
+        increment(block.getChunk().hashCode());
+        if (server.recentTps[0] < disableTPS && getVLS(block.getChunk().hashCode()) > 70) {
             event.setNewCurrent(0);
             if (shouldBreakBlock()) block.breakNaturally();
         } else {
-            increment(block.getChunk().hashCode());
             int vls = getVLS(block.getChunk().hashCode());
             if (vls > 20000) {
                 if (shouldBreakBlock()) event.getBlock().breakNaturally();

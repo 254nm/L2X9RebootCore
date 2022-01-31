@@ -21,8 +21,7 @@ public class AutoRestart {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (player.getLocale().toLowerCase().contains("es")) {
                         player.kickPlayer(Utils.translateChars("&6[&3l2&bx9&6] El servidor se está reiniciando"));
-                    } else
-                        player.kickPlayer(Utils.translateChars("&6[&3l2&bx9&6] The server is restarting"));
+                    } else player.kickPlayer(Utils.translateChars("&6[&3l2&bx9&6] The server is restarting"));
                 }
                 Bukkit.getServer().shutdown();
             });
