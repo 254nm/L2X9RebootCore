@@ -46,6 +46,7 @@ public class PatchManager extends Manager {
         plugin.registerListener(new Damage());
         plugin.registerListener(new ChunkBan());
         plugin.registerListener(new ProjectileVelocity());
+        plugin.registerListener(new PacketPerSecondLimit());
         plugin.registerListener(new Redstone());
         WitherLag lag = new WitherLag();
         plugin.registerListener(lag);
