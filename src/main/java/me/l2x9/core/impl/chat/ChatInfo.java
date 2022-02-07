@@ -75,7 +75,7 @@ public class ChatInfo {
             InputStream fis = new FileInputStream(ignoreList);
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader reader = new BufferedReader(isr);
-            reader.lines().forEach(l -> buffer.add(UUID.fromString(l)));
+            buffer.addAll(reader.lines().collect(Collectoes.toList(UUID[]::new)));
             reader.close();
             isr.close();
             fis.close();

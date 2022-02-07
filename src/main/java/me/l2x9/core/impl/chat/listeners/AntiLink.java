@@ -40,6 +40,7 @@ public class AntiLink implements Listener {
                         }
                     }
             } catch (Throwable t) {
+                t.printStackTrace();
             }
         }
     }
