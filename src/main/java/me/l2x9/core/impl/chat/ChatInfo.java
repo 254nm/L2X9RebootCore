@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class ChatInfo {
     private final Player player;
@@ -70,12 +71,11 @@ public class ChatInfo {
     private List<UUID> loadIgnores() {
         File ignoreList = new File(manager.getIgnoresFolder(), player.getName().concat(".lst"));
         if (!ignoreList.exists()) return new ArrayList<>();
-        List<UUID> buffer = new ArrayList<>();
         try {
             InputStream fis = new FileInputStream(ignoreList);
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader reader = new BufferedReader(isr);
-            buffer.addAll(reader.lines().collect(Collectoes.toList(UUID[]::new)));
+            List<UUID> buffer = reader.lines().map(UUID::fromString).collect(Collectors.toList());
             reader.close();
             isr.close();
             fis.close();

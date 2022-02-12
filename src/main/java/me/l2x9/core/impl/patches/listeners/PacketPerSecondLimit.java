@@ -18,7 +18,6 @@ public class PacketPerSecondLimit extends ViolationManager implements Listener {
     public void onPacket(PacketEvent.Incoming event) {
         increment(event.getPlayer().hashCode());
         int vls = getVLS(event.getPlayer().hashCode());
-        System.out.println(vls);
         if (vls > PP_LIMIT) {
             remove(event.getPlayer().hashCode());
             plugin.getServer().getScheduler().runTask(plugin, () -> event.getPlayer().kickPlayer("You are sending packets too fast!"));
