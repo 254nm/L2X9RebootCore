@@ -48,6 +48,7 @@ public class PatchManager extends Manager {
         plugin.registerListener(new ProjectileVelocity());
         plugin.registerListener(new PacketPerSecondLimit());
         plugin.registerListener(new Redstone());
+        plugin.registerListener(new IllegalBlock(plugin.getConfig()));
         WitherLag lag = new WitherLag();
         plugin.registerListener(lag);
         new LightLag();

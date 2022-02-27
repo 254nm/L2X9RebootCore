@@ -3,6 +3,7 @@ package me.l2x9.core.impl.patches.listeners;
 import me.l2x9.core.boiler.event.CustomEventHandler;
 import me.l2x9.core.boiler.event.Listener;
 import me.l2x9.core.boiler.event.events.PacketEvent;
+import me.l2x9.core.boiler.util.Utils;
 import net.minecraft.server.v1_12_R1.NBTTagCompound;
 import net.minecraft.server.v1_12_R1.PacketPlayOutMapChunk;
 
@@ -41,7 +42,10 @@ public class ChunkBan implements Listener {
                         stream().
                         mapToDouble(Integer::doubleValue).
                         sum();
-                if (dataSize >= MAX_SIZE) tileEntities.clear();
+                if (dataSize >= MAX_SIZE) {
+                    tileEntities.clear();
+                    Utils.log(String.format("&aPrevented large ChunkMapPacket near %s", Utils.formatLocation(event.getPlayer().getLocation())));
+                }
             } catch (Throwable t) {
                 t.printStackTrace();
             }

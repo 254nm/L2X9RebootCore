@@ -63,6 +63,7 @@ public final class L2X9RebootCore extends JavaPlugin {
     public void onEnable() {
         instance = this;
         managers = new ArrayList<>();
+        saveDefaultConfig();
         violationManagers = new ArrayList<>();
         service = Executors.newScheduledThreadPool(4);
         service.scheduleAtFixedRate(() -> violationManagers.forEach(ViolationManager::decrementAll), 0, 1, TimeUnit.SECONDS);

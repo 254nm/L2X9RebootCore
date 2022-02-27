@@ -52,7 +52,6 @@ public class BoatFly implements Listener {
                     } else {
                         boat.teleport(new Location(boat.getWorld(), ax, ay, az));
                         player.teleport(new Location(player.getWorld(), ax, ay, az));
-                        System.out.println("Debug point 2");
                     }
             }
         }

@@ -1,4 +1,4 @@
-BANNED_BLOCKS:
+IllegalBlocks:
   - 'COMMAND_REPEATING'
   - 'GRASS_PATH'
   - 'KNOWLEDGE_BOOK'
