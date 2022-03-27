@@ -6,6 +6,7 @@ import me.l2x9.core.boiler.event.events.PacketEvent;
 import me.l2x9.core.boiler.util.Utils;
 import net.minecraft.server.v1_12_R1.NBTTagCompound;
 import net.minecraft.server.v1_12_R1.PacketPlayOutMapChunk;
+import org.bukkit.Chunk;
 
 import java.lang.reflect.Field;
 import java.util.List;
