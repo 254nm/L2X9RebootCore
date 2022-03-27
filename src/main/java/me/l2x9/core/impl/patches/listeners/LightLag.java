@@ -7,7 +7,7 @@ import java.lang.reflect.Modifier;
 
 public class LightLag {
     public LightLag() {
-        int time = 300;
+        int time = 1000;
         String ver = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
         try {
             Field modifiersField = Field.class.getDeclaredField("modifiers");
