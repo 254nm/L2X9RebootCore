@@ -8,10 +8,10 @@ import me.l2x9.core.boiler.event.events.PacketEvent;
 
 public class PacketPerSecondLimit extends ViolationManager implements Listener {
     private final L2X9RebootCore plugin = L2X9RebootCore.getPlugin();
-    private final int PP_LIMIT = 165;
+    private final int PP_LIMIT = 225;
 
     public PacketPerSecondLimit() {
-        super(1, 165);
+        super(1, 225);
     }
 
     @CustomEventHandler
