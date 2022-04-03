@@ -6,8 +6,8 @@ import me.l2x9.core.impl.chat.listeners.ChatListener;
 import me.l2x9.core.impl.chat.listeners.JoinLeaveListener;
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
-import me.l2x9.core.boiler.util.ConfigCreator;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class ChatManager extends Manager {
     private final HashMap<UUID, ChatInfo> map;
-    private ConfigCreator.ConfigurationWrapper config;
+    private ConfigurationSection config;
     private File ignoresFolder;
 
     public ChatManager() {
@@ -24,7 +24,7 @@ public class ChatManager extends Manager {
         map = new HashMap<>();
     }
 
-    public ConfigCreator.ConfigurationWrapper getConfig() {
+    public ConfigurationSection getConfig() {
         return config;
     }
 
@@ -34,12 +34,11 @@ public class ChatManager extends Manager {
 
     @Override
     public void init(L2X9RebootCore plugin) {
-        File dataFolder = new File(plugin.getCreator().getDataFolder(), "ChatControl");
+        File dataFolder = getDataFolder();
         if (!dataFolder.exists()) dataFolder.mkdir();
-        plugin.getCreator().makeConfig(dataFolder, "configs/chat-config.yml", "ChatConfig.yml");
-        config = plugin.getCreator().getConfigs().get("ChatConfig");
         ignoresFolder = new File(dataFolder, "IgnoreLists");
         if (!ignoresFolder.exists()) ignoresFolder.mkdir();
+        config = plugin.getModuleConfig(this);
         plugin.registerListener(new ChatListener(this));
         plugin.registerListener(new JoinLeaveListener(this));
         plugin.registerListener(new AntiLink(this));
@@ -58,8 +57,8 @@ public class ChatManager extends Manager {
     }
 
     @Override
-    public void reloadConfig(ConfigCreator creator) {
-        config = creator.getConfigs().get("ChatConfig");
+    public void reloadConfig(ConfigurationSection config) {
+        this.config = config;
     }
 
     public void registerPlayer(Player player) {

@@ -2,8 +2,8 @@ package me.l2x9.core.impl.patches;
 
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
-import me.l2x9.core.boiler.util.ConfigCreator;
 import me.l2x9.core.impl.patches.listeners.*;
+import org.bukkit.configuration.ConfigurationSection;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -60,7 +60,7 @@ public class PatchManager extends Manager {
     }
 
     @Override
-    public void reloadConfig(ConfigCreator creator) {
+    public void reloadConfig(ConfigurationSection config) {
 
     }
 }

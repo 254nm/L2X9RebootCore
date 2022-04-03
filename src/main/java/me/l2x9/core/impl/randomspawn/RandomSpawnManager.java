@@ -1,13 +1,11 @@
 package me.l2x9.core.impl.randomspawn;
 
 import me.l2x9.core.impl.randomspawn.listeners.RespawnListener;
-import me.l2x9.core.boiler.util.IOUtil;
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
-import me.l2x9.core.boiler.util.ConfigCreator;
-import me.l2x9.core.boiler.util.Utils;
+import me.l2x9.core.util.Utils;
 import org.bukkit.Material;
-import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +15,7 @@ public class RandomSpawnManager extends Manager {
     private int range;
     private String world;
     private List<Material> ignored;
-    private Configuration config;
+    private ConfigurationSection config;
 
     public RandomSpawnManager() {
         super("RandomSpawn");
@@ -29,7 +27,7 @@ public class RandomSpawnManager extends Manager {
 
     @Override
     public void init(L2X9RebootCore plugin) {
-        config = IOUtil.createConfig(plugin, getName(), getName() + "-config", "configs/random.yml").getConfig();
+        config = plugin.getModuleConfig(this);
         plugin.registerListener(new RespawnListener(this));
         setVars();
     }
@@ -40,8 +38,8 @@ public class RandomSpawnManager extends Manager {
     }
 
     @Override
-    public void reloadConfig(ConfigCreator creator) {
-        config = creator.getConfigs().get(getName() + "-config").getConfig();
+    public void reloadConfig(ConfigurationSection config) {
+        this.config = config;
         setVars();
     }
 

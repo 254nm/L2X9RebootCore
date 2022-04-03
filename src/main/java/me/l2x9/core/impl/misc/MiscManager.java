@@ -3,7 +3,7 @@ package me.l2x9.core.impl.misc;
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
 import me.l2x9.core.impl.misc.listeners.*;
-import me.l2x9.core.boiler.util.ConfigCreator;
+import org.bukkit.configuration.ConfigurationSection;
 
 public class MiscManager extends Manager {
     public MiscManager() {
@@ -24,7 +24,7 @@ public class MiscManager extends Manager {
     }
 
     @Override
-    public void reloadConfig(ConfigCreator creator) {
+    public void reloadConfig(ConfigurationSection config) {
 
     }
 }
