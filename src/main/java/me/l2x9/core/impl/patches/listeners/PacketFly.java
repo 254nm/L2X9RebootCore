@@ -2,6 +2,7 @@ package me.l2x9.core.impl.patches.listeners;
 
 import me.l2x9.core.packet.PacketEvent;
 import me.l2x9.core.packet.PacketListener;
+import net.minecraft.server.v1_12_R1.PacketPlayInChat;
 import net.minecraft.server.v1_12_R1.PacketPlayInFlying;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -19,6 +20,7 @@ public class PacketFly implements PacketListener {
         double yDelta = loc.getY() - y;
         if (Math.abs(yDelta) > 20) {
             event.setCancelled(true);
+            player.teleport(player.getLocation()); //Sync the location after cancelling the packet
         }
     }
 
