@@ -2,6 +2,7 @@ package me.l2x9.core.packet;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelPipeline;
+import lombok.AllArgsConstructor;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.event.EventHandler;
@@ -10,14 +11,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 
+@AllArgsConstructor
 public class PlayerJoinListener implements Listener {
     private final Plugin plugin;
     private final PacketEventDispatcher dispatcher;
-
-    public PlayerJoinListener(Plugin plugin, PacketEventDispatcher dispatcher) {
-        this.plugin = plugin;
-        this.dispatcher = dispatcher;
-    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {

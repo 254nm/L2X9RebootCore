@@ -1,36 +1,22 @@
 package me.l2x9.core.packet;
 
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import net.minecraft.server.v1_12_R1.Packet;
 import org.bukkit.entity.Player;
 
+@RequiredArgsConstructor
+@Getter
+@Setter
 public abstract class PacketEvent {
-    private final Player player;
+    @NonNull
     private Packet<?> packet;
+    @NonNull
+    private final Player player;
+
     private boolean cancelled;
-    public PacketEvent(Packet<?> packet, Player player) {
-        this.packet = packet;
-        this.player = player;
-    }
-
-    public boolean isCancelled() {
-        return cancelled;
-    }
-
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
-    }
-
-    public Packet<?> getPacket() {
-        return packet;
-    }
-
-    public void setPacket(Packet<?> packet) {
-        this.packet = packet;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
 
     public static class Incoming extends PacketEvent {
         public Incoming(Packet<?> packet, Player player) {
