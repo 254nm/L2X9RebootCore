@@ -2,25 +2,22 @@ package me.l2x9.core.impl.home;
 
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
-import me.l2x9.core.boiler.util.ConfigCreator;
-import me.l2x9.core.boiler.util.IOUtil;
 import me.l2x9.core.impl.home.commands.DelHomeCommand;
 import me.l2x9.core.impl.home.commands.HomeCommand;
 import me.l2x9.core.impl.home.commands.SetHomeCommand;
 import me.l2x9.core.impl.home.listeners.JoinListener;
 import me.l2x9.core.impl.home.util.HomeUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 public class HomeManager extends Manager {
     private HashMap<UUID, ArrayList<Home>> homes;
-    private Configuration config;
+    private ConfigurationSection config;
     private HomeUtil homeUtil;
 
     public HomeManager() {
@@ -35,16 +32,15 @@ public class HomeManager extends Manager {
         return homes;
     }
 
-    public Configuration getConfig() {
+    public ConfigurationSection getConfig() {
         return config;
     }
 
     @Override
     public void init(L2X9RebootCore plugin) {
-        ConfigCreator.ConfigurationWrapper wrapper = IOUtil.createConfig(plugin, getName(), getName() + "-config", "configs/home.yml");
-        config = wrapper.getConfig();
-        File homesFolder = new File(wrapper.getDataFolder(), "PlayerHomes");
+        File homesFolder = new File(getDataFolder(), "PlayerHomes");
         if (!homesFolder.exists()) homesFolder.mkdir();
+        config = plugin.getModuleConfig(this);
         homeUtil = new HomeUtil(homesFolder);
         homes = homeUtil.getHomes();
         if (!Bukkit.getOnlinePlayers().isEmpty()) Bukkit.getOnlinePlayers().forEach(p -> homeUtil.loadHomes(p));
@@ -60,7 +56,7 @@ public class HomeManager extends Manager {
     }
 
     @Override
-    public void reloadConfig(ConfigCreator creator) {
-        config = creator.getConfigs().get(getName() + "-config").getConfig();
+    public void reloadConfig(ConfigurationSection config) {
+        this.config = config;
     }
 }

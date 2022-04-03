@@ -1,13 +1,13 @@
 package me.l2x9.core.impl.home.util;
 
 import me.l2x9.core.impl.home.Home;
+import me.l2x9.core.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class HomeUtil {
@@ -42,7 +42,7 @@ public class HomeUtil {
             fis.close();
             isr.close();
             reader.close();
-            return new Home(name, loc, owner);
+            return new Home(name, owner, loc);
         } catch (Throwable t) {
             t.printStackTrace();
             return null;
@@ -102,6 +102,18 @@ public class HomeUtil {
             return "";
         }
         return name.substring(index);
+    }
+
+    public boolean deleteHome(Home home) {
+        ArrayList<Home> homeList = getHomes().getOrDefault(home.getOwner(), null);
+        File playerFolder = new File(homesFolder, home.getOwner().toString());
+        File homeFile = new File(playerFolder, home.getName() + ".map");
+        if (homeFile.delete()) {
+            homeList.remove(home);
+            homes.replace(home.getOwner(), homeList);
+            return true;
+        }
+        return false;
     }
 
     public boolean hasHomes(Player player) {

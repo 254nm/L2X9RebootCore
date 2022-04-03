@@ -1,17 +1,15 @@
 package me.l2x9.core.impl.home.listeners;
 
+import lombok.AllArgsConstructor;
 import me.l2x9.core.impl.home.HomeManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+@AllArgsConstructor
 public class JoinListener implements Listener {
     private final HomeManager main;
-
-    public JoinListener(HomeManager main) {
-        this.main = main;
-    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
