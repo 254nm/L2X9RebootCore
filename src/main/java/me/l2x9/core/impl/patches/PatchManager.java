@@ -41,7 +41,7 @@ public class PatchManager extends Manager {
         plugin.registerListener(new Damage());
         plugin.registerListener(new ChunkBan(), PacketPlayOutMapChunk.class);
         plugin.registerListener(new ProjectileVelocity());
-//        plugin.registerListener(new PacketPerSecondLimit());
+        plugin.registerListener(new PacketPerSecondLimit(), null); //null means that this listener receives every packet
         plugin.registerListener(new Redstone());
         plugin.registerListener(new IllegalBlock(plugin.getConfig()));
         WitherLag lag = new WitherLag();
