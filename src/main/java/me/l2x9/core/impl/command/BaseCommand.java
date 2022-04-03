@@ -10,7 +10,7 @@ public abstract class BaseCommand {
     public final String CONSOLE_ONLY = "This command is console only";
     public final String PLAYER_ONLY = "This command is player only";
     public final String PREFIX = "[&3L2X9&r&aCore&r] ";
-    public final Configuration config = CommandManager.getInstance().getConfig();
+    public final Configuration config = L2X9RebootCore.getInstance().getConfig();
     public final L2X9RebootCore plugin = L2X9RebootCore.getInstance();
     private final String name;
     private final String usage;

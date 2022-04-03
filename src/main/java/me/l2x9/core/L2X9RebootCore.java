@@ -1,8 +1,7 @@
 package me.l2x9.core;
 
-import me.l2x9.core.boiler.event.EventBus;
-import me.l2x9.core.boiler.event.listener.PlayerJoinListener;
-import me.l2x9.core.boiler.util.ConfigCreator;
+import me.l2x9.core.packet.PacketEventDispatcher;
+import me.l2x9.core.packet.PacketListener;
 import me.l2x9.core.impl.chat.ChatManager;
 import me.l2x9.core.impl.command.CommandManager;
 import me.l2x9.core.impl.home.HomeManager;
@@ -13,6 +12,7 @@ import me.l2x9.core.impl.tablist.TabManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,13 +25,12 @@ import java.util.concurrent.TimeUnit;
 
 
 public final class L2X9RebootCore extends JavaPlugin {
-    public static EventBus EVENT_BUS = new EventBus();
+    private PacketEventDispatcher dispatcher;
     private static L2X9RebootCore instance;
     private final long startTime = System.currentTimeMillis();
     private ScheduledExecutorService service;
     private List<ViolationManager> violationManagers;
     private List<Manager> managers;
-    private ConfigCreator creator;
     //TODO: On chunk load scan for illegals and add to list of done chunks also ignore new chunks
 
     public static L2X9RebootCore getInstance() {
@@ -55,21 +54,15 @@ public final class L2X9RebootCore extends JavaPlugin {
         return getPlugin(L2X9RebootCore.class);
     }
 
-    public ConfigCreator getCreator() {
-        return creator;
-    }
-
     @Override
     public void onEnable() {
         instance = this;
+        dispatcher = new PacketEventDispatcher(this);
         managers = new ArrayList<>();
         saveDefaultConfig();
         violationManagers = new ArrayList<>();
         service = Executors.newScheduledThreadPool(4);
         service.scheduleAtFixedRate(() -> violationManagers.forEach(ViolationManager::decrementAll), 0, 1, TimeUnit.SECONDS);
-        creator = new ConfigCreator(getName());
-        creator.makeConfig(null, "config.yml", "config");
-        registerListener(new PlayerJoinListener());
         registerManagers();
     }
 
@@ -105,8 +98,8 @@ public final class L2X9RebootCore extends JavaPlugin {
         getServer().getPluginManager().registerEvents(listener, this);
     }
 
-    public void registerListener(me.l2x9.core.boiler.event.Listener listener) {
-        EVENT_BUS.subscribe(listener);
+    public void registerListener(PacketListener listener) {
+        dispatcher.register(listener);
     }
 
     public void registerCommand(String name, CommandExecutor... commands) {
@@ -120,5 +113,17 @@ public final class L2X9RebootCore extends JavaPlugin {
                 }
             });
         }
+    }
+    public ConfigurationSection getModuleConfig(Manager manager) {
+        return getConfig().getConfigurationSection(manager.getName());
+    }
+
+    @Override
+    public void reloadConfig() {
+        super.reloadConfig();
+        getManagers().forEach(m -> {
+           ConfigurationSection section = getConfig().getConfigurationSection(m.getName());
+           if (section != null) m.reloadConfig(section);
+        });
     }
 }

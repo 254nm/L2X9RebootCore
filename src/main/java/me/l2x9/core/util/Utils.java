@@ -1,21 +1,13 @@
-package me.l2x9.core.boiler.util;
+package me.l2x9.core.util;
 
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
 import org.bukkit.*;
-import org.bukkit.block.ShulkerBox;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BlockStateMeta;
-import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.inventory.meta.SpawnEggMeta;
 
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.logging.Level;
-
-import static me.l2x9.core.ConfigManager.config;
 
 public class Utils {
     private static final DecimalFormat format = new DecimalFormat("#.##");

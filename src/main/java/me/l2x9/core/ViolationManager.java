@@ -1,14 +1,11 @@
 package me.l2x9.core;
 
-import me.l2x9.core.L2X9RebootCore;
-
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class ViolationManager {
     private final ConcurrentHashMap<Integer, Integer> map;
     private final int addAmount;
-    private int removeAmount;
+    private final int removeAmount;
 
     public ViolationManager(int addAmount) {
         this.addAmount = addAmount;
