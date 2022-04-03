@@ -1,6 +1,5 @@
 package me.l2x9.core.packet;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
 import net.minecraft.server.v1_12_R1.Packet;
 import org.bukkit.plugin.Plugin;
 
@@ -26,9 +25,10 @@ public class PacketEventDispatcher {
         if (!listeners.containsValue(listener)) return;
     }
 
+    @SuppressWarnings(value = "unchecked")
     protected void dispatch(PacketEvent event) {
         Class<? extends Packet<?>> clazz = (Class<? extends Packet<?>>) event.getPacket().getClass();
-        List<PacketListener> pl = listeners.keySet().stream().filter(s -> s.contains(clazz)).map(listeners::get).collect(Collectors.toList());
+        List<PacketListener> pl = listeners.keySet().stream().filter(s -> s.contains(clazz) || s.contains(null)).map(listeners::get).collect(Collectors.toList());
         if (event instanceof PacketEvent.Incoming) {
             pl.forEach(l -> {
                 try {
