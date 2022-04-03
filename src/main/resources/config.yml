@@ -1,3 +1,4 @@
+Prefix: ''
 Homes:
   Enabled: true #Enable this module
   #The closest the player can be to 0,0
@@ -67,6 +68,11 @@ ChatControl:
     - "discord"
     - "."
     - "dot"
+Patches:
+  CraftingLag:
+    MaxVLS: 2000
+    KickMessage: ''
+
 AntiIllegal:
   Enabled: true #Enable this module
   IllegalBlocks:

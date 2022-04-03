@@ -35,31 +35,27 @@ public class NoCom implements PacketListener {
 
     @Override
     public void outgoing(PacketEvent.Outgoing event) throws Throwable {
-        if (event.getPacket() instanceof PacketPlayOutBlockChange) {
-            PacketPlayOutBlockChange packet = (PacketPlayOutBlockChange) event.getPacket();
-            BlockPosition position = (BlockPosition) outPosF.get(packet);
-            Player player = event.getPlayer();
-            Point packetP = new Point(position.getX(), position.getZ());
-            Point playerP = new Point((int) player.getLocation().getX(), (int) player.getLocation().getZ());
-            if (playerP.distance(packetP) > Bukkit.getServer().getViewDistance() * 16) {
-                event.setCancelled(true);
-            }
+        PacketPlayOutBlockChange packet = (PacketPlayOutBlockChange) event.getPacket();
+        BlockPosition position = (BlockPosition) outPosF.get(packet);
+        Player player = event.getPlayer();
+        Point packetP = new Point(position.getX(), position.getZ());
+        Point playerP = new Point((int) player.getLocation().getX(), (int) player.getLocation().getZ());
+        if (playerP.distance(packetP) > Bukkit.getServer().getViewDistance() * 16) {
+            event.setCancelled(true);
         }
     }
 
     @Override
     public void incoming(PacketEvent.Incoming event) throws Throwable {
-        if (event.getPacket() instanceof PacketPlayInBlockDig) {
-            PacketPlayInBlockDig packet = (PacketPlayInBlockDig) event.getPacket();
-            BlockPosition position = (BlockPosition) posF.get(packet);
-            Player player = event.getPlayer();
-            EnumPlayerDigType action = (EnumPlayerDigType) actionF.get(packet);
-            if (!validActions.contains(action)) return;
-            Point playerP = new Point(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
-            Point packetP = new Point(position.getX(), position.getZ());
-            if (playerP.distance(packetP) > Bukkit.getServer().getViewDistance() * 16) {
-                event.setCancelled(true);
-            }
+        PacketPlayInBlockDig packet = (PacketPlayInBlockDig) event.getPacket();
+        BlockPosition position = (BlockPosition) posF.get(packet);
+        Player player = event.getPlayer();
+        EnumPlayerDigType action = (EnumPlayerDigType) actionF.get(packet);
+        if (!validActions.contains(action)) return;
+        Point playerP = new Point(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
+        Point packetP = new Point(position.getX(), position.getZ());
+        if (playerP.distance(packetP) > Bukkit.getServer().getViewDistance() * 16) {
+            event.setCancelled(true);
         }
     }
 }

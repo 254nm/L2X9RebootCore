@@ -38,6 +38,14 @@ public class Utils {
         }
     }
 
+    /**
+     * Runs a task on bukkits main thread
+     * @param runnable The task to be run
+     */
+    public static void run(Runnable runnable) {
+         Bukkit.getScheduler().runTask(L2X9RebootCore.getPlugin(), runnable);
+    }
+
     public static void sendMessage(Object obj, String message) {
         message = translateChars(message);
         try {
@@ -47,6 +55,12 @@ public class Utils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void kick(Player player, String message) {
+        message = String.format("%s %s", "translateChars(message);", message);
+        message = translateChars(message);
+        player.kickPlayer(message);
     }
 
     public static void log(String message) {

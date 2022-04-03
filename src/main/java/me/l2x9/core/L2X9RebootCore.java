@@ -9,6 +9,7 @@ import me.l2x9.core.impl.misc.MiscManager;
 import me.l2x9.core.impl.patches.PatchManager;
 import me.l2x9.core.impl.randomspawn.RandomSpawnManager;
 import me.l2x9.core.impl.tablist.TabManager;
+import net.minecraft.server.v1_12_R1.Packet;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -98,8 +99,9 @@ public final class L2X9RebootCore extends JavaPlugin {
         getServer().getPluginManager().registerEvents(listener, this);
     }
 
-    public void registerListener(PacketListener listener) {
-        dispatcher.register(listener);
+    @SafeVarargs
+    public final void registerListener(PacketListener listener, Class<? extends Packet<?>>... packets) {
+        dispatcher.register(listener, packets);
     }
 
     public void registerCommand(String name, CommandExecutor... commands) {

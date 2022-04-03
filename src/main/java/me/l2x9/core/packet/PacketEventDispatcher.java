@@ -1,33 +1,36 @@
 package me.l2x9.core.packet;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
+import net.minecraft.server.v1_12_R1.Packet;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class PacketEventDispatcher {
-    private final List<PacketListener> listeners;
+    private final HashMap<HashSet<Class<? extends Packet<?>>>, PacketListener> listeners;
     private final Plugin plugin;
 
     public PacketEventDispatcher(Plugin plugin) {
         this.plugin = plugin;
-        listeners = new ArrayList<>();
+        listeners = new HashMap<>();
         plugin.getServer().getPluginManager().registerEvents(new PlayerJoinListener(plugin, this), plugin);
     }
 
-    public void register(PacketListener listener) {
-        if (listeners.contains(listener)) return;
-        listeners.add(listener);
+    public void register(PacketListener listener, Class<? extends Packet<?>>[] listeningFor) {
+        if (listeners.containsValue(listener)) return;
+        listeners.put(new HashSet<>(Arrays.asList(listeningFor)), listener);
     }
 
     public void unregister(PacketListener listener) {
-        if (!listeners.contains(listener)) return;
-        listeners.remove(listener);
+        if (!listeners.containsValue(listener)) return;
     }
 
     protected void dispatch(PacketEvent event) {
+        Class<? extends Packet<?>> clazz = (Class<? extends Packet<?>>) event.getPacket().getClass();
+        List<PacketListener> pl = listeners.keySet().stream().filter(s -> s.contains(clazz)).map(listeners::get).collect(Collectors.toList());
         if (event instanceof PacketEvent.Incoming) {
-            listeners.forEach(l -> {
+            pl.forEach(l -> {
                 try {
                     l.incoming((PacketEvent.Incoming) event);
                 } catch (Throwable e) {
@@ -35,7 +38,7 @@ public class PacketEventDispatcher {
                 }
             });
         } else if (event instanceof PacketEvent.Outgoing) {
-            listeners.forEach(l -> {
+            pl.forEach(l -> {
                 try {
                     l.outgoing((PacketEvent.Outgoing) event);
                 } catch (Throwable e) {

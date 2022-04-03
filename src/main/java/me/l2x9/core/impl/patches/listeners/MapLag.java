@@ -39,26 +39,27 @@ public class MapLag implements PacketListener {
 
     @Override
     public void incoming(PacketEvent.Incoming event) throws Throwable {
-        if (event.getPacket() instanceof PacketPlayOutMap) {
-            PacketPlayOutMap packet = (PacketPlayOutMap) event.getPacket();
-            MapIcon[] icons = (MapIcon[]) iconsF.get(packet);
-            int id = idF.getInt(packet);
-            WorldMap map = (WorldMap) world.a(WorldMap.class, "map_" + id);
-            if (map == null) return;
-            MapView view = map.mapView;
-            if (icons.length > 35) {
-                event.setCancelled(true);
-                if (view.getRenderers().get(0) instanceof DeleteRender) return;
-                view.removeRenderer(view.getRenderers().get(0));
-                view.addRenderer(new DeleteRender(manager));
-                Utils.log("&3Added delete renderer to map&r&a " + id);
-            }
-        }
     }
 
     @Override
     public void outgoing(PacketEvent.Outgoing event) throws Throwable {
-
+        if (event.getPacket() instanceof PacketPlayOutMap) {
+            PacketPlayOutMap packet = (PacketPlayOutMap) event.getPacket();
+            MapIcon[] icons = (MapIcon[]) iconsF.get(packet);
+            int id = idF.getInt(packet);
+            if (icons.length > 35) {
+                event.setCancelled(true);
+                Utils.run(() -> {
+                    WorldMap map = (WorldMap) world.a(WorldMap.class, "map_" + id);
+                    if (map == null) return;
+                    MapView view = map.mapView;
+                    if (view.getRenderers().get(0) instanceof DeleteRender) return;
+                    view.removeRenderer(view.getRenderers().get(0));
+                    view.addRenderer(new DeleteRender(manager));
+                    Utils.log("&3Added delete renderer to map&r&a " + id);
+                });
+            }
+        }
     }
 
     private static class DeleteRender extends MapRenderer {
@@ -83,7 +84,7 @@ public class MapLag implements PacketListener {
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
-            mapCanvas.drawImage(0, 0, manager.getMapImage());
+            mapCanvas.drawImage(0, 0, manager.getImage());
         }
     }
 }

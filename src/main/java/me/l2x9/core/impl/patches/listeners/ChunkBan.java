@@ -35,25 +35,20 @@ public class ChunkBan implements PacketListener {
     }
 
     @Override
+    @SuppressWarnings(value = "unchecked")
     public void outgoing(PacketEvent.Outgoing event) throws Throwable {
-        if (event.getPacket() instanceof PacketPlayOutMapChunk) {
-            try {
-                PacketPlayOutMapChunk packet = (PacketPlayOutMapChunk) event.getPacket();
-                List<NBTTagCompound> tileEntities = (List<NBTTagCompound>) nbtF.get(packet);
-                double dataSize = tileEntities.stream().
-                        map(o -> o.toString().length()).
-                        collect(Collectors.toList()).
-                        stream().
-                        mapToDouble(Integer::doubleValue).
-                        sum();
-                int maxSize = 2097152;
-                if (dataSize >= maxSize) {
-                    tileEntities.clear();
-                    Utils.log(String.format("&aPrevented large ChunkMapPacket near %s", Utils.formatLocation(event.getPlayer().getLocation())));
-                }
-            } catch (Throwable t) {
-                t.printStackTrace();
-            }
+        PacketPlayOutMapChunk packet = (PacketPlayOutMapChunk) event.getPacket();
+        List<NBTTagCompound> tileEntities = (List<NBTTagCompound>) nbtF.get(packet);
+        double dataSize = tileEntities.stream().
+                map(o -> o.toString().length()).
+                collect(Collectors.toList()).
+                stream().
+                mapToDouble(Integer::doubleValue).
+                sum();
+        int maxSize = 2097152;
+        if (dataSize >= maxSize) {
+            tileEntities.clear();
+            Utils.log(String.format("&aPrevented large ChunkMapPacket near %s", Utils.formatLocation(event.getPlayer().getLocation())));
         }
     }
 }
