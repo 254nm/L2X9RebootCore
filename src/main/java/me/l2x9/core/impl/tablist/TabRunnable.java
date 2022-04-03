@@ -30,8 +30,8 @@ public class TabRunnable extends TimerTask {
     public void run() {
         Bukkit.getOnlinePlayers().forEach(player -> {
             try {
-                String headerStr = String.join("\n", manager.getConfig().getConfig().getStringList("Header"));
-                String footerStr = String.join("\n", manager.getConfig().getConfig().getStringList("Footer"));
+                String headerStr = String.join("\n", manager.getConfig().getStringList("Header"));
+                String footerStr = String.join("\n", manager.getConfig().getStringList("Footer"));
                 IChatBaseComponent header = new ChatComponentText(manager.parsePlaceHolders(headerStr, player));
                 IChatBaseComponent footer = new ChatComponentText(manager.parsePlaceHolders(footerStr, player));
                 CraftPlayer craftPlayer = (CraftPlayer) player;

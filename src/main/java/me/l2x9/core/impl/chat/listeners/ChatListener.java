@@ -1,9 +1,9 @@
 package me.l2x9.core.impl.chat.listeners;
 
-import me.l2x9.core.boiler.util.Cooldown;
+import me.l2x9.core.util.Cooldown;
 import me.l2x9.core.impl.chat.ChatInfo;
 import me.l2x9.core.impl.chat.ChatManager;
-import me.l2x9.core.boiler.util.Utils;
+import me.l2x9.core.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -29,12 +29,12 @@ public class ChatListener implements Listener {
         boolean blocked = false;
         Player player = event.getPlayer();
         if (cooldown.checkCooldown(player)) {
-            cooldown.setCooldown(player, manager.getConfig().getConfig().getInt("Cooldown"));
+            cooldown.setCooldown(player, manager.getConfig().getInt("Cooldown"));
         } else {
             blocked = true;
         }
         if (!blocked) {
-            List<String> list = manager.getConfig().getConfig().getStringList("Blocked");
+            List<String> list = manager.getConfig().getStringList("Blocked");
             for (String word : list) {
                 if (event.getMessage().toLowerCase().contains(word)) {
                     blocked = true;
