@@ -1,17 +1,15 @@
 package me.l2x9.core.impl.chat.listeners;
 
 import me.l2x9.core.impl.chat.ChatManager;
-import me.l2x9.core.boiler.event.CustomEventHandler;
-import me.l2x9.core.boiler.event.Listener;
-import me.l2x9.core.boiler.event.events.PacketEvent;
+import me.l2x9.core.packet.PacketEvent;
+import me.l2x9.core.packet.PacketListener;
 import net.minecraft.server.v1_12_R1.IChatBaseComponent;
 import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
-import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
-public class AntiLink implements Listener {
+public class AntiLink implements PacketListener {
     private final ChatManager manager;
     private Field messageF;
 
@@ -25,22 +23,23 @@ public class AntiLink implements Listener {
         }
     }
 
-    @CustomEventHandler
-    public void onPacket(PacketEvent.Outgoing event) {
+    @Override
+    public void incoming(PacketEvent.Incoming event) throws Throwable {
+
+    }
+
+    @Override
+    public void outgoing(PacketEvent.Outgoing event) throws Throwable {
         if (event.getPacket() instanceof PacketPlayOutChat) {
-            try {
-                PacketPlayOutChat packet = (PacketPlayOutChat) event.getPacket();
-                IChatBaseComponent message = (IChatBaseComponent) messageF.get(packet);
-                if (message == null) return;
-                List<String> list = manager.getConfig().getConfig().getStringList("Blocked");
-                    for (String word : list) {
-                        if (message.toPlainText().contains(word)) {
-                            event.setCancelled(true);
-                            break;
-                        }
-                    }
-            } catch (Throwable t) {
-                t.printStackTrace();
+            PacketPlayOutChat packet = (PacketPlayOutChat) event.getPacket();
+            IChatBaseComponent message = (IChatBaseComponent) messageF.get(packet);
+            if (message == null) return;
+            List<String> list = manager.getConfig().getStringList("Blocked");
+            for (String word : list) {
+                if (message.toPlainText().contains(word)) {
+                    event.setCancelled(true);
+                    break;
+                }
             }
         }
     }

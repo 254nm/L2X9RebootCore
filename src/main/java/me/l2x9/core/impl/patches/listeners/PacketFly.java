@@ -1,16 +1,15 @@
 package me.l2x9.core.impl.patches.listeners;
 
-import me.l2x9.core.boiler.event.CustomEventHandler;
-import me.l2x9.core.boiler.event.Listener;
-import me.l2x9.core.boiler.event.events.PacketEvent;
+import me.l2x9.core.packet.PacketEvent;
+import me.l2x9.core.packet.PacketListener;
 import net.minecraft.server.v1_12_R1.PacketPlayInFlying;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class PacketFly implements Listener {
+public class PacketFly implements PacketListener {
 
-    @CustomEventHandler
-    public void onPacket(PacketEvent.Incoming event) {
+    @Override
+    public void incoming(PacketEvent.Incoming event) throws Throwable {
         if (!(event.getPacket() instanceof PacketPlayInFlying)) return;
         PacketPlayInFlying packet = (PacketPlayInFlying) event.getPacket();
         Player player = event.getPlayer();
@@ -21,5 +20,10 @@ public class PacketFly implements Listener {
         if (Math.abs(yDelta) > 20) {
             event.setCancelled(true);
         }
+    }
+
+    @Override
+    public void outgoing(PacketEvent.Outgoing event) throws Throwable {
+
     }
 }

@@ -1,11 +1,9 @@
 package me.l2x9.core.impl.patches.listeners;
 
-import me.l2x9.core.L2X9RebootCore;
-import me.l2x9.core.boiler.event.CustomEventHandler;
-import me.l2x9.core.boiler.event.Listener;
-import me.l2x9.core.boiler.event.events.PacketEvent;
-import me.l2x9.core.boiler.util.Utils;
 import me.l2x9.core.impl.patches.PatchManager;
+import me.l2x9.core.packet.PacketEvent;
+import me.l2x9.core.packet.PacketListener;
+import me.l2x9.core.util.Utils;
 import net.minecraft.server.v1_12_R1.MapIcon;
 import net.minecraft.server.v1_12_R1.PacketPlayOutMap;
 import net.minecraft.server.v1_12_R1.World;
@@ -21,7 +19,7 @@ import org.bukkit.map.MapView;
 import java.lang.reflect.Field;
 import java.util.List;
 
-public class MapLag implements Listener {
+public class MapLag implements PacketListener {
     private final World world = ((CraftWorld) Bukkit.getServer().getWorlds().get(0)).getHandle();
     private final PatchManager manager;
     private Field iconsF;
@@ -39,29 +37,28 @@ public class MapLag implements Listener {
         }
     }
 
-    @CustomEventHandler
-    public void onPacket(PacketEvent.Outgoing event) {
+    @Override
+    public void incoming(PacketEvent.Incoming event) throws Throwable {
         if (event.getPacket() instanceof PacketPlayOutMap) {
-            try {
-                PacketPlayOutMap packet = (PacketPlayOutMap) event.getPacket();
-                MapIcon[] icons = (MapIcon[]) iconsF.get(packet);
-                int id = idF.getInt(packet);
-                Bukkit.getScheduler().runTask(L2X9RebootCore.getInstance(), () -> {
-                    WorldMap map = (WorldMap) world.a(WorldMap.class, "map_" + id);
-                    if (map == null) return;
-                    MapView view = map.mapView;
-                    if (icons.length > 35) {
-                        event.setCancelled(true);
-                        if (view.getRenderers().get(0) instanceof DeleteRender) return;
-                        view.removeRenderer(view.getRenderers().get(0));
-                        view.addRenderer(new DeleteRender(manager));
-                        Utils.log("&3Added delete renderer to map&r&a " + id);
-                    }
-                });
-            } catch (Throwable t) {
-                t.printStackTrace();
+            PacketPlayOutMap packet = (PacketPlayOutMap) event.getPacket();
+            MapIcon[] icons = (MapIcon[]) iconsF.get(packet);
+            int id = idF.getInt(packet);
+            WorldMap map = (WorldMap) world.a(WorldMap.class, "map_" + id);
+            if (map == null) return;
+            MapView view = map.mapView;
+            if (icons.length > 35) {
+                event.setCancelled(true);
+                if (view.getRenderers().get(0) instanceof DeleteRender) return;
+                view.removeRenderer(view.getRenderers().get(0));
+                view.addRenderer(new DeleteRender(manager));
+                Utils.log("&3Added delete renderer to map&r&a " + id);
             }
         }
+    }
+
+    @Override
+    public void outgoing(PacketEvent.Outgoing event) throws Throwable {
+
     }
 
     private static class DeleteRender extends MapRenderer {

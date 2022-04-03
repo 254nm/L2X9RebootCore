@@ -1,12 +1,10 @@
 package me.l2x9.core.impl.patches.listeners;
 
-import me.l2x9.core.boiler.event.CustomEventHandler;
-import me.l2x9.core.boiler.event.Listener;
-import me.l2x9.core.boiler.event.events.PacketEvent;
-import me.l2x9.core.boiler.util.Utils;
+import me.l2x9.core.packet.PacketEvent;
+import me.l2x9.core.packet.PacketListener;
+import me.l2x9.core.util.Utils;
 import net.minecraft.server.v1_12_R1.NBTTagCompound;
 import net.minecraft.server.v1_12_R1.PacketPlayOutMapChunk;
-import org.bukkit.Chunk;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -17,9 +15,8 @@ import java.util.stream.Collectors;
  * @since 2021-11-02 / 9:50 p.m.
  * This file was created as a part of L2X9RebootCore
  */
-public class ChunkBan implements Listener {
+public class ChunkBan implements PacketListener {
     private Field nbtF;
-    private final int MAX_SIZE = 2097152;
 
     public ChunkBan() {
         try {
@@ -31,8 +28,14 @@ public class ChunkBan implements Listener {
 
     }
 
-    @CustomEventHandler
-    public void onPacketSending(PacketEvent.Outgoing event) {
+
+    @Override
+    public void incoming(PacketEvent.Incoming event) throws Throwable {
+
+    }
+
+    @Override
+    public void outgoing(PacketEvent.Outgoing event) throws Throwable {
         if (event.getPacket() instanceof PacketPlayOutMapChunk) {
             try {
                 PacketPlayOutMapChunk packet = (PacketPlayOutMapChunk) event.getPacket();
@@ -43,7 +46,8 @@ public class ChunkBan implements Listener {
                         stream().
                         mapToDouble(Integer::doubleValue).
                         sum();
-                if (dataSize >= MAX_SIZE) {
+                int maxSize = 2097152;
+                if (dataSize >= maxSize) {
                     tileEntities.clear();
                     Utils.log(String.format("&aPrevented large ChunkMapPacket near %s", Utils.formatLocation(event.getPlayer().getLocation())));
                 }
