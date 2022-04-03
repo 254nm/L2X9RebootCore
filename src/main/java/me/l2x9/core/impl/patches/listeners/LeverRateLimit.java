@@ -1,6 +1,7 @@
 package me.l2x9.core.impl.patches.listeners;
 
 import me.l2x9.core.ViolationManager;
+import me.l2x9.core.util.Utils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,7 +21,7 @@ public class LeverRateLimit extends ViolationManager implements Listener {
             Player player = event.getPlayer();
             increment(player.hashCode());
             if (getVLS(player.hashCode()) > 20) {
-                player.kickPlayer("Fuck off degen");
+                Utils.kick(player, "&cYou are interacting too fast");
                 remove(player.hashCode());
             }
         }

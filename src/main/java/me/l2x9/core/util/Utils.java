@@ -11,6 +11,7 @@ import java.util.logging.Level;
 
 public class Utils {
     private static final DecimalFormat format = new DecimalFormat("#.##");
+    private static final String PREFIX = "&7{&r&b&3L2X9&r&aCore&r&7}&r";
 
     public static String translateChars(String input) {
         return ChatColor.translateAlternateColorCodes('&', input);
@@ -39,7 +40,7 @@ public class Utils {
     }
 
     /**
-     * Runs a task on bukkits main thread
+     * Runs a task on bukkit's main thread
      * @param runnable The task to be run
      */
     public static void run(Runnable runnable) {
@@ -58,7 +59,7 @@ public class Utils {
     }
 
     public static void kick(Player player, String message) {
-        message = String.format("%s %s", "translateChars(message);", message);
+        message = String.format("%s %s %s", PREFIX ,"&7->&r", message);
         message = translateChars(message);
         player.kickPlayer(message);
     }
