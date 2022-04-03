@@ -74,5 +74,11 @@
             <systemPath>${project.basedir}/lib/spigot-1.12.2.jar</systemPath>
             <scope>system</scope>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>
