@@ -25,8 +25,8 @@ public class BaseCmd extends BaseCommand {
         if (args.length > 0) {
             switch (args[0]) {
                 case "reload":
-                    plugin.getCreator().reloadAllConfigs();
-                    sendMessage(sender, PREFIX + "&aReloaded configuration files");
+                    plugin.reloadConfig();
+                    sendMessage(sender, PREFIX + "&aSuccessfully reloaded configuration file");
                     break;
                 case "version":
                     sendMessage(sender, PREFIX + "&6Version &r&c" + plugin.getDescription().getVersion());
