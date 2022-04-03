@@ -1,7 +1,7 @@
 package me.l2x9.core.impl.command.commands;
 
 import me.l2x9.core.impl.command.BaseCommand;
-import me.l2x9.core.boiler.util.Utils;
+import me.l2x9.core.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

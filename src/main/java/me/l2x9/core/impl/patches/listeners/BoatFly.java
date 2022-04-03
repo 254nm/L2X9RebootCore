@@ -1,6 +1,6 @@
 package me.l2x9.core.impl.patches.listeners;
 
-import me.l2x9.core.boiler.util.Utils;
+import me.l2x9.core.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Boat;

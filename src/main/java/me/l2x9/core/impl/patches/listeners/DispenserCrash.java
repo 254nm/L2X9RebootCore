@@ -1,6 +1,6 @@
 package me.l2x9.core.impl.patches.listeners;
 
-import me.l2x9.core.boiler.util.Utils;
+import me.l2x9.core.util.Utils;
 import org.bukkit.block.Dispenser;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;

@@ -1,8 +1,9 @@
 package me.l2x9.core.impl.home.commands;
 
+import lombok.AllArgsConstructor;
 import me.l2x9.core.impl.home.Home;
 import me.l2x9.core.impl.home.HomeManager;
-import me.l2x9.core.boiler.util.Utils;
+import me.l2x9.core.util.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,13 +12,9 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.util.List;
 
+@AllArgsConstructor
 public class SetHomeCommand implements CommandExecutor {
     private final HomeManager main;
-
-    public SetHomeCommand(HomeManager main) {
-        this.main = main;
-    }
-
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -25,7 +22,12 @@ public class SetHomeCommand implements CommandExecutor {
             Player player = (Player) sender;
             int maxHomes = main.getConfig().getInt("MaxHomes");
             List<Home> homes = main.getHomes().getOrDefault(player.getUniqueId(), null);
-            if (homes != null && homes.size() >= maxHomes) {
+            if (homes.stream().anyMatch(h -> h.getName() .equals(args[0]))) {
+                Home home = homes.stream().filter(h -> h.getName().equals(args[0])).findAny().get();
+                Utils.sendMessage(sender, "A home by that name already exists.");
+                main.getHomeUtil().deleteHome(home);
+            }
+            if (homes.size() >= maxHomes) {
                 Utils.sendMessage(player, "&3Max number of homes reached!");
                 return true;
             }
@@ -35,7 +37,7 @@ public class SetHomeCommand implements CommandExecutor {
                 Utils.sendMessage(player, "&3Please include a name for your new home");
                 return true;
             }
-            Home home = new Home(args[0], player.getLocation(), player.getUniqueId());
+            Home home = new Home(args[0], player.getUniqueId(), player.getLocation());
             main.getHomeUtil().save(playerFolder, home.getName() + ".map", home);
             Utils.sendMessage(player, "&3Home&r&a " + home.getName() + " &r&3Set");
         } else Utils.sendMessage(sender, "&3You must be a player to use this command");

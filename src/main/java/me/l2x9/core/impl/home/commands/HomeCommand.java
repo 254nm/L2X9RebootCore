@@ -1,9 +1,10 @@
 package me.l2x9.core.impl.home.commands;
 
+import lombok.AllArgsConstructor;
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.impl.home.Home;
 import me.l2x9.core.impl.home.HomeManager;
-import me.l2x9.core.boiler.util.Utils;
+import me.l2x9.core.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -13,12 +14,9 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
+@AllArgsConstructor
 public class HomeCommand implements CommandExecutor {
     private final HomeManager main;
-
-    public HomeCommand(HomeManager main) {
-        this.main = main;
-    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

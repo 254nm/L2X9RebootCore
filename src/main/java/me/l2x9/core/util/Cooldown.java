@@ -1,4 +1,4 @@
-package me.l2x9.core.boiler.util;
+package me.l2x9.core.util;
 
 import org.bukkit.entity.Player;
 

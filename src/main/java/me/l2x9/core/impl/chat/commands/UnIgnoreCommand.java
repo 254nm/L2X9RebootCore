@@ -1,6 +1,6 @@
 package me.l2x9.core.impl.chat.commands;
 
-import me.l2x9.core.boiler.util.Utils;
+import me.l2x9.core.util.Utils;
 import me.l2x9.core.impl.chat.ChatInfo;
 import me.l2x9.core.impl.chat.ChatManager;
 import org.bukkit.Bukkit;
