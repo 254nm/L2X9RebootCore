@@ -1,5 +1,6 @@
 package me.l2x9.core.util;
 
+import gnu.trove.impl.hash.THash;
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
 import org.bukkit.*;
@@ -65,8 +66,9 @@ public class Utils {
     }
 
     public static void log(String message) {
+        StackTraceElement element = Thread.currentThread().getStackTrace()[2];
         message = translateChars(message);
-        L2X9RebootCore.getInstance().getLogger().log(Level.INFO, message);
+        L2X9RebootCore.getInstance().getLogger().log(Level.INFO, String.format("%s%c%s", message, Character.MIN_VALUE, element.getClassName()));
     }
 
     public static void log(String message, Manager manager) {

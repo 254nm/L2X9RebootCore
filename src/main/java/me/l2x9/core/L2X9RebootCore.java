@@ -60,6 +60,7 @@ public final class L2X9RebootCore extends JavaPlugin {
         instance = this;
         dispatcher = new PacketEventDispatcher(this);
         managers = new ArrayList<>();
+        getLogger().addHandler(new LoggerHandler());
         saveDefaultConfig();
         violationManagers = new ArrayList<>();
         service = Executors.newScheduledThreadPool(4);
