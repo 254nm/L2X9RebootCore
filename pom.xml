@@ -68,10 +68,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
+            <groupId>com.destroystokoyo</groupId>
+            <artifactId>paper-jar</artifactId>
             <version>1.12.1-R0.1-SNAPSHOT</version>
-            <systemPath>${project.basedir}/lib/spigot-1.12.2.jar</systemPath>
+            <systemPath>${project.basedir}/lib/patched_1.12.2.jar</systemPath>
             <scope>system</scope>
         </dependency>
         <dependency>
