@@ -21,7 +21,6 @@ public class PlayerJoinListener implements Listener {
         EntityPlayer player = ((CraftPlayer) event.getPlayer()).getHandle();
         ChannelPipeline pipeline = player.playerConnection.networkManager.channel.pipeline();
         pipeline.addBefore("packet_handler", String.format("packet_listener%s", plugin.getName()), new ChannelInjector(dispatcher, event.getPlayer()));
-        System.out.println(pipeline);
     }
 
     @EventHandler
