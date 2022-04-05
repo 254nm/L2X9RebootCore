@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
 import me.l2x9.core.impl.patches.listeners.*;
+import me.l2x9.core.impl.patches.listeners.packetsize.PreLoginListener;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -39,9 +40,10 @@ public class PatchManager extends Manager {
         plugin.registerListener(new MapLag(this), PacketPlayOutMap.class);
         plugin.registerListener(new NoCom(), PacketPlayOutBlockChange.class, PacketPlayInBlockDig.class);
         plugin.registerListener(new Damage());
-        plugin.registerListener(new ChunkBan(), PacketPlayOutMapChunk.class);
+//        plugin.registerListener(new ChunkBan(), PacketPlayOutMapChunk.class);
         plugin.registerListener(new ProjectileVelocity());
-        plugin.registerListener(new PacketPerSecondLimit(), null); //null means that this listener receives every packet
+        plugin.registerListener(new PacketPerSecondLimit(), (Class<? extends Packet<?>>) null); //null means that this listener receives every packet
+        plugin.registerListener(new PreLoginListener());
         plugin.registerListener(new Redstone());
         plugin.registerListener(new IllegalBlock(plugin.getConfig()));
         WitherLag lag = new WitherLag();

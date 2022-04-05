@@ -16,6 +16,7 @@ public class ChannelInjector extends ChannelDuplexHandler {
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
         try {
+
             PacketEvent.Outgoing outgoing = new PacketEvent.Outgoing((Packet<?>) msg, player);
             dispatcher.dispatch(outgoing);
             if (outgoing.isCancelled()) return;
@@ -38,4 +39,5 @@ public class ChannelInjector extends ChannelDuplexHandler {
             t.printStackTrace();
         }
     }
+
 }
