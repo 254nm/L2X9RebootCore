@@ -1,7 +1,6 @@
 package me.l2x9.core;
 
-import me.l2x9.core.packet.PacketEventDispatcher;
-import me.l2x9.core.packet.PacketListener;
+import lombok.Getter;
 import me.l2x9.core.impl.chat.ChatManager;
 import me.l2x9.core.impl.command.CommandManager;
 import me.l2x9.core.impl.home.HomeManager;
@@ -9,6 +8,8 @@ import me.l2x9.core.impl.misc.MiscManager;
 import me.l2x9.core.impl.patches.PatchManager;
 import me.l2x9.core.impl.randomspawn.RandomSpawnManager;
 import me.l2x9.core.impl.tablist.TabManager;
+import me.l2x9.core.packet.PacketEventDispatcher;
+import me.l2x9.core.packet.PacketListener;
 import net.minecraft.server.v1_12_R1.Packet;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
@@ -26,33 +27,20 @@ import java.util.concurrent.TimeUnit;
 
 
 public final class L2X9RebootCore extends JavaPlugin {
-    private PacketEventDispatcher dispatcher;
+    @Getter
     private static L2X9RebootCore instance;
+    @Getter
     private final long startTime = System.currentTimeMillis();
+    private PacketEventDispatcher dispatcher;
     private ScheduledExecutorService service;
     private List<ViolationManager> violationManagers;
+    @Getter
     private List<Manager> managers;
     //TODO: On chunk load scan for illegals and add to list of done chunks also ignore new chunks
-
-    public static L2X9RebootCore getInstance() {
-        return instance;
-    }
 
     public boolean isDebug() {
         if (System.getProperty("l2x9coredebug") == null) return false;
         return Boolean.parseBoolean(System.getProperty("l2x9coredebug"));
-    }
-
-    public long getStartTime() {
-        return startTime;
-    }
-
-    public List<Manager> getManagers() {
-        return managers;
-    }
-
-    public static L2X9RebootCore getPlugin() {
-        return getPlugin(L2X9RebootCore.class);
     }
 
     @Override
@@ -117,6 +105,7 @@ public final class L2X9RebootCore extends JavaPlugin {
             });
         }
     }
+
     public ConfigurationSection getModuleConfig(Manager manager) {
         return getConfig().getConfigurationSection(manager.getName());
     }
@@ -125,8 +114,8 @@ public final class L2X9RebootCore extends JavaPlugin {
     public void reloadConfig() {
         super.reloadConfig();
         getManagers().forEach(m -> {
-           ConfigurationSection section = getConfig().getConfigurationSection(m.getName());
-           if (section != null) m.reloadConfig(section);
+            ConfigurationSection section = getConfig().getConfigurationSection(m.getName());
+            if (section != null) m.reloadConfig(section);
         });
     }
 }
