@@ -10,6 +10,7 @@ import net.minecraft.server.v1_12_R1.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -25,12 +26,11 @@ public class PreLoginListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPreLogin(PlayerJoinEvent event) {
-        ChannelPipeline pipeline = ((CraftPlayer) event.getPlayer()).getHandle().playerConnection.networkManager.channel.pipeline();
-
-        pipeline.replace("encoder", "encoder", new CustomPacketEncoder(EnumProtocolDirection.CLIENTBOUND));
-
+        Player player = event.getPlayer();
+        ChannelPipeline pipeline = ((CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
+        pipeline.replace("encoder", "encoder", new CustomPacketEncoder(player));
         if (pipeline.get("decompress") != null) {
-            pipeline.replace("decompress", "decompress", new CustomPacketDecompressor(server.aG()));
+            pipeline.replace("decompress", "decompress", new CustomPacketDecompressor(server.aG(), player));
         } else pipeline.replace("decode", "decode", new CustomPacketDecoder(EnumProtocolDirection.SERVERBOUND));
         System.out.println(pipeline);
         Utils.log("Added a custom packet encoder & decoder to " + event.getPlayer().getName());
