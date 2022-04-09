@@ -1,9 +1,7 @@
 package me.l2x9.core.util;
 
-import gnu.trove.impl.hash.THash;
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
-import net.minecraft.server.v1_12_R1.BlockPosition;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 
@@ -43,10 +41,11 @@ public class Utils {
 
     /**
      * Runs a task on bukkit's main thread
+     *
      * @param runnable The task to be run
      */
     public static void run(Runnable runnable) {
-         Bukkit.getScheduler().runTask(L2X9RebootCore.getInstance(), runnable);
+        Bukkit.getScheduler().runTask(L2X9RebootCore.getInstance(), runnable);
     }
 
     public static void sendMessage(Object obj, String message) {
@@ -61,7 +60,7 @@ public class Utils {
     }
 
     public static void kick(Player player, String message) {
-        message = String.format("%s %s %s", PREFIX ,"&7->&r", message);
+        message = String.format("%s %s %s", PREFIX, "&7->&r", message);
         message = translateChars(message);
         player.kickPlayer(message);
     }
@@ -93,9 +92,6 @@ public class Utils {
                 + " &r&3X:&r&a " + format.format(x)
                 + " &r&3Y:&r&a " + format.format(y)
                 + " &r&3Z:&r&a " + format.format(z);
-    }
-    public static Location fromBlockPos(BlockPosition pos) {
-        return new Location(null, pos.getX(), pos.getY(), pos.getZ());
     }
 }
 
