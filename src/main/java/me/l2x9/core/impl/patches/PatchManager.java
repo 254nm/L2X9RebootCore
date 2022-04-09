@@ -37,6 +37,7 @@ public class PatchManager extends Manager {
         plugin.registerListener(new LeverRateLimit());
         plugin.registerListener(new CraftingLag(this));
         plugin.registerListener(new PacketFly(), PacketPlayInFlying.class, PacketPlayInFlying.PacketPlayInPosition.class, PacketPlayInFlying.PacketPlayInPositionLook.class);
+        plugin.registerListener(new LargePacketListener());
 //        plugin.registerListener(new UnbreakableBlocks(), PacketPlayOutBlockChange.class, PacketPlayOutMultiBlockChange.class);
         plugin.registerListener(new MapLag(this), PacketPlayOutMap.class);
         plugin.registerListener(new NoCom(), PacketPlayOutBlockChange.class, PacketPlayInBlockDig.class);

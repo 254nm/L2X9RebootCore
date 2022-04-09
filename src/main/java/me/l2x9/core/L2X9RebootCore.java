@@ -31,6 +31,8 @@ public final class L2X9RebootCore extends JavaPlugin {
     private static L2X9RebootCore instance;
     @Getter
     private final long startTime = System.currentTimeMillis();
+    @Getter
+    private List<Configurable> configurable;
     private PacketEventDispatcher dispatcher;
     private ScheduledExecutorService service;
     private List<ViolationManager> violationManagers;
@@ -48,6 +50,7 @@ public final class L2X9RebootCore extends JavaPlugin {
         instance = this;
         dispatcher = new PacketEventDispatcher(this);
         managers = new ArrayList<>();
+        configurable = new ArrayList<>();
         getLogger().addHandler(new LoggerHandler());
         saveDefaultConfig();
         violationManagers = new ArrayList<>();
@@ -64,6 +67,7 @@ public final class L2X9RebootCore extends JavaPlugin {
         registerManager(new MiscManager());
         registerManager(new ChatManager());
         registerManager(new PatchManager());
+//        registerManager(new AntiIllegalManager());
         managers.forEach(manager -> manager.init(this));
     }
 
@@ -80,22 +84,26 @@ public final class L2X9RebootCore extends JavaPlugin {
     public void onDisable() {
         managers.forEach(m -> m.destruct(this));
         managers.clear();
+        configurable.clear();
         violationManagers.clear();
         service.shutdown();
     }
 
     public void registerListener(Listener listener) {
+        if (listener instanceof Configurable) configurable.add((Configurable) listener);
         getServer().getPluginManager().registerEvents(listener, this);
     }
 
     @SafeVarargs
     public final void registerListener(PacketListener listener, Class<? extends Packet<?>>... packets) {
+        if (listener instanceof Configurable) configurable.add((Configurable) listener);
         dispatcher.register(listener, packets);
     }
 
     public void registerCommand(String name, CommandExecutor... commands) {
         CraftServer cs = (CraftServer) Bukkit.getServer();
         for (CommandExecutor command : commands) {
+            if (command instanceof Configurable) configurable.add((Configurable) command);
             cs.getCommandMap().register(name, new org.bukkit.command.Command(name) {
                 @Override
                 public boolean execute(CommandSender sender, String commandLabel, String[] args) {
@@ -116,6 +124,10 @@ public final class L2X9RebootCore extends JavaPlugin {
         getManagers().forEach(m -> {
             ConfigurationSection section = getConfig().getConfigurationSection(m.getName());
             if (section != null) m.reloadConfig(section);
+        });
+        getConfigurable().forEach(c -> {
+            ConfigurationSection currentConfig = c.getConfig();
+            c.reloadConfig(getConfig().getConfigurationSection(currentConfig.getCurrentPath()));
         });
     }
 }

@@ -3,39 +3,44 @@ package me.l2x9.core.impl.patches.listeners.packetsize.encode;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import lombok.AllArgsConstructor;
+import me.l2x9.core.event.LargePacketEvent;
 import me.l2x9.core.util.Utils;
-import net.minecraft.server.v1_12_R1.*;
+import net.minecraft.server.v1_12_R1.EnumProtocolDirection;
+import net.minecraft.server.v1_12_R1.NetworkManager;
+import net.minecraft.server.v1_12_R1.Packet;
+import net.minecraft.server.v1_12_R1.PacketDataSerializer;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.util.List;
 
+@AllArgsConstructor
 public class CustomPacketDecoder extends ByteToMessageDecoder {
 
-    private final EnumProtocolDirection protocolDirection;
-
-    public CustomPacketDecoder(EnumProtocolDirection var1) {
-        this.protocolDirection = var1;
-    }
+    private final EnumProtocolDirection direction;
+    private final Player player;
 
     @Override
-    public void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> list) throws Exception {
+    protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> list) throws Exception {
         if (buf.readableBytes() != 0) {
-            EnumProtocol protocol = ctx.channel().attr(NetworkManager.c).get();
-            PacketDataSerializer serializer = new PacketDataSerializer(buf);
-            int id = serializer.g();
-            Packet<?> packet = protocol.a(protocolDirection, id);
+            PacketDataSerializer pds = new PacketDataSerializer(buf);
+            int id = pds.g(); //Read the second VarInt in the packet which should be the ID
+            Packet<?> packet = ctx.channel().attr(NetworkManager.c).get().a(direction, id);
             if (packet == null) throw new IOException("Bad packet id " + id);
-            int len = serializer.readableBytes();
-            int MAX_LEN = 2097152;
-            if (len >= MAX_LEN) {
-                serializer.clear();
-                Utils.log(String.format("&aPrevented an extremely large&r&3 %s &r&apacket with length of&r&3 %d/%d &r&afrom being received&r", packet.getClass().getName(), len, MAX_LEN));
+            if (pds.readableBytes() >= 100000) {
+                String longPacketFormat = "&aPrevented a large&r&3 %s &r&apacket with length of&r&3 %d/%d &r&afrom being sent by player&r&3 %s&r&a near &r&a%s&r";
+                Utils.log(String.format(longPacketFormat, packet.getClass().getSimpleName(), pds.readableBytes(), 100000, player.getName(), Utils.formatLocation(player.getLocation())));
+                LargePacketEvent.Incoming incoming = new LargePacketEvent.Incoming(player, packet, pds, pds.readableBytes());
+                Utils.run(() -> Bukkit.getServer().getPluginManager().callEvent(incoming));
+                pds.clear();
                 return;
             }
-            packet.a(serializer);
-            if (serializer.readableBytes() > 0)
-                throw new IOException("Packet " + protocol.a() + "/" + id + " (" + packet.getClass().getSimpleName() + ") was larger than I expected, found " + serializer.readableBytes() + " bytes extra whilst reading packet " + id);
-
+            packet.a(pds);
+            if (pds.readableBytes() > 0)
+                throw new IOException("Packet " + ctx.channel().attr(NetworkManager.c).get().a() + "/" + id + " (" + packet.getClass().getSimpleName() + ") was larger than I expected, found " + pds.readableBytes() + " bytes extra whilst reading packet " + id);
+            list.add(packet);
         }
     }
 }
