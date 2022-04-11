@@ -2,7 +2,9 @@ package me.l2x9.core.util;
 
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
+import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.*;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Method;
@@ -51,10 +53,11 @@ public class Utils {
     /**
      * Will attempt to invoke a method called sendMessage(String.class) on the object given
      *
-     * @param obj The recipient
+     * @param obj     The recipient
      * @param message The message to be sent
      */
     public static void sendMessage(Object obj, String message) {
+        message = String.format("%s &7➠&r %s", PREFIX, message);
         message = translateChars(message);
         try {
             Method method = obj.getClass().getMethod("sendMessage", String.class);
@@ -94,10 +97,23 @@ public class Utils {
         double y = location.getY();
         double z = location.getZ();
         World world = location.getWorld();
-        return "&3world&r&a " + world.getName()
-                + " &r&3X:&r&a " + format.format(x)
-                + " &r&3Y:&r&a " + format.format(y)
-                + " &r&3Z:&r&a " + format.format(z);
+        return "&3world&r&a " + world.getName() + " &r&3X:&r&a " + format.format(x) + " &r&3Y:&r&a " + format.format(y) + " &r&3Z:&r&a " + format.format(z);
+    }
+
+    public static ItemStack shallowReadItemStack(PacketDataSerializer buf) {
+        short itemID = buf.readShort();
+        if (itemID < 0) return net.minecraft.server.v1_12_R1.ItemStack.a;
+        byte count = buf.readByte();
+        short damage = buf.readShort();
+        return new net.minecraft.server.v1_12_R1.ItemStack(Item.getById(itemID), count, damage);
+    }
+
+    public static void clearCurrentContainer(EntityPlayer player) {
+        if (!(player.activeContainer instanceof ContainerChest)) return;
+        IInventory inventory = ((ContainerChest) player.activeContainer).e();
+        for (int i = 0; i < inventory.getSize(); i++) inventory.setItem(i, ItemStack.a);
+        inventory.update();
+        log(String.format("&aCleared inventory&r&3 %s&r&a with window ID&r&3 %d&r&a because it had excessive NBT data", inventory.getClass().getSimpleName(), player.activeContainer.windowId));
     }
 }
 

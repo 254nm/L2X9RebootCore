@@ -29,13 +29,15 @@ public class CustomPacketDecoder extends ByteToMessageDecoder {
             int id = pds.g(); //Read the second VarInt in the packet which should be the ID
             Packet<?> packet = ctx.channel().attr(NetworkManager.c).get().a(direction, id);
             if (packet == null) throw new IOException("Bad packet id " + id);
-            if (pds.readableBytes() >= 100000) {
+            if (pds.readableBytes() >= 262144) {
                 String longPacketFormat = "&aPrevented a large&r&3 %s &r&apacket with length of&r&3 %d/%d &r&afrom being sent by player&r&3 %s&r&a near &r&a%s&r";
                 Utils.log(String.format(longPacketFormat, packet.getClass().getSimpleName(), pds.readableBytes(), 100000, player.getName(), Utils.formatLocation(player.getLocation())));
                 LargePacketEvent.Incoming incoming = new LargePacketEvent.Incoming(player, packet, pds, pds.readableBytes());
-                Utils.run(() -> Bukkit.getServer().getPluginManager().callEvent(incoming));
-                pds.clear();
-                return;
+                Bukkit.getServer().getPluginManager().callEvent(incoming);
+                if (incoming.isCancelled()) {
+                    pds.clear();
+                    return;
+                }
             }
             packet.a(pds);
             if (pds.readableBytes() > 0)

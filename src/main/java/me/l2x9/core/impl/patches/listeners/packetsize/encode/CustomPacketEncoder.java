@@ -34,8 +34,8 @@ public class CustomPacketEncoder extends MessageToByteEncoder<Packet<?>> {
                 String longPacketFormat = "&aPrevented a large&r&3 %s &r&apacket with length of&r&3 %d/%d &r&afrom being sent to player&r&3 %s&r&a near &r&a%s&r";
                 Utils.log(String.format(longPacketFormat, packet.getClass().getSimpleName(), len, 2097152, player.getName(), Utils.formatLocation(player.getLocation())));
                 LargePacketEvent.Outgoing outgoing = new LargePacketEvent.Outgoing(player, packet, dataSerializer, len);
-                Utils.run(() -> Bukkit.getServer().getPluginManager().callEvent(outgoing));
-                dataSerializer.clear();
+                Bukkit.getServer().getPluginManager().callEvent(outgoing);
+                if (outgoing.isCancelled()) dataSerializer.clear();
             }
         } catch (Throwable throwable) {
             logger.error(throwable);

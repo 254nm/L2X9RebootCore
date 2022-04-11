@@ -1,17 +1,19 @@
 package me.l2x9.core.event;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_12_R1.Packet;
 import net.minecraft.server.v1_12_R1.PacketDataSerializer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
-public abstract class LargePacketEvent extends Event {
+public abstract class LargePacketEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
+    private boolean cancelled = true;
     private final Player player;
     private final Packet<?> packet;
     private final PacketDataSerializer buf;
@@ -19,6 +21,16 @@ public abstract class LargePacketEvent extends Event {
 
     public static HandlerList getHandlerList() {
         return handlers;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    @Override
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 
     @Override

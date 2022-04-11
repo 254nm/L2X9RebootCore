@@ -1,13 +1,14 @@
 package me.l2x9.core.impl.patches.listeners;
 
 import me.l2x9.core.event.LargePacketEvent;
-import me.txmc.protocolapi.reflection.GetField;
 import me.l2x9.core.util.Utils;
-import net.minecraft.server.v1_12_R1.PacketPlayOutMapChunk;
+import me.txmc.protocolapi.reflection.GetField;
+import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,6 +21,8 @@ public class LargePacketListener implements Listener {
     private Field chunkXF;
     @GetField(clazz = PacketPlayOutMapChunk.class, name = "b")
     private Field chunkZF;
+    @GetField(clazz = PacketPlayOutWindowItems.class, name = "b")
+    private Field itemsF;
 
     @EventHandler
     public void onLargeOutgoingPacket(LargePacketEvent.Outgoing event) {
@@ -29,13 +32,52 @@ public class LargePacketListener implements Listener {
                 Player player = event.getPlayer();
                 int x = (int) chunkXF.get(packet), z = (int) chunkZF.get(packet);
                 Chunk chunk = player.getWorld().getChunkAt(x, z);
-                int count = 0;
-                for (BlockState tileEntity : chunk.getTileEntities()) {
-                    tileEntity.getBlock().setType(Material.AIR);
-                    count++;
-                }
+                int count = chunk.getTileEntities().length;
+                Utils.run(() -> {
+                    for (BlockState tileEntity : chunk.getTileEntities()) {
+                        tileEntity.getBlock().setType(Material.AIR);
+                    }
+                });
                 Utils.log(String.format("&aCleared&r&3 %d&d&r&a tile entities out of chunk at&r&3 %s", count, Utils.formatLocation(new Location(player.getWorld(), chunk.getX(), -1, chunk.getZ()))));
-            } else Utils.log(String.format("&cThere is no large packet handler for&r&4 %s&r", event.getPacket().getClass().getName()));
+            } else if (event.getPacket() instanceof PacketPlayOutWindowItems) {
+                Utils.clearCurrentContainer(((CraftPlayer) event.getPlayer()).getHandle());
+            } else
+                Utils.log(String.format("&cThere is no large packet handler for&r&4 %s&r", event.getPacket().getClass().getName()));
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
+
+    @EventHandler
+    public void onLargeIncomingPacket(LargePacketEvent.Incoming event) {
+        try {
+            PacketDataSerializer buf = event.getBuf();
+            if (event.getPacket() instanceof PacketPlayInSetCreativeSlot) {
+                Utils.run(() -> {
+                    Player player = event.getPlayer();
+                    player.getInventory().clear();
+                    Utils.sendMessage(player, "&cYour inventory has been cleared to prevent you from being book banned");
+                });
+            } else if (event.getPacket() instanceof PacketPlayInWindowClick) {
+                buf.readBytes(6);
+                buf.g();
+                ItemStack itemFromWire = Utils.shallowReadItemStack(buf);
+                Utils.run(() -> {
+                    EntityPlayer player = ((CraftPlayer) event.getPlayer()).getHandle();
+                    if (player.activeContainer.windowId == 0) {
+                        for (int i = 0; i < player.inventory.getSize(); i++) {
+                            ItemStack item = player.inventory.getItem(i);
+                            if (item.getItem() != itemFromWire.getItem()) continue;
+                            player.inventory.setItem(i, ItemStack.a);
+                        }
+                        player.updateInventory(player.activeContainer);
+                        Utils.sendMessage(player.getBukkitEntity(), String.format("&cRemoved all&r&3 %s(s) &r&cfrom your inventory to prevent you from being bookbanned", itemFromWire.getItem().getName().toLowerCase().replace("_", "-")));
+                    } else {
+                        Utils.clearCurrentContainer(player);
+                    }
+                });
+            } else
+                Utils.log(String.format("&cThere is no large packet handler for&r&4 %s&r", event.getPacket().getClass().getName()));
         } catch (Throwable t) {
             t.printStackTrace();
         }
