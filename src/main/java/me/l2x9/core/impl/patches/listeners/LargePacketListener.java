@@ -21,8 +21,6 @@ public class LargePacketListener implements Listener {
     private Field chunkXF;
     @GetField(clazz = PacketPlayOutMapChunk.class, name = "b")
     private Field chunkZF;
-    @GetField(clazz = PacketPlayOutWindowItems.class, name = "b")
-    private Field itemsF;
 
     @EventHandler
     public void onLargeOutgoingPacket(LargePacketEvent.Outgoing event) {
