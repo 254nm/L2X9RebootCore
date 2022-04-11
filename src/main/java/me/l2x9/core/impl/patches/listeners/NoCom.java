@@ -1,7 +1,8 @@
 package me.l2x9.core.impl.patches.listeners;
 
-import me.l2x9.core.packet.PacketEvent;
-import me.l2x9.core.packet.PacketListener;
+import me.txmc.protocolapi.PacketEvent;
+import me.txmc.protocolapi.PacketListener;
+import me.txmc.protocolapi.reflection.GetField;
 import net.minecraft.server.v1_12_R1.BlockPosition;
 import net.minecraft.server.v1_12_R1.PacketPlayInBlockDig;
 import net.minecraft.server.v1_12_R1.PacketPlayInBlockDig.EnumPlayerDigType;
@@ -16,22 +17,13 @@ import java.util.List;
 
 public class NoCom implements PacketListener {
     private final List<EnumPlayerDigType> validActions = Arrays.asList(EnumPlayerDigType.ABORT_DESTROY_BLOCK, EnumPlayerDigType.START_DESTROY_BLOCK, EnumPlayerDigType.STOP_DESTROY_BLOCK);
-    private Field outPosF;
-    private Field posF;
-    private Field actionF;
 
-    public NoCom() {
-        try {
-            outPosF = PacketPlayOutBlockChange.class.getDeclaredField("a");
-            outPosF.setAccessible(true);
-            posF = PacketPlayInBlockDig.class.getDeclaredField("a");
-            posF.setAccessible(true);
-            actionF = PacketPlayInBlockDig.class.getDeclaredField("c");
-            actionF.setAccessible(true);
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-    }
+    @GetField(clazz = PacketPlayOutBlockChange.class, name = "a")
+    private Field outPosF;
+    @GetField(clazz = PacketPlayInBlockDig.class, name = "a")
+    private Field posF;
+    @GetField(clazz = PacketPlayInBlockDig.class, name = "c")
+    private Field actionF;
 
     @Override
     public void outgoing(PacketEvent.Outgoing event) throws Throwable {

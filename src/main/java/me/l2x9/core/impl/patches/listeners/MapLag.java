@@ -1,8 +1,10 @@
 package me.l2x9.core.impl.patches.listeners;
 
+import lombok.RequiredArgsConstructor;
 import me.l2x9.core.impl.patches.PatchManager;
-import me.l2x9.core.packet.PacketEvent;
-import me.l2x9.core.packet.PacketListener;
+import me.txmc.protocolapi.PacketEvent;
+import me.txmc.protocolapi.PacketListener;
+import me.txmc.protocolapi.reflection.GetField;
 import me.l2x9.core.util.Utils;
 import net.minecraft.server.v1_12_R1.MapIcon;
 import net.minecraft.server.v1_12_R1.PacketPlayOutMap;
@@ -19,23 +21,15 @@ import org.bukkit.map.MapView;
 import java.lang.reflect.Field;
 import java.util.List;
 
+@RequiredArgsConstructor
 public class MapLag implements PacketListener {
     private final World world = ((CraftWorld) Bukkit.getServer().getWorlds().get(0)).getHandle();
     private final PatchManager manager;
-    private Field iconsF;
-    private Field idF;
 
-    public MapLag(PatchManager manager) {
-        this.manager = manager;
-        try {
-            iconsF = PacketPlayOutMap.class.getDeclaredField("d");
-            iconsF.setAccessible(true);
-            idF = PacketPlayOutMap.class.getDeclaredField("a");
-            idF.setAccessible(true);
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-    }
+    @GetField(clazz = PacketPlayOutMap.class, name = "d")
+    private Field iconsF;
+    @GetField(clazz = PacketPlayOutMap.class, name = "a")
+    private Field idF;
 
     @Override
     public void incoming(PacketEvent.Incoming event) throws Throwable {

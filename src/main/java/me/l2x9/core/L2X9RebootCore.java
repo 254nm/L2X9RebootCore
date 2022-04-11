@@ -8,8 +8,9 @@ import me.l2x9.core.impl.misc.MiscManager;
 import me.l2x9.core.impl.patches.PatchManager;
 import me.l2x9.core.impl.randomspawn.RandomSpawnManager;
 import me.l2x9.core.impl.tablist.TabManager;
-import me.l2x9.core.packet.PacketEventDispatcher;
-import me.l2x9.core.packet.PacketListener;
+import me.txmc.protocolapi.PacketEventDispatcher;
+import me.txmc.protocolapi.PacketListener;
+import me.txmc.protocolapi.reflection.ClassProcessor;
 import net.minecraft.server.v1_12_R1.Packet;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
@@ -86,6 +87,7 @@ public final class L2X9RebootCore extends JavaPlugin {
     }
 
     public void registerListener(Listener listener) {
+        if (ClassProcessor.hasAnnotation(listener)) ClassProcessor.process(listener);
         getServer().getPluginManager().registerEvents(listener, this);
     }
 
@@ -97,6 +99,7 @@ public final class L2X9RebootCore extends JavaPlugin {
     public void registerCommand(String name, CommandExecutor... commands) {
         CraftServer cs = (CraftServer) Bukkit.getServer();
         for (CommandExecutor command : commands) {
+            if (ClassProcessor.hasAnnotation(commands)) ClassProcessor.process(command);
             cs.getCommandMap().register(name, new org.bukkit.command.Command(name) {
                 @Override
                 public boolean execute(CommandSender sender, String commandLabel, String[] args) {

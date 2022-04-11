@@ -1,7 +1,7 @@
 package me.l2x9.core.impl.patches.listeners;
 
-import me.l2x9.core.packet.PacketEvent;
-import me.l2x9.core.packet.PacketListener;
+import me.txmc.protocolapi.PacketEvent;
+import me.txmc.protocolapi.PacketListener;
 import me.l2x9.core.util.Utils;
 import net.minecraft.server.v1_12_R1.PacketPlayInFlying;
 import org.bukkit.Location;

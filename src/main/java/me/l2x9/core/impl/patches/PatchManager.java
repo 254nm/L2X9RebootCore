@@ -5,6 +5,7 @@ import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
 import me.l2x9.core.impl.patches.listeners.*;
 import me.l2x9.core.impl.patches.listeners.packetsize.PreLoginListener;
+import me.txmc.protocolapi.reflection.ClassProcessor;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -21,6 +22,7 @@ public class PatchManager extends Manager {
     private L2X9RebootCore plugin;
     @Getter
     private ConfigurationSection config;
+    private final ClassProcessor classProcessor = new ClassProcessor();
 
     public PatchManager() {
         super("Patches");
@@ -31,25 +33,24 @@ public class PatchManager extends Manager {
         this.plugin = plugin;
         image = loadImage();
         config = plugin.getModuleConfig(this);
-        plugin.registerListener(new DispenserCrash());
+        plugin.registerListener(new PreLoginListener());
         plugin.registerListener(new BoatFly());
-        plugin.registerListener(new ElytraSpeedLimit());
-        plugin.registerListener(new LeverRateLimit());
         plugin.registerListener(new CraftingLag(this));
-        plugin.registerListener(new PacketFly(), PacketPlayInFlying.class, PacketPlayInFlying.PacketPlayInPosition.class, PacketPlayInFlying.PacketPlayInPositionLook.class);
+        plugin.registerListener(new Damage());
+        plugin.registerListener(new DispenserCrash());
+        plugin.registerListener(new ElytraSpeedLimit());
+        plugin.registerListener(new EndGateway());
+        plugin.registerListener(new IllegalBlock(plugin.getConfig()));
         plugin.registerListener(new LargePacketListener());
-//        plugin.registerListener(new UnbreakableBlocks(), PacketPlayOutBlockChange.class, PacketPlayOutMultiBlockChange.class);
+        plugin.registerListener(new LeverRateLimit());
+        new LightLag();
         plugin.registerListener(new MapLag(this), PacketPlayOutMap.class);
         plugin.registerListener(new NoCom(), PacketPlayOutBlockChange.class, PacketPlayInBlockDig.class);
-        plugin.registerListener(new Damage());
-        plugin.registerListener(new ProjectileVelocity());
+        plugin.registerListener(new PacketFly(), PacketPlayInFlying.class, PacketPlayInFlying.PacketPlayInPosition.class, PacketPlayInFlying.PacketPlayInPositionLook.class);
         plugin.registerListener(new PacketPerSecondLimit(), (Class<? extends Packet<?>>) null); //null means that this listener receives every packet
-        plugin.registerListener(new PreLoginListener());
+        plugin.registerListener(new ProjectileVelocity());
         plugin.registerListener(new Redstone());
-        plugin.registerListener(new IllegalBlock(plugin.getConfig()));
-        WitherLag lag = new WitherLag();
-        plugin.registerListener(lag);
-        new LightLag();
+        plugin.registerListener(new WitherLag());
     }
 
     @Override

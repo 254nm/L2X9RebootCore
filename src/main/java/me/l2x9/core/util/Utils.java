@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 public class Utils {
     private static final DecimalFormat format = new DecimalFormat("#.##");
-    private static final String PREFIX = "&7{&r&b&3L2X9&r&aCore&r&7}&r";
+    private static final String PREFIX = "&7&r&b&3L2X9&r&aCore&r&7&r";
 
     public static String translateChars(String input) {
         return ChatColor.translateAlternateColorCodes('&', input);
@@ -48,10 +48,16 @@ public class Utils {
         Bukkit.getScheduler().runTask(L2X9RebootCore.getInstance(), runnable);
     }
 
+    /**
+     * Will attempt to invoke a method called sendMessage(String.class) on the object given
+     *
+     * @param obj The recipient
+     * @param message The message to be sent
+     */
     public static void sendMessage(Object obj, String message) {
         message = translateChars(message);
         try {
-            Method method = obj.getClass().getDeclaredMethod("sendMessage", String.class);
+            Method method = obj.getClass().getMethod("sendMessage", String.class);
             method.setAccessible(true);
             method.invoke(obj, message);
         } catch (Exception e) {
@@ -60,7 +66,7 @@ public class Utils {
     }
 
     public static void kick(Player player, String message) {
-        message = String.format("%s %s %s", PREFIX, "&7->&r", message);
+        message = String.format("%s &7->&r %s", PREFIX, message);
         message = translateChars(message);
         player.kickPlayer(message);
     }

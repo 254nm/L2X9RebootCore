@@ -1,5 +1,8 @@
 package me.l2x9.core.impl.tablist;
 
+import lombok.RequiredArgsConstructor;
+import me.txmc.protocolapi.reflection.ClassProcessor;
+import me.txmc.protocolapi.reflection.GetField;
 import net.minecraft.server.v1_12_R1.ChatComponentText;
 import net.minecraft.server.v1_12_R1.IChatBaseComponent;
 import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerListHeaderFooter;
@@ -9,25 +12,18 @@ import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import java.lang.reflect.Field;
 import java.util.TimerTask;
 
+@RequiredArgsConstructor
 public class TabRunnable extends TimerTask {
     private final TabManager manager;
-    private Field headerField;
-    private Field footerField;
 
-    public TabRunnable(TabManager manager) {
-        this.manager = manager;
-        try {
-            headerField = PacketPlayOutPlayerListHeaderFooter.class.getDeclaredField("a");
-            headerField.setAccessible(true);
-            footerField = PacketPlayOutPlayerListHeaderFooter.class.getDeclaredField("b");
-            footerField.setAccessible(true);
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-    }
+    @GetField(clazz = PacketPlayOutPlayerListHeaderFooter.class, name = "a")
+    private Field headerField;
+    @GetField(clazz = PacketPlayOutPlayerListHeaderFooter.class, name = "b")
+    private Field footerField;
 
     @Override
     public void run() {
+        if  (headerField == null || footerField == null) ClassProcessor.process(this);
         Bukkit.getOnlinePlayers().forEach(player -> {
             try {
                 String headerStr = String.join("\n", manager.getConfig().getStringList("Header"));

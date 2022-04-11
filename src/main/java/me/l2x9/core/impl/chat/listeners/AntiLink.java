@@ -1,27 +1,21 @@
 package me.l2x9.core.impl.chat.listeners;
 
+import lombok.RequiredArgsConstructor;
 import me.l2x9.core.impl.chat.ChatManager;
-import me.l2x9.core.packet.PacketEvent;
-import me.l2x9.core.packet.PacketListener;
+import me.txmc.protocolapi.PacketEvent;
+import me.txmc.protocolapi.PacketListener;
+import me.txmc.protocolapi.reflection.GetField;
 import net.minecraft.server.v1_12_R1.IChatBaseComponent;
 import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
+@RequiredArgsConstructor
 public class AntiLink implements PacketListener {
     private final ChatManager manager;
+    @GetField(clazz = PacketPlayOutChat.class, name = "a")
     private Field messageF;
-
-    public AntiLink(ChatManager manager) {
-        this.manager = manager;
-        try {
-            messageF = PacketPlayOutChat.class.getDeclaredField("a");
-            messageF.setAccessible(true);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void incoming(PacketEvent.Incoming event) throws Throwable {

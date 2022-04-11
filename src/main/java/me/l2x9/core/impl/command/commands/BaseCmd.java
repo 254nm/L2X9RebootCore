@@ -2,6 +2,7 @@ package me.l2x9.core.impl.command.commands;
 
 import me.l2x9.core.impl.command.BaseCommand;
 import me.l2x9.core.impl.command.CommandManager;
+import me.l2x9.core.util.Utils;
 import org.bukkit.command.CommandSender;
 
 public class BaseCmd extends BaseCommand {
@@ -54,6 +55,9 @@ public class BaseCmd extends BaseCommand {
                         }
                         sendMessage(sender, PREFIX + "");
                     });
+                    break;
+                default:
+                    Utils.sendMessage(sender, String.format("&cUnknown command&r&3 %s&r", args[0]));
                     break;
             }
         } else {

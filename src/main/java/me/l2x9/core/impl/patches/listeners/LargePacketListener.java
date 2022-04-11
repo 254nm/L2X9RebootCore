@@ -1,6 +1,7 @@
 package me.l2x9.core.impl.patches.listeners;
 
 import me.l2x9.core.event.LargePacketEvent;
+import me.txmc.protocolapi.reflection.GetField;
 import me.l2x9.core.util.Utils;
 import net.minecraft.server.v1_12_R1.PacketPlayOutMapChunk;
 import org.bukkit.Chunk;
@@ -11,31 +12,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 
 public class LargePacketListener implements Listener {
 
+    @GetField(clazz = PacketPlayOutMapChunk.class, name = "a")
     private Field chunkXF;
+    @GetField(clazz = PacketPlayOutMapChunk.class, name = "b")
     private Field chunkZF;
-
-    public LargePacketListener() {
-        try {
-            Field override = AccessibleObject.class.getDeclaredField("override"); //Do it like this because bukkit tries to prevent you from reflecting into nms
-            override.setAccessible(true);
-            chunkXF = PacketPlayOutMapChunk.class.getDeclaredField("a");
-            override.set(chunkXF, true);
-            chunkZF = PacketPlayOutMapChunk.class.getDeclaredField("b");
-            override.set(chunkZF, true);
-            chunkXF.setAccessible(true);
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-    }
-
-    @EventHandler
-    public void onLargeIncomingPacket(LargePacketEvent.Incoming event) {
-    }
 
     @EventHandler
     public void onLargeOutgoingPacket(LargePacketEvent.Outgoing event) {

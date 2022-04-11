@@ -57,8 +57,8 @@
 
     <repositories>
         <repository>
-            <id>papermc-repo</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
+            <id>txmc-repo</id>
+            <url>https://repo.txmc.me/releases</url>
         </repository>
         <repository>
             <id>sonatype</id>
@@ -68,11 +68,16 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.destroystokoyo</groupId>
+            <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-jar</artifactId>
-            <version>1.12.1-R0.1-SNAPSHOT</version>
-            <systemPath>${project.basedir}/lib/patched_1.12.2.jar</systemPath>
-            <scope>system</scope>
+            <version>1.12.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.txmc</groupId>
+            <artifactId>protocolapi</artifactId>
+            <version>1.0-SNAPSHOT_1.12.2</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
