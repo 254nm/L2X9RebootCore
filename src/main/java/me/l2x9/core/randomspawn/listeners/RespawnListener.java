@@ -1,5 +1,6 @@
 package me.l2x9.core.randomspawn.listeners;
 
+import lombok.AllArgsConstructor;
 import me.l2x9.core.randomspawn.RandomSpawnManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -12,27 +13,17 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+@AllArgsConstructor
 public class RespawnListener implements Listener {
     private final ThreadLocalRandom rand = ThreadLocalRandom.current();
     private final RandomSpawnManager main;
-
-    public RespawnListener(RandomSpawnManager main) {
-        this.main = main;
-    }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onRespawn(PlayerRespawnEvent event) {
         if (event.isBedSpawn()) return;
         int attemptCount = 0;
         Location respawn = null;
-        while (respawn == null) {
-            attemptCount++;
-            if (attemptCount == 600) {
-                respawn = calcSpawnLocation(true);
-            } else {
-                respawn = calcSpawnLocation(false);
-            }
-        }
+        while (respawn == null) respawn = calcSpawnLocation(attemptCount++ == 600);
         event.setRespawnLocation(respawn);
     }
 
