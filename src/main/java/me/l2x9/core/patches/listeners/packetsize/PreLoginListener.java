@@ -12,7 +12,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-
 public class PreLoginListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
