@@ -5,7 +5,6 @@ import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
 import me.l2x9.core.patches.listeners.*;
 import me.l2x9.core.patches.listeners.packetsize.PreLoginListener;
-import me.txmc.protocolapi.reflection.ClassProcessor;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -22,7 +21,6 @@ public class PatchManager extends Manager {
     private L2X9RebootCore plugin;
     @Getter
     private ConfigurationSection config;
-    private final ClassProcessor classProcessor = new ClassProcessor();
 
     public PatchManager() {
         super("Patches");
