@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -22,7 +23,8 @@ public class SetHomeCommand implements CommandExecutor {
             Player player = (Player) sender;
             int maxHomes = main.getConfig().getInt("MaxHomes");
             List<Home> homes = main.getHomes().getOrDefault(player.getUniqueId(), null);
-            if (homes.stream().anyMatch(h -> h.getName() .equals(args[0]))) {
+            if (homes == null) homes = new ArrayList<>();
+            if (homes.stream().anyMatch(h -> h.getName().equals(args[0]))) {
                 Home home = homes.stream().filter(h -> h.getName().equals(args[0])).findAny().get();
                 Utils.sendMessage(sender, "A home by that name already exists.");
                 main.getHomeUtil().deleteHome(home);
