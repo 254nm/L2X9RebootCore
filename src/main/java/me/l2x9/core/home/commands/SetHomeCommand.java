@@ -21,6 +21,10 @@ public class SetHomeCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
+            if (args.length < 1) {
+                Utils.sendMessage(player, "&3Please include a name for your new home");
+                return true;
+            }
             int maxHomes = main.getConfig().getInt("MaxHomes");
             List<Home> homes = main.getHomes().getOrDefault(player.getUniqueId(), null);
             if (homes == null) homes = new ArrayList<>();
@@ -35,10 +39,6 @@ public class SetHomeCommand implements CommandExecutor {
             }
             File playerFolder = new File(main.getHomeUtil().getHomesFolder(), player.getUniqueId().toString());
             if (!playerFolder.exists()) playerFolder.mkdir();
-            if (args.length < 1) {
-                Utils.sendMessage(player, "&3Please include a name for your new home");
-                return true;
-            }
             Home home = new Home(args[0], player.getUniqueId(), player.getLocation());
             main.getHomeUtil().save(playerFolder, home.getName() + ".map", home);
             Utils.sendMessage(player, "&3Home&r&a " + home.getName() + " &r&3Set");
