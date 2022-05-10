@@ -11,5 +11,5 @@
 ### Windows 🤮
 
 ```
-gradlew.bat shadowJar
+.\gradlew.bat shadowJar
 ```
