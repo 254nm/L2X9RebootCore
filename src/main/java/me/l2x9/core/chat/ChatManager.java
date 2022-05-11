@@ -1,7 +1,6 @@
 package me.l2x9.core.chat;
 
 import me.l2x9.core.chat.commands.*;
-import me.l2x9.core.chat.listeners.AntiLink;
 import me.l2x9.core.chat.listeners.ChatListener;
 import me.l2x9.core.chat.listeners.JoinLeaveListener;
 import me.l2x9.core.L2X9RebootCore;
@@ -41,7 +40,6 @@ public class ChatManager extends Manager {
         config = plugin.getModuleConfig(this);
         plugin.registerListener(new ChatListener(this));
         plugin.registerListener(new JoinLeaveListener(this));
-        plugin.registerListener(new AntiLink(this));
         plugin.registerCommand ("ignore",new IgnoreCommand(this));
         plugin.getCommand("msg").setExecutor(new MessageCommand(this));
         plugin.getCommand("reply").setExecutor(new ReplyCommand(this));
