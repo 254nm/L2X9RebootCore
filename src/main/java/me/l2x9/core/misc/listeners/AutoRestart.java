@@ -17,8 +17,8 @@ public class AutoRestart {
             Bukkit.getScheduler().runTask(L2X9RebootCore.getInstance(), () -> {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (player.getLocale().toLowerCase().contains("es")) {
-                        player.kickPlayer(Utils.translateChars("&6[&3l2&bx9&6] El servidor se está reiniciando"));
-                    } else player.kickPlayer(Utils.translateChars("&6[&3l2&bx9&6] The server is restarting"));
+                        Utils.kick(player, "El servidor se está reiniciando");
+                    } else Utils.kick(player, "The server is restarting");
                 }
                 Bukkit.getServer().shutdown();
             });
