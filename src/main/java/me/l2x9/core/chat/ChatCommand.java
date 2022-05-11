@@ -10,9 +10,9 @@ public abstract class ChatCommand implements CommandExecutor {
             if (!targetInfo.isIgnoring(player.getUniqueId())) {
                 targetInfo.setReplyTarget(player);
                 senderInfo.setReplyTarget(target);
-                Utils.sendMessage(target, "&d" + player.getName() + " Whispers: " + msg);
-                Utils.sendMessage(player, "&dTo " + target.getName().concat(": ") + msg);
-            } else Utils.sendMessage(player, "&c" + target.getName() + " is ignoring you");
-        } else Utils.sendMessage(player, "&cYou cannot message a player that you have ignored");
+                Utils.sendMessage(target, "&d" + player.getName() + " Whispers: " + msg, false);
+                Utils.sendMessage(player, "&dTo " + target.getName().concat(": ") + msg, false);
+            } else Utils.sendMessage(player, "&c" + target.getName() + " is ignoring you", false);
+        } else Utils.sendMessage(player, "&cYou cannot message a player that you have ignored", false);
     }
 }

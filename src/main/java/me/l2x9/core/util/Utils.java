@@ -3,8 +3,8 @@ package me.l2x9.core.util;
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
 import net.minecraft.server.v1_12_R1.*;
-import org.bukkit.*;
 import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Method;
@@ -57,15 +57,7 @@ public class Utils {
      * @param message The message to be sent
      */
     public static void sendMessage(Object obj, String message) {
-        message = String.format("%s &7➠&r %s", PREFIX, message);
-        message = translateChars(message);
-        try {
-            Method method = obj.getClass().getMethod("sendMessage", String.class);
-            method.setAccessible(true);
-            method.invoke(obj, message);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        sendMessage(obj, message, true);
     }
 
     public static void kick(Player player, String message) {
@@ -114,6 +106,22 @@ public class Utils {
         for (int i = 0; i < inventory.getSize(); i++) inventory.setItem(i, ItemStack.a);
         inventory.update();
         log(String.format("&aCleared inventory&r&3 %s&r&a with window ID&r&3 %d&r&a because it had excessive NBT data", inventory.getClass().getSimpleName(), player.activeContainer.windowId));
+    }
+
+    public static String getPrefix() {
+        return PREFIX;
+    }
+
+    public static void sendMessage(Object obj, String msg, boolean prefix) {
+        if (prefix) msg = String.format("%s &7➠&r %s", PREFIX, msg);
+        msg = translateChars(msg);
+        try {
+            Method method = obj.getClass().getMethod("sendMessage", String.class);
+            method.setAccessible(true);
+            method.invoke(obj, msg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 
