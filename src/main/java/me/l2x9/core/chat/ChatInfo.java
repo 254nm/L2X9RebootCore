@@ -40,6 +40,7 @@ public class ChatInfo {
     }
 
     public void saveIgnores() {
+        System.out.println("Saving ignores for " + getPlayer().getName());
         File ignoreList = new File(manager.getIgnoresFolder(), player.getName().concat(".lst"));
         try {
             if (ignoreList.exists() && ignoring.size() == 0) {
