@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -39,10 +40,15 @@ public class ChatInfo {
     }
 
     public void saveIgnores() {
+        System.out.println("Saving ignores for " + getPlayer().getName());
         File ignoreList = new File(manager.getIgnoresFolder(), player.getName().concat(".lst"));
         try {
+            if (ignoreList.exists() && ignoring.size() == 0) {
+                ignoreList.delete();
+                return;
+            }
             if (!ignoreList.exists()) ignoreList.createNewFile();
-            OutputStream fos = Files.newOutputStream(ignoreList.toPath());
+            OutputStream fos = new FileOutputStream(ignoreList, false);
             OutputStreamWriter osw = new OutputStreamWriter(fos);
             BufferedWriter writer = new BufferedWriter(osw);
             for (UUID id : ignoring) writer.write(id.toString().concat("\n"));

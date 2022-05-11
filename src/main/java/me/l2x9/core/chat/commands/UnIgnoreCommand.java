@@ -23,7 +23,7 @@ public class UnIgnoreCommand implements CommandExecutor {
             if (args.length == 1) {
                 ChatInfo info = manager.getInfo((Player) sender);
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
-                if (!info.isIgnoring(target.getUniqueId())) {
+                if (info.isIgnoring(target.getUniqueId())) {
                     info.unignorePlayer(target.getUniqueId());
                     Utils.sendMessage(sender, "&3Successfully unignored player&r&a " + target.getName());
                 } else Utils.sendMessage(sender, "&cYou arent ignoring " + target.getName());
