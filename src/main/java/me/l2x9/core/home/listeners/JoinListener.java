@@ -13,11 +13,11 @@ public class JoinListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        main.getHomeUtil().loadHomes(event.getPlayer());
+        main.getHomeIO().loadHomes(event.getPlayer());
     }
 
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
-        main.getHomeUtil().getHomes().remove(event.getPlayer().getUniqueId());
+        main.getHomeIO().getHomes().remove(event.getPlayer().getUniqueId());
     }
 }

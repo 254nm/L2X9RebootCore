@@ -2,6 +2,8 @@ package me.l2x9.core.misc.listeners;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -10,16 +12,18 @@ import org.bukkit.event.vehicle.VehicleMoveEvent;
 public class MoveListener implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
-        if (event.getPlayer().getLocation().getWorld().getEnvironment() != World.Environment.NETHER) return;
-        if (event.getPlayer().getLocation().getY() > 127) {
-            event.getPlayer().teleport(new Location(event.getPlayer().getWorld(), event.getPlayer().getLocation().getX(), 125, event.getPlayer().getLocation().getZ()));
+        Player player = event.getPlayer();
+        if (player.getLocation().getWorld().getEnvironment() != World.Environment.NETHER) return;
+        if (player.getLocation().getY() > 127) {
+            player.teleport(new Location(player.getWorld(), player.getLocation().getX(), 125, player.getLocation().getZ()));
         }
     }
     @EventHandler
     public void onMove(VehicleMoveEvent event) {
-        if (event.getVehicle().getLocation().getWorld().getEnvironment() != World.Environment.NETHER) return;
-        if (event.getVehicle().getLocation().getY() > 127) {
-            event.getVehicle().teleport(new Location(event.getVehicle().getWorld(), event.getVehicle().getLocation().getX(), 125, event.getVehicle().getLocation().getZ()));
+        Vehicle vehicle = event.getVehicle();
+        if (vehicle.getLocation().getWorld().getEnvironment() != World.Environment.NETHER) return;
+        if (vehicle.getLocation().getY() > 127) {
+            vehicle.teleport(new Location(vehicle.getWorld(), vehicle.getLocation().getX(), 125, vehicle.getLocation().getZ()));
         }
     }
 }

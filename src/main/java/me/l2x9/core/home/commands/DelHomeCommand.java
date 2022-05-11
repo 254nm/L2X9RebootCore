@@ -26,7 +26,7 @@ public class DelHomeCommand implements CommandExecutor {
                 Utils.sendMessage(player, "&3Home&r&a " + args[0] + "&r&3 was not found");
                 return true;
             }
-            if (main.getHomeUtil().deleteHome(home)) {
+            if (main.getHomeIO().deleteHome(home)) {
                 Utils.sendMessage(player, "&3Home&r&a " + home.getName() + "&r&3 has been deleted");
             } else Utils.sendMessage(player, "&3Could not delete&r&a " + home.getName());
         } else Utils.sendMessage(sender, "&3You must be a player to use this command");

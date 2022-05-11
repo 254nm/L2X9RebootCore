@@ -9,11 +9,11 @@ import org.bukkit.entity.Player;
 import java.io.*;
 import java.util.*;
 
-public class HomeUtil {
+public class HomeIO {
     private final File homesFolder;
     private final HashMap<UUID, ArrayList<Home>> homes;
 
-    public HomeUtil(File homesFolder) {
+    public HomeIO(File homesFolder) {
         this.homesFolder = homesFolder;
         homes = new HashMap<>();
     }

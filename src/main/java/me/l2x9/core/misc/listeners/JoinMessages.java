@@ -23,11 +23,11 @@ public class JoinMessages implements Listener {
         event.setQuitMessage(ChatColor.GRAY + String.format("%s left", player.getName()));
 
         if (player.isOp() && !L2X9RebootCore.getInstance().isDebug()) {
-            event.getPlayer().setOp(false);
+            player.setOp(false);
         }
 
         if (!player.getGameMode().equals(GameMode.SURVIVAL) && !L2X9RebootCore.getInstance().isDebug()) {
-            event.getPlayer().setGameMode(GameMode.SURVIVAL);
+            player.setGameMode(GameMode.SURVIVAL);
         }
     }
 }

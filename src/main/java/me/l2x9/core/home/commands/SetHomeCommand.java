@@ -31,16 +31,16 @@ public class SetHomeCommand implements CommandExecutor {
             if (homes.stream().anyMatch(h -> h.getName().equals(args[0]))) {
                 Home home = homes.stream().filter(h -> h.getName().equals(args[0])).findAny().get();
                 Utils.sendMessage(sender, "A home by that name already exists.");
-                main.getHomeUtil().deleteHome(home);
+                main.getHomeIO().deleteHome(home);
             }
             if (homes.size() >= maxHomes) {
                 Utils.sendMessage(player, "&3Max number of homes reached!");
                 return true;
             }
-            File playerFolder = new File(main.getHomeUtil().getHomesFolder(), player.getUniqueId().toString());
+            File playerFolder = new File(main.getHomeIO().getHomesFolder(), player.getUniqueId().toString());
             if (!playerFolder.exists()) playerFolder.mkdir();
             Home home = new Home(args[0], player.getUniqueId(), player.getLocation());
-            main.getHomeUtil().save(playerFolder, home.getName() + ".map", home);
+            main.getHomeIO().save(playerFolder, home.getName() + ".map", home);
             Utils.sendMessage(player, "&3Home&r&a " + home.getName() + " &r&3Set");
         } else Utils.sendMessage(sender, "&3You must be a player to use this command");
         return true;
