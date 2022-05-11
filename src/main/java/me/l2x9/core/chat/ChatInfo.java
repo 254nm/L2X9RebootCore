@@ -3,6 +3,7 @@ package me.l2x9.core.chat;
 import org.bukkit.entity.Player;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -72,7 +73,7 @@ public class ChatInfo {
         File ignoreList = new File(manager.getIgnoresFolder(), player.getName().concat(".lst"));
         if (!ignoreList.exists()) return new ArrayList<>();
         try {
-            InputStream fis = new FileInputStream(ignoreList);
+            InputStream fis = Files.newInputStream(ignoreList.toPath());
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader reader = new BufferedReader(isr);
             List<UUID> buffer = reader.lines().map(UUID::fromString).collect(Collectors.toList());
