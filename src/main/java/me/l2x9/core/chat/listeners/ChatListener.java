@@ -38,7 +38,7 @@ public class ChatListener implements Listener {
             for (String word : list) {
                 if (event.getMessage().toLowerCase().contains(word)) {
                     blocked = true;
-                    player.sendMessage("<" + player.getName() + "> " + event.getMessage());
+                    player.sendMessage("<" + player.getDisplayName()+ "> " + event.getMessage());
                     Utils.log("&3Prevented&r&a " + player.getName() + "&r&3 from advertising");
                     break;
                 }
@@ -46,7 +46,7 @@ public class ChatListener implements Listener {
         }
         if (blocked) return;
         Player chatter = event.getPlayer();
-        String message = (event.getMessage().startsWith(">")) ? "<" + chatter.getName() + "> " + ChatColor.GREEN + event.getMessage() : "<" + chatter.getName() + "> " + event.getMessage();
+        String message = (event.getMessage().startsWith(">")) ? "<" + chatter.getDisplayName() + "> " + ChatColor.GREEN + event.getMessage() : "<" + chatter.getName() + "> " + event.getMessage();
         Bukkit.getLogger().info(message);
         for (Player online : Bukkit.getOnlinePlayers()) {
             ChatInfo info = manager.getInfo(online);
