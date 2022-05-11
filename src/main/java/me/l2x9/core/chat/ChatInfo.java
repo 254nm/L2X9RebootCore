@@ -1,5 +1,7 @@
 package me.l2x9.core.chat;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.entity.Player;
 
 import java.io.*;
@@ -9,6 +11,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Getter
+@Setter
 public class ChatInfo {
     private final Player player;
     private final List<UUID> ignoring;
@@ -22,26 +26,6 @@ public class ChatInfo {
         ignoring = loadIgnores();
     }
 
-    public List<UUID> getIgnoring() {
-        return ignoring;
-    }
-
-    public Player getReplyTarget() {
-        return replyTarget;
-    }
-
-    public void setReplyTarget(Player replyTarget) {
-        this.replyTarget = replyTarget;
-    }
-
-    public boolean isToggledChat() {
-        return toggledChat;
-    }
-
-    public void setToggledChat(boolean toggledChat) {
-        this.toggledChat = toggledChat;
-    }
-
     public boolean isIgnoring(UUID player) {
         return ignoring.contains(player);
     }
@@ -49,6 +33,7 @@ public class ChatInfo {
     public void ignorePlayer(UUID player) {
         ignoring.add(player);
     }
+
     public void unignorePlayer(UUID player) {
         ignoring.remove(player);
     }
@@ -57,7 +42,7 @@ public class ChatInfo {
         File ignoreList = new File(manager.getIgnoresFolder(), player.getName().concat(".lst"));
         try {
             if (!ignoreList.exists()) ignoreList.createNewFile();
-            OutputStream fos = new FileOutputStream(ignoreList);
+            OutputStream fos = Files.newOutputStream(ignoreList.toPath());
             OutputStreamWriter osw = new OutputStreamWriter(fos);
             BufferedWriter writer = new BufferedWriter(osw);
             for (UUID id : ignoring) writer.write(id.toString().concat("\n"));
