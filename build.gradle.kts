@@ -5,11 +5,9 @@ plugins {
 
 repositories {
     mavenLocal()
-    maven {
-        url = uri("https://repo.txmc.me/releases")
-        url = uri("https://oss.sonatype.org/content/groups/public/")
-        url = uri("https://repo.maven.apache.org/maven2/")
-    }
+    maven { url = uri("https://repo.txmc.me/releases") }
+    maven { url = uri("https://oss.sonatype.org/content/groups/public/") }
+    maven { url = uri("https://repo.maven.apache.org/maven2/") }
 }
 
 dependencies {
