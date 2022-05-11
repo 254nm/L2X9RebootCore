@@ -46,7 +46,7 @@ public class ChatListener implements Listener {
         }
         if (blocked) return;
         Player chatter = event.getPlayer();
-        String message = (event.getMessage().startsWith(">")) ? "<" + chatter.getDisplayName() + "> " + ChatColor.GREEN + event.getMessage() : "<" + chatter.getName() + "> " + event.getMessage();
+        String message = (event.getMessage().startsWith(">")) ? "<" + chatter.getDisplayName() + "> " + ChatColor.GREEN + event.getMessage() : "<" + chatter.getDisplayName() + "> " + event.getMessage();
         Bukkit.getLogger().info(message);
         for (Player online : Bukkit.getOnlinePlayers()) {
             ChatInfo info = manager.getInfo(online);
