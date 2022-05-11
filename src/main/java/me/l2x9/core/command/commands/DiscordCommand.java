@@ -1,6 +1,7 @@
 package me.l2x9.core.command.commands;
 
 import me.l2x9.core.command.BaseCommand;
+import me.l2x9.core.util.Utils;
 import org.bukkit.command.CommandSender;
 
 public class DiscordCommand extends BaseCommand {
@@ -15,6 +16,6 @@ public class DiscordCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        sendMessage(sender, config.getString("Discord"));
+        Utils.sendMessage(sender, config.getString("Discord"));
     }
 }
