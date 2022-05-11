@@ -1,16 +1,21 @@
 package me.l2x9.core.command;
 
+import lombok.Getter;
 import me.l2x9.core.L2X9RebootCore;
+import me.l2x9.core.util.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
+
+@Getter
 public abstract class BaseCommand {
     public final String CONSOLE_ONLY = "This command is console only";
     public final String PLAYER_ONLY = "This command is player only";
-    public final String PREFIX = "[&3L2X9&r&aCore&r] ";
-    public final Configuration config = L2X9RebootCore.getInstance().getConfig();
+    public final String PREFIX = Utils.getPrefix();
+    public final ConfigurationSection config = CommandManager.getInstance().getConfig();
     public final L2X9RebootCore plugin = L2X9RebootCore.getInstance();
     private final String name;
     private final String usage;
@@ -38,25 +43,6 @@ public abstract class BaseCommand {
         this.subCommands = subCommands;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getUsage() {
-        return usage;
-    }
-
-    public String getPermission() {
-        return permission;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String[] getSubCommands() {
-        return subCommands;
-    }
     public void sendMessage(CommandSender sender, String message) {
         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
@@ -73,11 +59,11 @@ public abstract class BaseCommand {
         sender.sendMessage(finalMessage);
     }
 
-    public Player getSenderAsPlayer(CommandSender sender) {
+    public Optional<Player> getSenderAsPlayer(CommandSender sender) {
         if (sender instanceof Player) {
-            return (Player) sender;
+            return Optional.of((Player) sender);
         } else {
-            return null;
+            return Optional.empty();
         }
     }
     public abstract void execute(CommandSender sender, String[] args);
