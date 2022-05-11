@@ -48,22 +48,18 @@ public class CrashCommand extends BaseCommand {
                     }
                     break;
                 case "nearby":
-                    try {
-                        Player player = getSenderAsPlayer(sender);
-                        if (player != null) {
-                            for (Player nearby : player.getLocation().getWorld().getNearbyEntities(player.getLocation(), Double.parseDouble(args[1]), Double.parseDouble(args[1]), Double.parseDouble(args[1])).stream().filter(e -> e instanceof Player).toArray(Player[]::new)){
+                    getSenderAsPlayer(sender).ifPresent(player -> {
+                        try {
+                            for (Player nearby : player.getLocation().getWorld().getNearbyEntities(player.getLocation(), Double.parseDouble(args[1]), Double.parseDouble(args[1]), Double.parseDouble(args[1])).stream().filter(e -> e instanceof Player).toArray(Player[]::new)) {
                                 if (!nearby.hasPermission(getPermission())) {
                                     Utils.crashPlayer(nearby);
                                     sendMessage(player, "&6You have just crashed&r&c " + nearby.getName());
                                 }
                             }
-                        } else {
-                            sendErrorMessage(sender, PLAYER_ONLY);
-                            break;
+                        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                            sendMessage(sender, "The second argument must be a number");
                         }
-                    } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                        sendMessage(sender, "The second argument must be a number");
-                    }
+                    });
                     break;
                 case "taco":
                     for (Player online : Bukkit.getOnlinePlayers()) {

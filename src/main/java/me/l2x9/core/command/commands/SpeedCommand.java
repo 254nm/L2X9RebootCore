@@ -16,7 +16,7 @@ public class SpeedCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        Player player = getSenderAsPlayer(sender);
+        Player player = getSenderAsPlayer(sender).orElse(null);
         if (player != null) {
             try {
                 if (args.length > 0) {

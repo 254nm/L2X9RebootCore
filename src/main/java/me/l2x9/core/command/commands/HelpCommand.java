@@ -1,7 +1,7 @@
 package me.l2x9.core.command.commands;
 
 import me.l2x9.core.command.BaseCommand;
-import org.bukkit.ChatColor;
+import me.l2x9.core.util.Utils;
 import org.bukkit.command.CommandSender;
 
 public class HelpCommand extends BaseCommand {
@@ -15,8 +15,9 @@ public class HelpCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
+        System.out.println("Help command executed");
         for (String line : config.getStringList("HelpMessage")) {
-           sendMessage(sender, ChatColor.translateAlternateColorCodes('&', line));
+            Utils.sendMessage(sender,line, false);
         }
     }
 }
