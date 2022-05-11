@@ -51,7 +51,10 @@ public class ChatManager extends Manager {
 
     @Override
     public void destruct(L2X9RebootCore plugin) {
-
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            ChatInfo ci = getInfo(p);
+            ci.saveIgnores();
+        });
     }
 
     @Override
