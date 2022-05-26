@@ -12,7 +12,6 @@ public class InventoryOpen implements Listener {
 
     @EventHandler
     public void onOpen(InventoryOpenEvent event) {
-        System.out.println("Checking inv");
-        check.check(event.getInventory());
+//        System.out.printf("ItemStack %s created\n", event.getItem().getType());
     }
 }
