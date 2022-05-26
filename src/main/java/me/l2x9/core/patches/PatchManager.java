@@ -33,7 +33,6 @@ public class PatchManager extends Manager {
         config = plugin.getModuleConfig(this);
         plugin.registerListener(new PreLoginListener());
         plugin.registerListener(new BoatFly());
-        plugin.registerListener(new CraftingLag(this));
         plugin.registerListener(new Damage());
         plugin.registerListener(new DispenserCrash());
         plugin.registerListener(new ElytraSpeedLimit());
