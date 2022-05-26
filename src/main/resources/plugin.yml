@@ -1,6 +1,8 @@
 name: L2X9RebootCore
 version: 1.1-BETA
 main: me.l2x9.core.L2X9RebootCore
+loadbefore:
+  - ProtocolLib
 authors: [ 254n_m ]
 description: All of the plugins for thr l2x9 reboot
 commands:
