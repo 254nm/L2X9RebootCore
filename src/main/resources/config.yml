@@ -61,34 +61,12 @@ Commands:
   Discord: '&3Join us on discord at&r&a https://discord.gg/8JGXDZufag'
 ChatControl:
   Enabled: true #Enable this module
+  PreventLinks: true #Uses a list of all TLDs
   #How long before a player can chat again (In seconds)
   Cooldown: 3
   #Blocked words
-  Blocked:
-    - "discord"
-    - "."
-    - "dot"
+  Blocked: []
 Patches:
   CraftingLag:
     MaxVLS: 2000
     KickMessage: ''
-
-AntiIllegal:
-  Enabled: true #Enable this module
-  IllegalBlocks:
-    - 'COMMAND_REPEATING'
-    - 'GRASS_PATH'
-    - 'KNOWLEDGE_BOOK'
-    - 'STRUCTURE_VOID'
-    - 'STRUCTURE_BLOCK'
-    - 'BARRIER'
-    - 'SOIL'
-    - 'GRASS_PATH'
-    - 'MOB_SPAWNER'
-    - 'MONSTER_EGG'
-    - 'MONSTER_EGGS'
-    - 'ENDER_PORTAL_FRAME'
-    - 'BEDROCK'
-    - 'COMMAND'
-    - 'COMMAND_MINECART'
-    - 'COMMAND_CHAIN'
