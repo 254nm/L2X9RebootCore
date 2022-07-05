@@ -11,7 +11,6 @@ import me.l2x9.core.tablist.TabManager;
 import me.txmc.protocolapi.PacketEventDispatcher;
 import me.txmc.protocolapi.PacketListener;
 import me.txmc.protocolapi.reflection.ClassProcessor;
-import net.minecraft.server.v1_12_R1.AxisAlignedBB;
 import net.minecraft.server.v1_12_R1.Packet;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
@@ -65,7 +64,6 @@ public final class L2X9RebootCore extends JavaPlugin {
         registerManager(new MiscManager());
         registerManager(new ChatManager());
         registerManager(new PatchManager());
-//        registerManager(new AntiIllegalManager());
         managers.forEach(manager -> manager.init(this));
     }
 

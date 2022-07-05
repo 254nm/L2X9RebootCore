@@ -19,10 +19,10 @@ public class EndGateway implements Listener {
             for (BlockFace face : BlockFace.values()) {
                 Block next = vehicle.getLocation().getBlock().getRelative(face);
                 if (next.getType() == Material.END_GATEWAY) {
-                    Player player = (Player) vehicle.getPassengers().stream().filter(e -> e instanceof Player).findAny().orElse(null);
-                    if (player == null) return;
                     vehicle.eject();
                     vehicle.remove();
+                    Player player = (Player) vehicle.getPassengers().stream().filter(e -> e instanceof Player).findAny().orElse(null);
+                    if (player == null) return;
                     Utils.log(String.format("&1Prevented %s from crashing the server at %s)", player.getName(), Utils.formatLocation(vehicle.getLocation())));
                 }
             }

@@ -7,8 +7,12 @@ import org.bukkit.World;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 
+import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
 import java.text.DecimalFormat;
+import java.util.MissingResourceException;
 import java.util.logging.Level;
 
 public class Utils {
@@ -66,8 +70,9 @@ public class Utils {
         player.kickPlayer(message);
     }
 
-    public static void log(String message) {
+    public static void log(String format, Object... args) {
         StackTraceElement element = Thread.currentThread().getStackTrace()[2];
+        String message = String.format(format, args);
         message = translateChars(message);
         L2X9RebootCore.getInstance().getLogger().log(Level.INFO, String.format("%s%c%s", message, Character.MIN_VALUE, element.getClassName()));
     }
@@ -121,6 +126,17 @@ public class Utils {
             method.invoke(obj, msg);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    public static void unpackResource(String resourceName, File file) {
+        try {
+            InputStream is = L2X9RebootCore.class.getClassLoader().getResourceAsStream(resourceName);
+            if (is == null) throw new NullPointerException(String.format("Resource %s is not present in the jar", resourceName));
+            Files.copy(is, file.toPath());
+            is.close();
+        } catch (Throwable t) {
+            log("&cFailed to extract resource from jar due to &r&3 %s&r&c! Please see the stacktrace below for more info", t.getMessage());
+            t.printStackTrace();
         }
     }
 }
