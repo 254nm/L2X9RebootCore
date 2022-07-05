@@ -5,6 +5,7 @@ import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
 import me.l2x9.core.patches.listeners.*;
 import me.l2x9.core.patches.listeners.packetsize.PreLoginListener;
+import me.l2x9.core.util.Utils;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -37,6 +38,7 @@ public class PatchManager extends Manager {
         plugin.registerListener(new DispenserCrash());
         plugin.registerListener(new ElytraSpeedLimit());
         plugin.registerListener(new EndGateway());
+        plugin.registerListener(new EntityCollideListener());
         plugin.registerListener(new IllegalBlock(plugin.getConfig()));
         plugin.registerListener(new LargePacketListener());
         plugin.registerListener(new LeverRateLimit());
@@ -63,11 +65,7 @@ public class PatchManager extends Manager {
     private Image loadImage() {
         try {
             File file = new File(plugin.getDataFolder(), "Map.png");
-            if (!file.exists()) {
-                InputStream stream = getClass().getClassLoader().getResourceAsStream("Map.png");
-                if (stream == null) return null;
-                Files.copy(stream, file.toPath());
-            }
+            if (!file.exists()) Utils.unpackResource("Map.png", file);
             return ImageIO.read(file);
         } catch (IOException e) {
             e.printStackTrace();
