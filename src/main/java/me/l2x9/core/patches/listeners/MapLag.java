@@ -74,7 +74,7 @@ public class MapLag implements PacketListener {
         public void render(MapView mapView, MapCanvas mapCanvas, Player player) {
             try {
                 List<MapCursor> cursors = (List<MapCursor>) cursorsF.get(mapCanvas.getCursors());
-                cursors.forEach(c -> mapCanvas.getCursors().removeCursor(c));
+                cursors.forEach(mapCanvas.getCursors()::removeCursor);
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }

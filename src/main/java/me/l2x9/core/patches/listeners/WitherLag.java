@@ -17,6 +17,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
 
+//TODO Rewrite this
 public class WitherLag implements Listener {
     private final Timer timer;
     private final HashMap<World, Integer> skulls = new HashMap<>();

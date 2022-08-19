@@ -33,7 +33,7 @@ public class HomeManager extends Manager {
         config = plugin.getModuleConfig(this);
         homeIO = new HomeIO(homesFolder);
         homes = homeIO.getHomes();
-        if (!Bukkit.getOnlinePlayers().isEmpty()) Bukkit.getOnlinePlayers().forEach(p -> homeIO.loadHomes(p));
+        if (!Bukkit.getOnlinePlayers().isEmpty()) Bukkit.getOnlinePlayers().forEach(homeIO::loadHomes);
         plugin.registerListener(new JoinListener(this));
         plugin.registerCommand("home", new HomeCommand(this));
         plugin.registerCommand("sethome", new SetHomeCommand(this));

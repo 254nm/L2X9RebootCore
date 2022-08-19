@@ -13,11 +13,13 @@ import me.txmc.protocolapi.PacketListener;
 import me.txmc.protocolapi.reflection.ClassProcessor;
 import net.minecraft.server.v1_12_R1.Packet;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.event.Listener;
+import org.bukkit.event.server.ServerEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -48,6 +50,7 @@ public final class L2X9RebootCore extends JavaPlugin {
         instance = this;
         dispatcher = new PacketEventDispatcher(this);
         managers = new ArrayList<>();
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         getLogger().addHandler(new LoggerHandler());
         saveDefaultConfig();
         violationManagers = new ArrayList<>();
@@ -78,6 +81,7 @@ public final class L2X9RebootCore extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        getServer().getMessenger().unregisterOutgoingPluginChannel(this, "BungeeCord");
         managers.forEach(m -> m.destruct(this));
         managers.clear();
         violationManagers.clear();

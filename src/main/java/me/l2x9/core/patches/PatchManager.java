@@ -39,7 +39,6 @@ public class PatchManager extends Manager {
         plugin.registerListener(new ElytraSpeedLimit());
         plugin.registerListener(new EndGateway());
         plugin.registerListener(new EntityCollideListener());
-        plugin.registerListener(new IllegalBlock(plugin.getConfig()));
         plugin.registerListener(new LargePacketListener());
         plugin.registerListener(new LeverRateLimit());
         new LightLag();

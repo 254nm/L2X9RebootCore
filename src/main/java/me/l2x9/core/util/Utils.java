@@ -1,5 +1,7 @@
 package me.l2x9.core.util;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
 import net.minecraft.server.v1_12_R1.*;
@@ -7,6 +9,8 @@ import org.bukkit.World;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -67,7 +71,20 @@ public class Utils {
     public static void kick(Player player, String message) {
         message = String.format("%s &7->&r %s", PREFIX, message);
         message = translateChars(message);
-        player.kickPlayer(message);
+        if (L2X9RebootCore.getInstance().isDebug()) {
+            player.kickPlayer(message);
+        } else {
+            ByteArrayDataOutput out = ByteStreams.newDataOutput();
+            out.writeUTF("KickPlayer");
+            out.writeUTF(player.getName());
+            out.writeUTF(message);
+            player.sendPluginMessage(L2X9RebootCore.getInstance(), "BungeeCord", out.toByteArray());
+        }
+        StackTraceElement element = Thread.currentThread().getStackTrace()[2];
+        String[] rawCallerName = element.getClassName().split("\\.");
+        String callerName = rawCallerName[rawCallerName.length - 1];
+        String executor = String.format("%s:%d", callerName, element.getLineNumber());
+        log("&7(&r&6%s&r&7)&r &3Kicking player&r&a %s&r&3 for&r&a \"%s\"&r", executor, player.getName(), message);
     }
 
     public static void log(String format, Object... args) {

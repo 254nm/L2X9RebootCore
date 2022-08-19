@@ -13,7 +13,7 @@ dependencies {
     implementation("me.txmc:protocolapi:1.2-SNAPSHOT")
     compileOnly("com.destroystokyo.paper:paper-jar:1.12.2-R0.1-SNAPSHOT")
     compileOnly("org.projectlombok:lombok:1.18.24")
-    annotationProcessor("org.projectlombok:lombok:1.18.22")
+    annotationProcessor("org.projectlombok:lombok:1.18.24")
 }
 
 tasks.shadowJar {

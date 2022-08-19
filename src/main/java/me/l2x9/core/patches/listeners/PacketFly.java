@@ -20,7 +20,7 @@ public class PacketFly implements PacketListener {
         double y = packet.b(-1D);
         if (y == -1D) return;
         double yDelta = loc.getY() - y;
-        if (Math.abs(yDelta) > 20) {
+        if (Math.abs(yDelta) > 10) {
             event.setCancelled(true);
             Utils.run(() -> player.teleport(player.getLocation())); //Sync the location after cancelling the packet
         }
