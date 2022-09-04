@@ -20,6 +20,7 @@ public class ChatInfo {
     private final ChatManager manager;
     private Player replyTarget;
     private boolean toggledChat = false;
+    private boolean chatLock;
 
     public ChatInfo(Player player, ChatManager manager) {
         this.player = player;
