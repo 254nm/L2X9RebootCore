@@ -46,6 +46,7 @@ public class PatchManager extends Manager {
         plugin.registerListener(new NoCom(), PacketPlayOutBlockChange.class, PacketPlayInBlockDig.class);
         plugin.registerListener(new PacketFly(), PacketPlayInFlying.class, PacketPlayInFlying.PacketPlayInPosition.class, PacketPlayInFlying.PacketPlayInPositionLook.class);
         plugin.registerListener(new PacketPerSecondLimit(), (Class<? extends Packet<?>>) null); //null means that this listener receives every packet
+        plugin.registerListener(new ProjectileCrash());
         plugin.registerListener(new ProjectileVelocity());
         plugin.registerListener(new Redstone());
         plugin.registerListener(new WitherLag());

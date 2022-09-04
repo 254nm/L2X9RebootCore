@@ -8,15 +8,13 @@ import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.World;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerKickEvent;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.text.DecimalFormat;
-import java.util.MissingResourceException;
 import java.util.logging.Level;
 
 public class Utils {
@@ -78,7 +76,11 @@ public class Utils {
             out.writeUTF("KickPlayer");
             out.writeUTF(player.getName());
             out.writeUTF(message);
-            player.sendPluginMessage(L2X9RebootCore.getInstance(), "BungeeCord", out.toByteArray());
+            PlayerKickEvent pke = new PlayerKickEvent(player, message, String.format(translateChars("&e%s left the game"), player.getName()));
+            Bukkit.getServer().getPluginManager().callEvent(pke);
+            if (!pke.isCancelled()) {
+                player.sendPluginMessage(L2X9RebootCore.getInstance(), "BungeeCord", out.toByteArray());
+            }
         }
         StackTraceElement element = Thread.currentThread().getStackTrace()[2];
         String[] rawCallerName = element.getClassName().split("\\.");
@@ -145,15 +147,48 @@ public class Utils {
             e.printStackTrace();
         }
     }
+
     public static void unpackResource(String resourceName, File file) {
         try {
             InputStream is = L2X9RebootCore.class.getClassLoader().getResourceAsStream(resourceName);
-            if (is == null) throw new NullPointerException(String.format("Resource %s is not present in the jar", resourceName));
+            if (is == null)
+                throw new NullPointerException(String.format("Resource %s is not present in the jar", resourceName));
             Files.copy(is, file.toPath());
             is.close();
         } catch (Throwable t) {
             log("&cFailed to extract resource from jar due to &r&3 %s&r&c! Please see the stacktrace below for more info", t.getMessage());
             t.printStackTrace();
+        }
+    }
+
+    public static float getMotionModifier(org.bukkit.entity.Entity entity) {
+        switch (entity.getType()) {
+            case FIREBALL:
+            case SMALL_FIREBALL:
+                return 1.10f;
+            case WITHER_SKULL:
+                return 1.15f;
+            default:
+                return 0.99f;
+        }
+    }
+
+    public static float getGravityModifier(org.bukkit.entity.Entity entity) {
+        switch (entity.getType()) {
+            case SNOWBALL:
+            case ENDER_PEARL:
+            case EGG:
+                return 0.03f;
+            case ARROW:
+            case SPECTRAL_ARROW:
+            case TIPPED_ARROW:
+            case LINGERING_POTION:
+            case SPLASH_POTION:
+                return 0.05f;
+            case THROWN_EXP_BOTTLE:
+                return 0.07f;
+            default:
+                return 0.0f;
         }
     }
 }
