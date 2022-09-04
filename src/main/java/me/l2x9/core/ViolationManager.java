@@ -8,11 +8,9 @@ public abstract class ViolationManager {
     private final int removeAmount;
 
     public ViolationManager(int addAmount) {
-        this.addAmount = addAmount;
-        this.removeAmount = addAmount;
-        map = new ConcurrentHashMap<>();
-        L2X9RebootCore.getInstance().registerViolationManager(this);
+        this(addAmount, addAmount);
     }
+
     public ViolationManager(int addAmount, int removeAmount) {
         this.addAmount = addAmount;
         this.removeAmount = removeAmount;
