@@ -49,7 +49,6 @@ public class PatchManager extends Manager {
         plugin.registerListener(new ProjectileCrash());
         plugin.registerListener(new ProjectileVelocity());
         plugin.registerListener(new Redstone());
-        plugin.registerListener(new WitherLag());
     }
 
     @Override

@@ -13,6 +13,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.entity.WitherSkull;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
@@ -61,12 +62,13 @@ public class ProjectileCrash extends ViolationManager implements Listener {
                     Dispenser dispenser = (Dispenser) holder;
                     TNTPrimed tnt = (TNTPrimed) dispenser.getWorld().spawnEntity(dispenser.getLocation(), EntityType.PRIMED_TNT);
                     tnt.setFuseTicks(0);
-                } else if (getVLS(holder.hashCode()) >= 30) {
+                } else if (getVLS(holder.hashCode()) >= 25) {
                     holder.getInventory().remove(itemMap.get(projectile.getType()));
                 }
             }
             projectile.remove();
-            Utils.log("&3Prevented a &r&a%s&r&3 from going into unloaded chunks in %s", projectile.getClass().getSimpleName(), Utils.formatLocation(projectile.getLocation()));
+            if (!(projectile instanceof WitherSkull))
+                Utils.log("&3Prevented a &r&a%s&r&3 from going into unloaded chunks in %s", projectile.getClass().getSimpleName(), Utils.formatLocation(projectile.getLocation()));
         }
     }
 
