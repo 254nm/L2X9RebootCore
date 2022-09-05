@@ -9,12 +9,13 @@ import me.l2x9.core.home.commands.SetHomeCommand;
 import me.l2x9.core.home.listeners.JoinListener;
 import me.l2x9.core.home.util.HomeIO;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Getter
 public class HomeManager extends Manager {
@@ -38,6 +39,19 @@ public class HomeManager extends Manager {
         plugin.registerCommand("home", new HomeCommand(this));
         plugin.registerCommand("sethome", new SetHomeCommand(this));
         plugin.registerCommand("delhome", new DelHomeCommand(this));
+    }
+
+    public List<String> tabComplete(CommandSender sender, String[] args) {
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            List<Home> homes = getHomes().getOrDefault(player.getUniqueId(), null);
+            if (homes == null) return Collections.emptyList();
+            if (args.length < 1) {
+                return homes.stream().map(Home::getName).sorted(String::compareToIgnoreCase).collect(Collectors.toList());
+            } else {
+                return homes.stream().map(Home::getName).filter(s -> s.toLowerCase().startsWith(args[0].toLowerCase())).sorted(String::compareToIgnoreCase).collect(Collectors.toList());
+            }
+        } else return Collections.emptyList();
     }
 
     @Override

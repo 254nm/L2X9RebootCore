@@ -13,15 +13,17 @@ import me.txmc.protocolapi.PacketListener;
 import me.txmc.protocolapi.reflection.ClassProcessor;
 import net.minecraft.server.v1_12_R1.Packet;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.event.Listener;
-import org.bukkit.event.server.ServerEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -98,17 +100,17 @@ public final class L2X9RebootCore extends JavaPlugin {
         dispatcher.register(listener, packets);
     }
 
-    public void registerCommand(String name, CommandExecutor... commands) {
-        CraftServer cs = (CraftServer) Bukkit.getServer();
-        for (CommandExecutor command : commands) {
-            if (ClassProcessor.hasAnnotation(commands)) ClassProcessor.process(command);
-            cs.getCommandMap().register(name, new org.bukkit.command.Command(name) {
-                @Override
-                public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-                    command.onCommand(sender, this, commandLabel, args);
-                    return true;
-                }
-            });
+    public void registerCommand(String name, CommandExecutor command) {
+        try {
+            CraftServer cs = (CraftServer) Bukkit.getServer();
+            if (ClassProcessor.hasAnnotation(command)) ClassProcessor.process(command);
+            Constructor<PluginCommand> constructor = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
+            constructor.setAccessible(true);
+            PluginCommand pluginCommand = constructor.newInstance(name, this);
+            pluginCommand.setExecutor(command);
+            cs.getCommandMap().register(name, pluginCommand);
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
     }
 

@@ -1,27 +1,35 @@
 package me.l2x9.core.home.commands;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import me.l2x9.core.home.Home;
 import me.l2x9.core.home.HomeManager;
 import me.l2x9.core.util.Utils;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
-@AllArgsConstructor
-public class DelHomeCommand implements CommandExecutor {
-    HomeManager main;
+import java.util.List;
+
+@RequiredArgsConstructor
+public class DelHomeCommand implements TabExecutor {
+    private final HomeManager main;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (args.length < 1) {
-                Utils.sendMessage(player, "&3Please include the name of a home to delete");
+            List<Home> homes = main.getHomes().getOrDefault(player.getUniqueId(), null);
+            if (homes == null) {
+                Utils.sendMessage(player, "&3You do not have any homes");
                 return true;
             }
-            Home home = main.getHomes().getOrDefault(player.getUniqueId(), null).stream().filter(h -> h.getName().equals(args[0])).findFirst().orElse(null);
+            if (args.length < 1) {
+                String names = String.join(", ", homes.stream().map(Home::getName).toArray(String[]::new));
+                Utils.sendMessage(player, String.format("&3Please include the name of a home to delete. Current homes: (&r&a%s&r&3)&r", names));
+                return true;
+            }
+            Home home = homes.stream().filter(h -> h.getName().equals(args[0])).findFirst().orElse(null);
             if (home == null) {
                 Utils.sendMessage(player, "&3Home&r&a " + args[0] + "&r&3 was not found");
                 return true;
@@ -31,5 +39,10 @@ public class DelHomeCommand implements CommandExecutor {
             } else Utils.sendMessage(player, "&3Could not delete&r&a " + home.getName());
         } else Utils.sendMessage(sender, "&3You must be a player to use this command");
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        return main.tabComplete(sender, args);
     }
 }

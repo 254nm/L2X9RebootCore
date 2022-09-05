@@ -1,6 +1,6 @@
 package me.l2x9.core.home.commands;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.home.Home;
 import me.l2x9.core.home.HomeManager;
@@ -8,14 +8,14 @@ import me.l2x9.core.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-@AllArgsConstructor
-public class HomeCommand implements CommandExecutor {
+@RequiredArgsConstructor
+public class HomeCommand implements TabExecutor {
     private final HomeManager main;
 
     @Override
@@ -73,5 +73,10 @@ public class HomeCommand implements CommandExecutor {
                 onlinePlayer.showPlayer(L2X9RebootCore.getInstance(), player);
             }
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        return main.tabComplete(sender, args);
     }
 }
