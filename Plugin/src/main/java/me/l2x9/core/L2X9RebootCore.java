@@ -23,7 +23,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -50,6 +56,7 @@ public final class L2X9RebootCore extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        loadMixins();
         dispatcher = new PacketEventDispatcher(this);
         managers = new ArrayList<>();
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -89,6 +96,27 @@ public final class L2X9RebootCore extends JavaPlugin {
         violationManagers.clear();
         service.shutdown();
     }
+
+    private void loadMixins() {
+        File mixinJar = new File(".", "mixins-temp.jar");
+        try {
+            InputStream is = getClass().getClassLoader().getResourceAsStream("mixins.dat");
+            if (is == null) throw new RuntimeException("The plugin jar is missing the mixins");
+            Files.copy(is, mixinJar.toPath());
+            URLClassLoader ccl = new URLClassLoader(new URL[]{mixinJar.toURI().toURL()});
+            Class<?> mixinMainClass = Class.forName(String.format("%s.mixin.MixinMain", getClass().getPackage().getName()), true, ccl);
+            Object instance = mixinMainClass.newInstance();
+            Method mainM = instance.getClass().getDeclaredMethod("init", JavaPlugin.class);
+            mainM.invoke(instance, this);
+        } catch (Throwable t) {
+            getLogger().severe(String.format("Failed to load mixins due to %s. Please see the stacktrace below for more info", t.getClass().getName()));
+            t.printStackTrace();
+        } finally {
+            if (mixinJar.exists()) mixinJar.delete();
+        }
+    }
+
+
 
     public void registerListener(Listener listener) {
         if (ClassProcessor.hasAnnotation(listener)) ClassProcessor.process(listener);

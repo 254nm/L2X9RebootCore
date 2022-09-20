@@ -12,6 +12,9 @@ out/
 build/
 .gradle/
 
+#Misc
+mixins.dat
+
 # Compiled class file
 *.class
 

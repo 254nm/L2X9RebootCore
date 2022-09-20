@@ -2,6 +2,7 @@ package me.l2x9.core.chat;
 
 import me.l2x9.core.chat.commands.*;
 import me.l2x9.core.chat.listeners.ChatListener;
+import me.l2x9.core.chat.listeners.CommandWhitelist;
 import me.l2x9.core.chat.listeners.JoinLeaveListener;
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
@@ -44,6 +45,7 @@ public class ChatManager extends Manager {
         config = plugin.getModuleConfig(this);
         plugin.registerListener(new ChatListener(this, parseTLDS(tldFile)));
         plugin.registerListener(new JoinLeaveListener(this));
+        plugin.registerListener(new CommandWhitelist(this));
         plugin.registerCommand ("ignore",new IgnoreCommand(this));
         plugin.getCommand("msg").setExecutor(new MessageCommand(this));
         plugin.getCommand("reply").setExecutor(new ReplyCommand(this));
