@@ -15,7 +15,6 @@ public class HelpCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        System.out.println("Help command executed");
         for (String line : config.getStringList("HelpMessage")) {
             Utils.sendMessage(sender,line, false);
         }
