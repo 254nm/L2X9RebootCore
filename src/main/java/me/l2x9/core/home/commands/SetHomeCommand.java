@@ -33,7 +33,7 @@ public class SetHomeCommand implements CommandExecutor {
                 Utils.sendMessage(sender, "A home by that name already exists.");
                 main.getHomeIO().deleteHome(home);
             }
-            if (homes.size() >= maxHomes) {
+            if (homes.size() >= maxHomes && !player.isOp()) {
                 Utils.sendMessage(player, "&3Max number of homes reached!");
                 return true;
             }
