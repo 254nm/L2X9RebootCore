@@ -12,6 +12,10 @@ out/
 build/
 .gradle/
 
+#Misc
+mixins.dat
+L2X9RebootCore*.jar
+
 # Compiled class file
 *.class
 

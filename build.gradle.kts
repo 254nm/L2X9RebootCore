@@ -1,3 +1,8 @@
+group = "me.l2x9"
+version = "1.0-SNAPSHOT"
+description = "L2X9RebootCore"
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+
 plugins {
     `java-library`
     id("com.github.johnrengelman.shadow") version "7.1.2"
@@ -21,11 +26,6 @@ tasks.shadowJar {
     exclude("pom.*")
     minimize()
 }
-
-group = "me.l2x9"
-version = "1.0-SNAPSHOT"
-description = "L2X9RebootCore"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 tasks.withType<JavaCompile>() {
     options.encoding = "UTF-8"
