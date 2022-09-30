@@ -1,15 +1,13 @@
 package me.l2x9.core.home;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.bukkit.Location;
 
 import java.util.UUID;
 
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class Home {
     private final String name;
     private final UUID owner;
