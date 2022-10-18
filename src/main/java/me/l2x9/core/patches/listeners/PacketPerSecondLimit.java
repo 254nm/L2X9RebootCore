@@ -6,10 +6,10 @@ import me.txmc.protocolapi.PacketListener;
 import me.l2x9.core.util.Utils;
 
 public class PacketPerSecondLimit extends ViolationManager implements PacketListener {
-    private final int PP_LIMIT = 225;
+    private final int PP_LIMIT = 300;
 
     public PacketPerSecondLimit() {
-        super(1, 225);
+        super(1, 300);
     }
 
     @Override
