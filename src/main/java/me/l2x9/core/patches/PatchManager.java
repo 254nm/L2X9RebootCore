@@ -6,15 +6,16 @@ import me.l2x9.core.Manager;
 import me.l2x9.core.patches.listeners.*;
 import me.l2x9.core.patches.listeners.packetsize.PreLoginListener;
 import me.l2x9.core.util.Utils;
+import me.txmc.protocolapi.PacketListener;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.Listener;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
+import java.lang.reflect.Constructor;
 
 public class PatchManager extends Manager {
     @Getter
@@ -39,6 +40,7 @@ public class PatchManager extends Manager {
         plugin.registerListener(new ElytraSpeedLimit());
         plugin.registerListener(new EndGateway());
         plugin.registerListener(new EntityCollideListener());
+        registerConfigurable(FakePlugins.class, PacketPlayInTabComplete.class);
         plugin.registerListener(new LargePacketListener());
         plugin.registerListener(new LeverRateLimit());
         new LightLag();
@@ -49,6 +51,32 @@ public class PatchManager extends Manager {
         plugin.registerListener(new ProjectileCrash());
         plugin.registerListener(new ProjectileVelocity());
         plugin.registerListener(new Redstone());
+    }
+
+    @SafeVarargs
+    private final void registerConfigurable(Class<? extends PacketListener> listener, Class<? extends Packet<?>>... listeningFor) {
+        try {
+            ConfigurationSection patchSection = config.getConfigurationSection(listener.getSimpleName());
+            if (patchSection == null) throw new IllegalArgumentException("Missing configuration section for " + listener.getName());
+            Constructor<? extends PacketListener> constructor = listener.getConstructor(ConfigurationSection.class, PatchManager.class);
+            constructor.setAccessible(true);
+            PacketListener packetListener = constructor.newInstance(patchSection, this);
+            plugin.registerListener(packetListener, listeningFor);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
+    private void registerConfigurable(Class<? extends Listener> listener) {
+        try {
+            ConfigurationSection patchSection = config.getConfigurationSection(listener.getSimpleName());
+            if (patchSection == null) throw new IllegalArgumentException("Missing configuration section for " + listener.getName());
+            Constructor<? extends Listener> constructor = listener.getConstructor(ConfigurationSection.class, PatchManager.class);
+            constructor.setAccessible(true);
+            Listener packetListener = constructor.newInstance(patchSection, this);
+            plugin.registerListener(packetListener);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
     }
 
     @Override

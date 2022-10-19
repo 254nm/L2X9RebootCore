@@ -89,6 +89,10 @@ ChatControl:
     - "/stats"
     - "/discord"
 Patches:
-  CraftingLag:
-    MaxVLS: 2000
-    KickMessage: ''
+  FakePlugins:
+    PluginList:
+      - 'Hey'
+      - 'idiot'
+      - '/pl'
+      - 'is'
+      - 'enabled'
