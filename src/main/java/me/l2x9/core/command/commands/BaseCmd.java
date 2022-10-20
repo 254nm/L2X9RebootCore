@@ -54,7 +54,7 @@ public class BaseCmd extends BaseCommand {
                     });
                     break;
                 default:
-                    Utils.sendPrefixMessage(sender, String.format("&cUnknown command&r&3 %s&r", args[0]));
+                    Utils.sendMessage(sender, String.format("&cUnknown command&r&3 %s&r", args[0]));
                     break;
             }
         } else {

@@ -54,7 +54,7 @@ public class LargePacketListener implements Listener {
                 Utils.run(() -> {
                     Player player = event.getPlayer();
                     player.getInventory().clear();
-                    Utils.sendPrefixMessage(player, "&cYour inventory has been cleared to prevent you from being book banned");
+                    Utils.sendMessage(player, "&cYour inventory has been cleared to prevent you from being book banned");
                 });
             } else if (event.getPacket() instanceof PacketPlayInWindowClick) {
                 buf.readBytes(6);
@@ -69,7 +69,7 @@ public class LargePacketListener implements Listener {
                             player.inventory.setItem(i, ItemStack.a);
                         }
                         player.updateInventory(player.activeContainer);
-                        Utils.sendPrefixMessage(player.getBukkitEntity(), String.format("&cRemoved all&r&3 %s(s) &r&cfrom your inventory to prevent you from being bookbanned", itemFromWire.getItem().getName().toLowerCase().replace("_", "-")));
+                        Utils.sendMessage(player.getBukkitEntity(), String.format("&cRemoved all&r&3 %s(s) &r&cfrom your inventory to prevent you from being bookbanned", itemFromWire.getItem().getName().toLowerCase().replace("_", "-")));
                     } else {
                         Utils.clearCurrentContainer(player);
                     }

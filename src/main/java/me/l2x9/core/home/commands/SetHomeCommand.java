@@ -22,7 +22,7 @@ public class SetHomeCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (args.length < 1) {
-                Utils.sendPrefixMessage(player, "&3Please include a name for your new home");
+                Utils.sendMessage(player, "&3Please include a name for your new home");
                 return true;
             }
             int maxHomes = main.getConfig().getInt("MaxHomes");
@@ -30,19 +30,19 @@ public class SetHomeCommand implements CommandExecutor {
             if (homes == null) homes = new ArrayList<>();
             if (homes.stream().anyMatch(h -> h.getName().equals(args[0]))) {
                 Home home = homes.stream().filter(h -> h.getName().equals(args[0])).findAny().get();
-                Utils.sendPrefixMessage(sender, "A home by that name already exists.");
+                Utils.sendMessage(sender, "A home by that name already exists.");
                 main.getHomeIO().deleteHome(home);
             }
             if (homes.size() >= maxHomes && !player.isOp()) {
-                Utils.sendPrefixMessage(player, "&3Max number of homes reached!");
+                Utils.sendMessage(player, "&3Max number of homes reached!");
                 return true;
             }
             File playerFolder = new File(main.getHomeIO().getHomesFolder(), player.getUniqueId().toString());
             if (!playerFolder.exists()) playerFolder.mkdir();
             Home home = new Home(args[0], player.getUniqueId(), player.getLocation());
             main.getHomeIO().save(playerFolder, home.getName() + ".map", home);
-            Utils.sendPrefixMessage(player, "&3Home&r&a " + home.getName() + " &r&3Set");
-        } else Utils.sendPrefixMessage(sender, "&3You must be a player to use this command");
+            Utils.sendMessage(player, "&3Home&r&a " + home.getName() + " &r&3Set");
+        } else Utils.sendMessage(sender, "&3You must be a player to use this command");
         return true;
     }
 }

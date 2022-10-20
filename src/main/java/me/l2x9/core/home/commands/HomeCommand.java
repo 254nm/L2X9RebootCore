@@ -25,16 +25,16 @@ public class HomeCommand implements TabExecutor {
             int radius = main.getConfig().getInt("Radius");
             List<Home> homes = main.getHomes().getOrDefault(player.getUniqueId(), null);
             if (homes == null) {
-                Utils.sendPrefixMessage(player, "&3No homes found");
+                Utils.sendMessage(player, "&3No homes found");
                 return true;
             }
             String names = String.join(", ", homes.stream().map(Home::getName).toArray(String[]::new));
             if (args.length < 1) {
-                Utils.sendPrefixMessage(player, "&3Please include a home! Current homes: (&r&a" + names + "&r&3)&r");
+                Utils.sendMessage(player, "&3Please include a home! Current homes: (&r&a" + names + "&r&3)&r");
                 return true;
             }
             if (isSpawn(player, radius)) {
-                Utils.sendPrefixMessage(player, "&3You must be&r&a " + radius + "&r&3 blocks from spawn in order to use /home");
+                Utils.sendMessage(player, "&3You must be&r&a " + radius + "&r&3 blocks from spawn in order to use /home");
                 return true;
             }
             boolean teleported = false;
@@ -43,13 +43,13 @@ public class HomeCommand implements TabExecutor {
                     vanish(player);
                     player.teleport(home.getLocation());
                     unVanish(player);
-                    Utils.sendPrefixMessage(player, "&3Teleporting to home&r&a " + home.getName() + "&r&3...");
+                    Utils.sendMessage(player, "&3Teleporting to home&r&a " + home.getName() + "&r&3...");
                     teleported = true;
                     break;
                 }
             }
-            if (!teleported) Utils.sendPrefixMessage(player, "&3Home&r&a " + args[0] + "&r&3 was not found");
-        } else Utils.sendPrefixMessage(sender, "&3You must be a player to use this command");
+            if (!teleported) Utils.sendMessage(player, "&3Home&r&a " + args[0] + "&r&3 was not found");
+        } else Utils.sendMessage(sender, "&3You must be a player to use this command");
         return true;
     }
 

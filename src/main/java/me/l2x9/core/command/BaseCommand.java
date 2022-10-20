@@ -39,15 +39,15 @@ public abstract class BaseCommand {
     }
 
     public void sendNoPermission(CommandSender sender) {
-        Utils.sendPrefixMessage(sender, "&cYou are lacking the permission&r&a %s", getPermission());
+        Utils.sendMessage(sender, "&cYou are lacking the permission&r&a %s", getPermission());
     }
 
     public void sendErrorMessage(CommandSender sender, String message) {
-        Utils.sendPrefixMessage(sender, message);
+        Utils.sendMessage(sender, message);
     }
 
     public void sendMessage(CommandSender sender, String format, Object... args) {
-        Utils.sendPrefixMessage(sender, format, args);
+        Utils.sendMessage(sender, format, args);
     }
 
     public Optional<Player> getSenderAsPlayer(CommandSender sender) {

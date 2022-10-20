@@ -62,7 +62,7 @@ public class Utils {
      * @param obj     The recipient
      * @param message The message to be sent
      */
-    public static void sendPrefixMessage(Object obj, String message, Object... args) {
+    public static void sendMessage(Object obj, String message, Object... args) {
         sendOptionalPrefixMessage(obj, message, true,args);
     }
 
