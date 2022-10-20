@@ -16,6 +16,6 @@ public class DiscordCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        Utils.sendMessage(sender, config.getString("Discord"));
+        Utils.sendPrefixMessage(sender, config.getString("Discord"));
     }
 }

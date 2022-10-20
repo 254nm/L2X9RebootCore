@@ -8,16 +8,7 @@ import org.bukkit.entity.Player;
 
 public class OpenInv extends BaseCommand {
     public OpenInv() {
-        super(
-                "open",
-                "/open <inv | ender> <player>",
-                "l2x9core.command.openinv",
-                "Open peoples inventories",
-                new String[]{
-                        "inventory::Open the inventory of the specified player",
-                        "ender::Open the ender chest of the specified player"
-                }
-                );
+        super("open", "/open <inv | ender> <player>", "l2x9core.command.openinv", "Open peoples inventories", new String[]{"inv::Open the inventory of the specified player", "ender::Open the ender chest of the specified player"});
     }
 
     @Override
@@ -28,24 +19,22 @@ public class OpenInv extends BaseCommand {
                 sendErrorMessage(sender, getUsage());
             } else {
                 Player target = Bukkit.getPlayer(args[1]);
-                if (target.isOnline()) {
-                    switch (args[0]) {
-                        case "ender":
-                            player.openInventory(target.getEnderChest());
-                            break;
-                        case "inv":
-                        case "inventory":
-                            player.openInventory(target.getInventory());
-                            break;
-                        default:
-                            sendErrorMessage(sender, "Unknown argument " + args[0]);
-                    }
-                } else {
-                    sendErrorMessage(sender, "Player " + args[0] + " not online");
+                if (target == null) {
+                    sendMessage(sender, "&cPlayer&r&a %s&r&c not online&r", args[1]);
+                    return;
+                }
+                switch (args[0]) {
+                    case "ender":
+                        player.openInventory(target.getEnderChest());
+                        break;
+                    case "inv":
+                    case "inventory":
+                        player.openInventory(target.getInventory());
+                        break;
+                    default:
+                        sendErrorMessage(sender, "Unknown argument " + args[0]);
                 }
             }
-        } else {
-            sendErrorMessage(sender, PLAYER_ONLY);
-        }
+        } else sendErrorMessage(sender, PLAYER_ONLY);
     }
 }

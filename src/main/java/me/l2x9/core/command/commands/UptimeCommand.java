@@ -17,6 +17,6 @@ public class UptimeCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        sendMessage(sender, "&6The server has had &r&c" + Utils.getFormattedInterval(System.currentTimeMillis() - plugin.getStartTime()) + "&r&6 uptime");
+        sendMessage(sender, "&3The server has had&r&a %s&r&3 uptime", Utils.getFormattedInterval(System.currentTimeMillis() - plugin.getStartTime()));
     }
 }

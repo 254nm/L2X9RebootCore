@@ -3,7 +3,6 @@ package me.l2x9.core.command;
 import java.util.List;
 
 public abstract class BaseTabCommand extends BaseCommand {
-    private List<String> tabCompletions;
 
     public BaseTabCommand(String name, String usage, String permission) {
         super(name, usage, permission);
@@ -17,12 +16,4 @@ public abstract class BaseTabCommand extends BaseCommand {
     }
 
     public abstract List<String> onTab(String[] args);
-
-    public List<String> getTabCompletions() {
-        return tabCompletions;
-    }
-
-    public void setTabCompletions(List<String> tabCompletions) {
-        this.tabCompletions = tabCompletions;
-    }
 }

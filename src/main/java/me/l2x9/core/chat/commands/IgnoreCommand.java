@@ -25,10 +25,10 @@ public class IgnoreCommand implements CommandExecutor {
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
                 if (!info.isIgnoring(target.getUniqueId())) {
                     info.ignorePlayer(target.getUniqueId());
-                    Utils.sendMessage(sender, "&3Successfully ignored player&r&a " + target.getName());
-                } else Utils.sendMessage(sender, "&cYou are already ignoring that player");
-            } else Utils.sendMessage(sender, "&cPlease include a player /ignore <playerName>");
-        } else Utils.sendMessage(sender, "&cYou must be a player");
+                    Utils.sendPrefixMessage(sender, "&3Successfully ignored player&r&a " + target.getName());
+                } else Utils.sendPrefixMessage(sender, "&cYou are already ignoring that player");
+            } else Utils.sendPrefixMessage(sender, "&cPlease include a player /ignore <playerName>");
+        } else Utils.sendPrefixMessage(sender, "&cYou must be a player");
         return true;
     }
 }

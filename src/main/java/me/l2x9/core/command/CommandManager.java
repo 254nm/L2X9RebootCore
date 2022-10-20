@@ -17,20 +17,12 @@ public class CommandManager extends Manager {
         return instance;
     }
 
-    public static void setInstance(CommandManager instance) {
-        CommandManager.instance = instance;
-    }
-
     @Override
     public void init(L2X9RebootCore plugin) {
         instance = this;
-        commandHandler = new CommandHandler(L2X9RebootCore.getInstance(), this);
+        commandHandler = new CommandHandler(L2X9RebootCore.getInstance());
         config = plugin.getModuleConfig(this);
-        try {
-            commandHandler.registerCommands();
-        } catch (NotInPluginYMLException e) {
-            e.printStackTrace();
-        }
+        commandHandler.registerCommands();
     }
 
     @Override

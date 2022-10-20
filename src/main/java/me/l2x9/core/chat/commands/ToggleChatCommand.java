@@ -20,10 +20,10 @@ public class ToggleChatCommand implements CommandExecutor {
         if (sender instanceof Player) {
             ChatInfo info = manager.getInfo((Player) sender);
             if (info.isToggledChat()) {
-                Utils.sendMessage(sender, "&aEnabled chat!");
-            } else Utils.sendMessage(sender, "&cDisabled chat!");
+                Utils.sendPrefixMessage(sender, "&aEnabled chat!");
+            } else Utils.sendPrefixMessage(sender, "&cDisabled chat!");
             info.setToggledChat(!info.isToggledChat());
-        } else Utils.sendMessage(sender, "&cYou must be a player");
+        } else Utils.sendPrefixMessage(sender, "&cYou must be a player");
         return true;
     }
 }

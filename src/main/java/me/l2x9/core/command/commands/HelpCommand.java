@@ -16,7 +16,7 @@ public class HelpCommand extends BaseCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         for (String line : config.getStringList("HelpMessage")) {
-            Utils.sendMessage(sender,line, false);
+            Utils.sendOptionalPrefixMessage(sender,line, false);
         }
     }
 }

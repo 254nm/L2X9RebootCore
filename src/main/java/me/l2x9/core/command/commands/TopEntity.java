@@ -36,8 +36,8 @@ public class TopEntity extends BaseCommand {
         if (args.length > 1) {
             String deep = args[0];
             if (deep.equalsIgnoreCase("deep")) {
-                Utils.sendMessage(sender, "&3Total entities&r&a " + total);
-                sorted.forEach((key, val) -> Utils.sendMessage(sender, "&3Total &r&a" + key.name().toLowerCase().replace("_", " ") + "s&r&3 on the server&r&a " + val));
+                Utils.sendPrefixMessage(sender, "&3Total entities&r&a " + total);
+                sorted.forEach((key, val) -> Utils.sendPrefixMessage(sender, "&3Total &r&a" + key.name().toLowerCase().replace("_", " ") + "s&r&3 on the server&r&a " + val));
             } else {
                 printResults(sender, total, sorted);
             }
@@ -47,12 +47,12 @@ public class TopEntity extends BaseCommand {
     }
 
     private void printResults(CommandSender sender, int total, HashMap<EntityType, Integer> sorted) {
-        Utils.sendMessage(sender, "&3Total entities&r&a " + total);
+        Utils.sendPrefixMessage(sender, "&3Total entities&r&a " + total);
         int count = 0;
         for (Map.Entry<EntityType, Integer> entry : sorted.entrySet()) {
             count++;
             if (count >= 5) break;
-            Utils.sendMessage(sender, "&3Total &r&a" + entry.getKey().name().toLowerCase().replace("_", " ") + "s&r&3 on the server&r&a " + entry.getValue());
+            Utils.sendPrefixMessage(sender, "&3Total &r&a" + entry.getKey().name().toLowerCase().replace("_", " ") + "s&r&3 on the server&r&a " + entry.getValue());
         }
     }
 

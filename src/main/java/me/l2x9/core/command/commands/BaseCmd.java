@@ -17,8 +17,7 @@ public class BaseCmd extends BaseCommand {
                         "reload::Reload the config file",
                         "version::Show the version of the plugin",
                         "help::Shows the help for the plugin"
-                }
-        );
+                });
     }
 
     @Override
@@ -46,9 +45,7 @@ public class BaseCmd extends BaseCommand {
                                     String[] split = subCommand.split("::");
                                     if (split.length > 0) {
                                         sendMessage(sender, PREFIX + "&6 /" + command.getName() + " " + split[0] + " |&r&e " + split[1]);
-                                    } else {
-                                        sendMessage(sender, PREFIX + "&6 /" + command.getName() + " " + subCommand);
-                                    }
+                                    } else sendMessage(sender, PREFIX + "&6 /" + command.getName() + " " + subCommand);
                                 }
                                 sendMessage(sender, PREFIX + "&1--------------------");
                             }
@@ -57,7 +54,7 @@ public class BaseCmd extends BaseCommand {
                     });
                     break;
                 default:
-                    Utils.sendMessage(sender, String.format("&cUnknown command&r&3 %s&r", args[0]));
+                    Utils.sendPrefixMessage(sender, String.format("&cUnknown command&r&3 %s&r", args[0]));
                     break;
             }
         } else {

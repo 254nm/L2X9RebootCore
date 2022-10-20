@@ -28,10 +28,10 @@ public class ReplyCommand extends ChatCommand {
                         ChatInfo targetInfo = manager.getInfo(target);
                         String msg = ChatColor.stripColor(String.join(" ", args));
                         sendWhisper(player, senderInfo, target, targetInfo, msg);
-                    } else Utils.sendMessage(player, "&cThe player " + target.getName() + " is offline");
-                } else Utils.sendMessage(player, "&cYou have not messaged anyone yet");
-            } else Utils.sendMessage(sender, "&cPlease include a message /r <message>");
-        } else Utils.sendMessage(sender, "&cYou must be a player");
+                    } else Utils.sendPrefixMessage(player, "&cThe player " + target.getName() + " is offline");
+                } else Utils.sendPrefixMessage(player, "&cYou have not messaged anyone yet");
+            } else Utils.sendPrefixMessage(sender, "&cPlease include a message /r <message>");
+        } else Utils.sendPrefixMessage(sender, "&cYou must be a player");
         return true;
     }
 }

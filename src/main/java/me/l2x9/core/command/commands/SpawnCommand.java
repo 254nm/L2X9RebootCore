@@ -10,11 +10,7 @@ import java.util.List;
 
 public class SpawnCommand extends BaseTabCommand {
     public SpawnCommand() {
-        super(
-                "spawn",
-                "/spawn <amount> <EntityType>",
-                "l2x9core.command.spawnshit"
-        );
+        super("spawn", "/spawn <amount> <EntityType>", "l2x9core.command.spawnshit");
     }
 
     @Override
@@ -28,18 +24,12 @@ public class SpawnCommand extends BaseTabCommand {
                         for (int i = 0; i < amount; i++) {
                             player.getWorld().spawnEntity(player.getLocation(), EntityType.valueOf(args[1].toUpperCase()));
                         }
-                    } else {
-                        sendErrorMessage(sender, "Invalid entity " + args[1]);
-                    }
+                    } else sendErrorMessage(sender, "Invalid entity " + args[1]);
                 } catch (NumberFormatException e) {
                     sendErrorMessage(sender, "Invalid argument type the argument " + args[0] + " must be a number");
                 }
-            } else {
-                sendErrorMessage(sender, getUsage());
-            }
-        } else {
-            sendErrorMessage(sender, PLAYER_ONLY);
-        }
+            } else sendErrorMessage(sender, getUsage());
+        } else sendErrorMessage(sender, PLAYER_ONLY);
     }
 
     public List<String> getEntityTypes() {

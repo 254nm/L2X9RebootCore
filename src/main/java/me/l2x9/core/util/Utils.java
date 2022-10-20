@@ -62,8 +62,8 @@ public class Utils {
      * @param obj     The recipient
      * @param message The message to be sent
      */
-    public static void sendMessage(Object obj, String message) {
-        sendMessage(obj, message, true);
+    public static void sendPrefixMessage(Object obj, String message, Object... args) {
+        sendOptionalPrefixMessage(obj, message, true,args);
     }
 
     public static void kick(Player player, String message) {
@@ -136,9 +136,9 @@ public class Utils {
         return PREFIX;
     }
 
-    public static void sendMessage(Object obj, String msg, boolean prefix) {
-        if (prefix) msg = String.format("%s &7➠&r %s", PREFIX, msg);
-        msg = translateChars(msg);
+    public static void sendOptionalPrefixMessage(Object obj, String msg, boolean prefix, Object... args) {
+        if (prefix) msg = String.format("%s &7>>&r %s", PREFIX, msg);
+        msg = String.format(translateChars(msg), args);
         try {
             Method method = obj.getClass().getMethod("sendMessage", String.class);
             method.setAccessible(true);

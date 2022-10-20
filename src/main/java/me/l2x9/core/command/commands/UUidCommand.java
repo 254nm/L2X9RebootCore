@@ -9,6 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
+import java.util.UUID;
+
 public class UUidCommand extends BaseCommand {
 
     public UUidCommand() {
@@ -22,18 +24,15 @@ public class UUidCommand extends BaseCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length > 0) {
-            OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
+            UUID uuid = UUID.nameUUIDFromBytes(args[0].getBytes());
             sendClickableMessage(
                     sender,
-                    "&6The UUID of&r&c " + target.getName() + "&r&6 is &r&c" + target.getUniqueId().toString(),
+                    "&6The UUID of&r&c " + args[0] + "&r&6 is &r&c" + uuid,
                     "&a&l&lClick to copy",
-                    target.getUniqueId().toString(),
-                    ClickEvent.Action.SUGGEST_COMMAND
-            );
+                    uuid.toString(),
+                    ClickEvent.Action.SUGGEST_COMMAND);
 
-        } else {
-            sendErrorMessage(sender, "Please include at least one argument /uuid <playerName>");
-        }
+        } else sendErrorMessage(sender, "Please include at least one argument /uuid <playerName>");
     }
 
     private void sendClickableMessage(CommandSender sender, String message, String hoverText, String command, ClickEvent.Action action) {
