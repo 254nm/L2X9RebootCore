@@ -29,7 +29,9 @@ public class RandomSpawnManager extends Manager {
     public void init(L2X9RebootCore plugin) {
         config = plugin.getModuleConfig(this);
         plugin.registerListener(new RespawnListener(this));
-        setVars();
+        range = config.getInt("Range");
+        world = config.getString("World");
+        ignored = parseIgnored();
     }
 
     @Override
@@ -40,7 +42,9 @@ public class RandomSpawnManager extends Manager {
     @Override
     public void reloadConfig(ConfigurationSection config) {
         this.config = config;
-        setVars();
+        range = config.getInt("Range");
+        world = config.getString("World");
+        ignored = parseIgnored();
     }
 
     private List<Material> parseIgnored() {
@@ -51,16 +55,10 @@ public class RandomSpawnManager extends Manager {
                 Material material = Material.valueOf(strMat.toUpperCase());
                 output.add(material);
             } catch (EnumConstantNotPresentException e) {
-                Utils.log("&3Unknown block&r&a " + strMat + "&r&3 in blocks section of the config", this);
+                Utils.log("&3Unknown block&r&a %s&r&3 in blocks section of the config", strMat);
             }
         }
         return output;
-    }
-
-    private void setVars() {
-        range = config.getInt("Range");
-        world = config.getString("World");
-        ignored = parseIgnored();
     }
 
     public List<Material> getIgnored() {
