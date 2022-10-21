@@ -18,8 +18,8 @@ public class PreLoginListener implements Listener {
     public void onPreLogin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         ChannelPipeline pipeline = ((CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
-        if (pipeline.get("protocol_lib_decoder") != null && pipeline.get("protocol_lib_encoder") != null) {
-
+        if (pipeline.get("encoder") == null || pipeline.get("decoder") == null) {
+            Utils.kick(player, "&cFailed to inject");
         }
         pipeline.replace("encoder", "encoder", new CustomPacketEncoder(player));
         pipeline.replace("decoder", "decoder", new CustomPacketDecoder(EnumProtocolDirection.SERVERBOUND, player));

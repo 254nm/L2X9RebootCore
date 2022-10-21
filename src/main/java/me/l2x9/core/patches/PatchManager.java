@@ -33,7 +33,7 @@ public class PatchManager extends Manager {
         this.plugin = plugin;
         image = loadImage();
         config = plugin.getModuleConfig(this);
-        plugin.registerListener(new PreLoginListener());
+//        plugin.registerListener(new PreLoginListener());
         plugin.registerListener(new BoatFly());
         plugin.registerListener(new Damage());
         plugin.registerListener(new DispenserCrash());
@@ -41,7 +41,7 @@ public class PatchManager extends Manager {
         plugin.registerListener(new EndGateway());
         plugin.registerListener(new EntityCollideListener());
         registerConfigurable(FakePlugins.class, PacketPlayInTabComplete.class);
-        plugin.registerListener(new LargePacketListener());
+//        plugin.registerListener(new LargePacketListener());
         plugin.registerListener(new LeverRateLimit());
         new LightLag();
         plugin.registerListener(new MapLag(this), PacketPlayOutMap.class);
