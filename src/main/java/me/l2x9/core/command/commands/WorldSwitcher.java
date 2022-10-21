@@ -34,9 +34,7 @@ public class WorldSwitcher extends BaseCommand {
         if (player != null) {
             if (args.length > 0) {
                 String worldName = Bukkit.getWorlds().get(0).getName();
-                double x = player.getLocation().getX();
-                double y = player.getLocation().getY();
-                double z = player.getLocation().getZ();
+                double x = player.getLocation().getX(), y = player.getLocation().getY(), z = player.getLocation().getZ();
                 switch (args[0]) {
                     case "overworld":
                         World overWorld = Bukkit.getWorld(worldName);

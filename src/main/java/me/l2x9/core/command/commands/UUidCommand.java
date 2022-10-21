@@ -5,8 +5,6 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
 import java.util.UUID;
@@ -27,8 +25,8 @@ public class UUidCommand extends BaseCommand {
             UUID uuid = UUID.nameUUIDFromBytes(args[0].getBytes());
             sendClickableMessage(
                     sender,
-                    "&6The UUID of&r&c " + args[0] + "&r&6 is &r&c" + uuid,
-                    "&a&l&lClick to copy",
+                    "&3The UUID of&r&a " + args[0] + "&r&3 is &r&a" + uuid,
+                    "&3Click to copy",
                     uuid.toString(),
                     ClickEvent.Action.SUGGEST_COMMAND);
 
