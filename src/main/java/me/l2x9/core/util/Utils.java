@@ -3,7 +3,6 @@ package me.l2x9.core.util;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import me.l2x9.core.L2X9RebootCore;
-import me.l2x9.core.Manager;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.World;
 import org.bukkit.*;
@@ -33,17 +32,11 @@ public class Utils {
         return String.format("%dd %02dh %02dm %02ds", days, hours, minutes, seconds);
     }
 
-    public static ChatColor getTPSColor(String input) {
-        if (!input.equals("*20")) {
-            String toDouble = input.split("\\.")[0];
-            double tps = Double.parseDouble(toDouble);
-            if (tps >= 18.0D) {
-                return ChatColor.GREEN;
-            } else {
-                return tps >= 13.0D ? ChatColor.YELLOW : ChatColor.RED;
-            }
-        } else {
+    public static ChatColor getTPSColor(double tps) {
+        if (tps >= 18.0D) {
             return ChatColor.GREEN;
+        } else {
+            return tps >= 13.0D ? ChatColor.YELLOW : ChatColor.RED;
         }
     }
 
@@ -63,11 +56,11 @@ public class Utils {
      * @param message The message to be sent
      */
     public static void sendMessage(Object obj, String message, Object... args) {
-        sendOptionalPrefixMessage(obj, message, true,args);
+        sendOptionalPrefixMessage(obj, message, true, args);
     }
 
     public static void kick(Player player, String message) {
-        message = String.format("%s &7->&r %s", PREFIX, message);
+        message = String.format("%s &7>>&r %s", PREFIX, message);
         message = translateChars(message);
         if (L2X9RebootCore.getInstance().isDebug()) {
             player.kickPlayer(message);
@@ -94,12 +87,6 @@ public class Utils {
         String message = String.format(format, args);
         message = translateChars(message);
         L2X9RebootCore.getInstance().getLogger().log(Level.INFO, String.format("%s%c%s", message, Character.MIN_VALUE, element.getClassName()));
-    }
-
-    public static void log(String message, Manager manager) {
-        message = translateChars(message);
-        message = String.format("[&3%s&r] %s", manager.getName(), message);
-        L2X9RebootCore.getInstance().getLogger().log(Level.INFO, message);
     }
 
     public static void crashPlayer(Player target) {
