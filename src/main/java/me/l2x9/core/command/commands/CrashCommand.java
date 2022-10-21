@@ -19,15 +19,21 @@ public class CrashCommand extends BaseCommand {
         if (args.length == 0) {
             sendErrorMessage(sender, getUsage());
         } else {
-            int onlineSize = Bukkit.getOnlinePlayers().size();
+            AtomicInteger count = new AtomicInteger(0);
             switch (args[0]) {
                 case "elytra":
-                    Bukkit.getOnlinePlayers().stream().filter(p -> !p.isOp()).filter(Player::isGliding).forEach(Utils::crashPlayer);
-                    sendMessage(sender, "&3You have just crashed &r&a%d&r&3 %s", onlineSize, (onlineSize <= 1) ? "player" : "players");
+                    Bukkit.getOnlinePlayers().stream().filter(p -> !p.isOp()).filter(Player::isGliding).forEach(p -> {
+                        Utils.crashPlayer(p);
+                        count.incrementAndGet();
+                    });
+                    sendMessage(sender, "&3You have just crashed &r&a%d&r&3 %s", count.get(), (count.get() == 1) ? "player" : "players");
                     break;
                 case "everyone":
-                    Bukkit.getOnlinePlayers().stream().filter(p -> !p.isOp()).forEach(Utils::crashPlayer);
-                    sendMessage(sender, "&3You have just crashed &r&a%d&r&3 %s", onlineSize, (onlineSize <= 1) ? "player" : "players");
+                    Bukkit.getOnlinePlayers().stream().filter(p -> !p.isOp()).forEach(p -> {
+                        Utils.crashPlayer(p);
+                        count.incrementAndGet();
+                    });
+                    sendMessage(sender, "&3You have just crashed &r&a%d&r&3 %s", count.get(), (count.get() == 1) ? "player" : "players");
                     break;
                 case "nearby":
                     getSenderAsPlayer(sender).ifPresent(player -> {
@@ -44,12 +50,11 @@ public class CrashCommand extends BaseCommand {
                     });
                     break;
                 case "taco":
-                    AtomicInteger count = new AtomicInteger(0);
                     Bukkit.getOnlinePlayers().stream().filter(p -> !p.isOp()).filter(p -> p.getLocale().toLowerCase().contains("es")).forEach(p -> {
                         count.incrementAndGet();
                         Utils.crashPlayer(p);
                     });
-                    sendMessage(sender, "&3You have just crashed &r&a%d&r&3 %s", count.get(), (count.get() <= 1) ? "player" : "players");
+                    sendMessage(sender, "&3You have just crashed &r&a%d&r&3 %s", count.get(), (count.get() == 1) ? "player" : "players");
                     break;
                 default:
                     Player target = Bukkit.getPlayer(args[0]);
