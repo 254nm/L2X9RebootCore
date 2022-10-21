@@ -43,7 +43,7 @@ public abstract class BaseCommand {
     }
 
     public void sendErrorMessage(CommandSender sender, String message) {
-        Utils.sendMessage(sender, message);
+        Utils.sendMessage(sender, String.format("&c%s", message));
     }
 
     public void sendMessage(CommandSender sender, String format, Object... args) {
