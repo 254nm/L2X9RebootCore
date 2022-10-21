@@ -3,33 +3,35 @@ package me.l2x9.core.command.commands;
 import me.l2x9.core.command.BaseTabCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SpawnCommand extends BaseTabCommand {
+    private final List<String> entityTypes;
+
     public SpawnCommand() {
-        super("spawn", "/spawn <amount> <EntityType>", "l2x9core.command.spawnshit");
+        super("spawn", "/spawn <EntityType> <amount>", "l2x9core.command.spawnshit");
+        entityTypes = getEntityTypes();
     }
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        Player player = getSenderAsPlayer(sender).orElse(null);
-        if (player != null) {
-            if (args.length == 2) {
+        getSenderAsPlayer(sender).ifPresentOrElse(player -> {
+            if (args.length >= 1 && args.length <= 2) {
                 try {
-                    if (getEntityTypes().contains(args[1])) {
-                        int amount = Integer.parseInt(args[0]);
-                        for (int i = 0; i < amount; i++) {
-                            player.getWorld().spawnEntity(player.getLocation(), EntityType.valueOf(args[1].toUpperCase()));
-                        }
-                    } else sendErrorMessage(sender, "Invalid entity " + args[1]);
+                    if (entityTypes.contains(args[0])) {
+                        int count = (args.length == 2) ? Integer.parseInt(args[1]) : 1;
+                        EntityType entityType = EntityType.valueOf(args[0].toUpperCase());
+                        for (int i = 0; i < count; i++) player.getWorld().spawnEntity(player.getLocation(), entityType);
+                    } else sendMessage(sender, "&cInvalid entity&r&a %s", args[0]);
                 } catch (NumberFormatException e) {
                     sendErrorMessage(sender, "Invalid argument type the argument " + args[0] + " must be a number");
                 }
             } else sendErrorMessage(sender, getUsage());
-        } else sendErrorMessage(sender, PLAYER_ONLY);
+        }, () -> sendMessage(sender, "&c%s", PLAYER_ONLY));
+
     }
 
     public List<String> getEntityTypes() {
@@ -42,6 +44,7 @@ public class SpawnCommand extends BaseTabCommand {
 
     @Override
     public List<String> onTab(String[] args) {
-        return getEntityTypes();
+        System.out.println(args.length);
+        return entityTypes.stream().filter(s -> s.startsWith(args[0].toLowerCase())).collect(Collectors.toList());
     }
 }
