@@ -1,7 +1,7 @@
 group = "me.l2x9"
 version = "1.0-SNAPSHOT"
 description = "L2X9RebootCore"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 plugins {
     `java-library`
