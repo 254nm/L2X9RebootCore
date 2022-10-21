@@ -8,7 +8,13 @@ import org.bukkit.entity.Player;
 
 public class OpenInv extends BaseCommand {
     public OpenInv() {
-        super("open", "/open <inv | ender> <player>", "l2x9core.command.openinv", "Open peoples inventories", new String[]{"inv::Open the inventory of the specified player", "ender::Open the ender chest of the specified player"});
+        super(
+                "open",
+                "/open <inv | ender> <player>",
+                "l2x9core.command.openinv",
+                "Open peoples inventories",
+                new String[]{"inv::Open the inventory of the specified player", "ender::Open the ender chest of the specified player"}
+        );
     }
 
     @Override
