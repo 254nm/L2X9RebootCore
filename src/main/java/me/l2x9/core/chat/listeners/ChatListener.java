@@ -5,7 +5,6 @@ import me.l2x9.core.chat.ChatManager;
 import me.l2x9.core.event.CheckedChatEvent;
 import me.l2x9.core.util.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -52,7 +51,8 @@ public class ChatListener implements Listener {
             Utils.log("&3Prevented player&r&a %s&r&3 from sending a link / server ip", player.getName());
             return;
         }
-        String message = (ogMessage.startsWith(">")) ? "<" + player.getDisplayName() + "> " + ChatColor.GREEN + ogMessage : "<" + player.getDisplayName() + "> " + ogMessage;
+        String playerName = player.getDisplayName();
+        String message = (ogMessage.startsWith(">")) ? Utils.translateChars(String.format("<%s&r>&a %s", playerName, ogMessage)) : String.format("<%s&r> %s", playerName, ogMessage);
         Bukkit.getLogger().info(message);
         for (Player online : Bukkit.getOnlinePlayers()) {
             ChatInfo info = manager.getInfo(online);
