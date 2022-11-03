@@ -11,11 +11,11 @@ import java.util.Optional;
 
 @Getter
 public abstract class BaseCommand {
-    public final String CONSOLE_ONLY = "This command is console only";
-    public final String PLAYER_ONLY = "This command is player only";
-    public final String PREFIX = Utils.getPrefix();
-    public final ConfigurationSection config = CommandManager.getInstance().getConfig();
-    public final L2X9RebootCore plugin = L2X9RebootCore.getInstance();
+    protected final String CONSOLE_ONLY = "This command is console only";
+    protected final String PLAYER_ONLY = "This command is player only";
+    protected final String PREFIX = Utils.getPrefix();
+    protected final ConfigurationSection config = CommandManager.getInstance().getConfig();
+    protected final L2X9RebootCore plugin = L2X9RebootCore.getInstance();
     private final String name;
     private final String usage;
     private final String permission;
