@@ -96,3 +96,10 @@ Patches:
       - '/pl'
       - 'is'
       - 'enabled'
+
+Misc:
+  EntityPerChunk:
+    CheckInterval: 2 #In minutes
+    EntitiesPerChunk:
+      - 'wither::20'
+      - 'armor_stand::15'

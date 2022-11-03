@@ -41,5 +41,6 @@ public class CommandManager extends Manager {
 
     public ConfigurationSection getConfig() {
         return config;
+
     }
 }

@@ -15,8 +15,6 @@ import net.minecraft.server.v1_12_R1.Packet;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.command.TabCompleter;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.event.Listener;
@@ -36,7 +34,8 @@ public final class L2X9RebootCore extends JavaPlugin {
     @Getter
     private final long startTime = System.currentTimeMillis();
     private PacketEventDispatcher dispatcher;
-    private ScheduledExecutorService service;
+    @Getter
+    private ScheduledExecutorService executorService;
     private List<ViolationManager> violationManagers;
     @Getter
     private List<Manager> managers;
@@ -56,8 +55,8 @@ public final class L2X9RebootCore extends JavaPlugin {
         getLogger().addHandler(new LoggerHandler());
         saveDefaultConfig();
         violationManagers = new ArrayList<>();
-        service = Executors.newScheduledThreadPool(4);
-        service.scheduleAtFixedRate(() -> violationManagers.forEach(ViolationManager::decrementAll), 0, 1, TimeUnit.SECONDS);
+        executorService = Executors.newScheduledThreadPool(4);
+        executorService.scheduleAtFixedRate(() -> violationManagers.forEach(ViolationManager::decrementAll), 0, 1, TimeUnit.SECONDS);
         registerManagers();
     }
 
@@ -87,7 +86,7 @@ public final class L2X9RebootCore extends JavaPlugin {
         managers.forEach(m -> m.destruct(this));
         managers.clear();
         violationManagers.clear();
-        service.shutdown();
+        executorService.shutdown();
     }
 
     public void registerListener(Listener listener) {
