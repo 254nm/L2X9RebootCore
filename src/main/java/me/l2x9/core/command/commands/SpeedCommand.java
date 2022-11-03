@@ -23,7 +23,7 @@ public class SpeedCommand extends BaseCommand {
                     float speed = Float.parseFloat(args[0]);
                     if (speed <= 1) {
                         player.setFlySpeed(speed);
-                        sendMessage(player, "&3Fly speed set to&r&a %d ", speed);
+                        sendMessage(player, "&3Fly speed set to&r&a %f", speed);
                     } else sendMessage(player, "Flying speed must not be above 1");
                 } else {
                     sendMessage(sender, "&3Please note that the default flight speed is&r&a 0.1");
