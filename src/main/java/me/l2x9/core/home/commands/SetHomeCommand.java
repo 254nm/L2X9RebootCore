@@ -8,10 +8,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class SetHomeCommand implements CommandExecutor {
@@ -25,12 +29,14 @@ public class SetHomeCommand implements CommandExecutor {
                 Utils.sendMessage(player, "&3Please include a name for your new home");
                 return true;
             }
-            int maxHomes = main.getConfig().getInt("MaxHomes");
+            Set<PermissionAttachmentInfo> perms = player.getEffectivePermissions();
+            List<Integer> maxL = perms.stream().map(PermissionAttachmentInfo::getPermission).filter(p -> p.startsWith("l2x9core.home.max.")).map(s -> Integer.parseInt(s.substring(s.lastIndexOf('.') + 1))).collect(Collectors.toList());
+            int maxHomes = (maxL.size() > 1) ? Collections.max(maxL) : main.getConfig().getInt("MaxHomes");
             List<Home> homes = main.getHomes().getOrDefault(player.getUniqueId(), null);
             if (homes == null) homes = new ArrayList<>();
             if (homes.stream().anyMatch(h -> h.getName().equals(args[0]))) {
                 Home home = homes.stream().filter(h -> h.getName().equals(args[0])).findAny().get();
-                Utils.sendMessage(sender, "A home by that name already exists.");
+                Utils.sendMessage(sender, "&3A home by that name already exists.");
                 main.getHomeIO().deleteHome(home);
             }
             if (homes.size() >= maxHomes && !player.isOp()) {
