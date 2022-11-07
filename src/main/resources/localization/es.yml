@@ -1,3 +1,4 @@
+#Basic messages
 ignore_successful: "&3El jugador &r&a%s&r &3ha sido ignorado exitosamente"
 already_ignoring: "&cTu ya estas ignorando a este jugador."
 ignore_command_syntax: "&cPorfavor para ignorar a un jugador incluye: &r&a/ignore <Jugador>"
@@ -39,3 +40,39 @@ bookban_removed_item: "&cSe removió &r&3%s(s) &r&cde tu inventario para preveni
 kick_lever_ratelimit: "&cEstas interactuando bastante rapido!"
 kick_pps_limit: "&cEstas mandando paquetes muy rapido!"
 kick_failed_to_inject: "&cNo se pudo inyectar"
+join_message: "&7%s se unió al servidor"
+leave_message: "&7%s se salió del servidor"
+#Complex messages
+HelpMessage:
+  - "&6-----------------------------------------------------"
+  - "&3/ignore Ignora a un jugador"
+  - "&3/unignore designora a un jugador"
+  - "&3/togglechat Activa o desactiva el chat"
+  - "&3/toggledeathmsg Activa o desactiva los mensajes de muerte"
+  - "&3/whisper Enviarle un mensaje a un jugador al privado. Tambien puedes usar: /message, /msg, /tell, /w"
+  - "&3/reply Responderle a un jugador que te envió un mensaje privado Tambien puedes usar /r"
+  - "&3/home Teletransportarte a las homes que has establecido"
+  - "&3/sethome Establecer una home"
+  - "&3/delhome Eliminar una home"
+  - "&3/help Mostrar este menu"
+  - "&3/plugins Mostrar todos los plugins del servidor"
+  - "&3/kill Suicidarte"
+  - "&3/stats Muestra cuanto pesa el mundo y cuantos jugadores se han unido"
+  - "&3/discord Muestra un link para unirte al discord de L2X9"
+  - "&6-----------------------------------------------------"
+TabList:
+  Header:
+    - ''
+    - '&7&l&oL2X9'
+    - '&r'
+    - '&b&m------------------------------------------------------'
+    - ''
+  Footer:
+    - ''
+    - '&7tps: %tps% &7ping: &f%ping%'
+    - '&7jugadores: &f%players% &7el servidor esta en linea desde: &f%uptime%'
+    - ''
+    - '&b&m------------------------------------------------------'
+    - '&r&7contacto: help@l2x9.me'
+    - '&r&7discusion: https://discord.l2x9.me/'
+    - '&r&7Esos son los unicos contactos y paginas web oficiales de L2X9'

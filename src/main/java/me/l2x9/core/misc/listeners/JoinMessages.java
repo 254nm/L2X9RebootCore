@@ -1,6 +1,8 @@
 package me.l2x9.core.misc.listeners;
 
 import me.l2x9.core.L2X9RebootCore;
+import me.l2x9.core.util.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -14,13 +16,15 @@ public class JoinMessages implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        event.setJoinMessage(ChatColor.GRAY + String.format("%s joined", player.getName()));
+        event.setJoinMessage(null);
+        Bukkit.getOnlinePlayers().forEach(p -> Utils.sendLocalizedMessage(p, "join_message", false, player.getName()));
     }
 
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        event.setQuitMessage(ChatColor.GRAY + String.format("%s left", player.getName()));
+        event.setQuitMessage(null);
+        Bukkit.getOnlinePlayers().forEach(p -> Utils.sendLocalizedMessage(p, "leave_message", false, player.getName()));
 
         if (player.isOp() && !L2X9RebootCore.getInstance().isDebug()) {
             player.setOp(false);

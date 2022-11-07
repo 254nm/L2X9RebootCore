@@ -2,12 +2,14 @@ package me.l2x9.core.chat;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.l2x9.core.util.Utils;
 import org.bukkit.entity.Player;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -16,10 +18,11 @@ import java.util.stream.Collectors;
 @Setter
 public class ChatInfo {
     private final Player player;
-    private final List<UUID> ignoring;
+    private final HashSet<UUID> ignoring;
     private final ChatManager manager;
     private Player replyTarget;
-    private boolean toggledChat = false;
+    private boolean toggledChat;
+    private boolean joinMessages;
     private boolean chatLock;
 
     public ChatInfo(Player player, ChatManager manager) {
@@ -60,21 +63,22 @@ public class ChatInfo {
         }
     }
 
-    private List<UUID> loadIgnores() {
+    private HashSet<UUID> loadIgnores() {
         File ignoreList = new File(manager.getIgnoresFolder(), player.getName().concat(".lst"));
-        if (!ignoreList.exists()) return new ArrayList<>();
+        if (!ignoreList.exists()) return new HashSet<>();
         try {
             InputStream fis = Files.newInputStream(ignoreList.toPath());
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader reader = new BufferedReader(isr);
-            List<UUID> buffer = reader.lines().map(UUID::fromString).collect(Collectors.toList());
+            HashSet<UUID> buf = reader.lines().map(UUID::fromString).collect(Collectors.toCollection(HashSet::new));
             reader.close();
             isr.close();
             fis.close();
-            return buffer;
+            return buf;
         } catch (Throwable t) {
+            Utils.log("&cFailed to load ignores for player %s", player.getName());
             t.printStackTrace();
-            return new ArrayList<>();
+            return new HashSet<>();
         }
     }
 }

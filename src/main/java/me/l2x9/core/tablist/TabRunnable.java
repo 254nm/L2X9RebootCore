@@ -1,6 +1,7 @@
 package me.l2x9.core.tablist;
 
 import lombok.RequiredArgsConstructor;
+import me.l2x9.core.Localization;
 import me.txmc.protocolapi.reflection.ClassProcessor;
 import me.txmc.protocolapi.reflection.GetField;
 import net.minecraft.server.v1_12_R1.ChatComponentText;
@@ -26,8 +27,9 @@ public class TabRunnable extends TimerTask {
         if  (headerField == null || footerField == null) ClassProcessor.process(this);
         Bukkit.getOnlinePlayers().forEach(player -> {
             try {
-                String headerStr = String.join("\n", manager.getConfig().getStringList("Header"));
-                String footerStr = String.join("\n", manager.getConfig().getStringList("Footer"));
+                Localization loc = Localization.getLocalization(player.getLocale().toLowerCase());
+                String headerStr = String.join("\n", loc.getStringList("TabList.Header"));
+                String footerStr = String.join("\n", loc.getStringList("TabList.Footer"));
                 IChatBaseComponent header = new ChatComponentText(manager.parsePlaceHolders(headerStr, player));
                 IChatBaseComponent footer = new ChatComponentText(manager.parsePlaceHolders(footerStr, player));
                 CraftPlayer craftPlayer = (CraftPlayer) player;

@@ -1,6 +1,7 @@
+#Basic messages
 ignore_successful: "&3Successfully ignored player&r&a %s&r"
 already_ignoring: "&cYou are already ignoring that player"
-ignore_command_syntax:  "&cPlease include a player /ignore <playerName>"
+ignore_command_syntax: "&cPlease include a player /ignore <playerName>"
 unignore_successful: "&3Successfully unignored player&r&a %s&r"
 unignore_not_ignoring: "&cYou arent ignoring %s"
 unignore_command_syntax: "&cPlease include a player /unignore <playerName>"
@@ -39,3 +40,39 @@ bookban_removed_item: "&cRemoved all&r&3 %s(s) &r&cfrom your inventory to preven
 kick_lever_ratelimit: "&cYou are interacting too fast"
 kick_pps_limit: "&cYou are sending packets too fast!"
 kick_failed_to_inject: "&cFailed to inject"
+join_message: "&7%s joined"
+leave_message: "&7%s left"
+#Complex messages
+HelpMessage:
+  - "&6-----------------------------------------------------"
+  - "&3/ignore Ignore a player in chat"
+  - "&3/unignore Unignore a player in chat"
+  - "&3/togglechat Turn chat on or off"
+  - "&3/toggledeathmsg Turn death messages on or off"
+  - "&3/whisper Privately message a player. You can also use /message, /msg, /tell, /w"
+  - "&3/reply Reply to the last person that messaged you. You can also use /r"
+  - "&3/home Teleport to a home that you have set"
+  - "&3/sethome Set a home"
+  - "&3/delhome Delete a home"
+  - "&3/help Snow this menu"
+  - "&3/plugins Show all the plugins on the server"
+  - "&3/kill Kills you"
+  - "&3/stats Show world size and how many players have joined"
+  - "&3/discord Shows a link to join the L2X9 discord"
+  - "&6-----------------------------------------------------"
+TabList:
+  Header:
+    - ''
+    - '&7&l&oL2X9'
+    - '&r'
+    - '&b&m-------------------------------------------------'
+    - ''
+  Footer:
+    - ''
+    - '&7tps: %tps% &7ping: &f%ping%'
+    - '&7players: &f%players% &7uptime: &f%uptime%'
+    - ''
+    - '&b&m-------------------------------------------------'
+    - '&r&7contact: help@l2x9.me'
+    - '&r&7discussion: https://discord.l2x9.me'
+    - '&r&7These are the only official L2X9 websites and contacts'

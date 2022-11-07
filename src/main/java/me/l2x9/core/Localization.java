@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class Localization {
@@ -36,5 +37,8 @@ public class Localization {
 
     public String get(String key) {
         return config.getString(key, String.format("Unknown key %s", key));
+    }
+    public List<String> getStringList(String key) {
+        return config.getStringList(key);
     }
 }
