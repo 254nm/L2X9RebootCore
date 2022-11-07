@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.logging.Level;
 
 @RequiredArgsConstructor
 public class Localization {
@@ -14,6 +15,7 @@ public class Localization {
     private final Configuration config;
 
     protected static void loadLocalizations(File dataFolder) {
+        if (localizationMap != null) localizationMap.clear();
         localizationMap = new HashMap<>();
         File localeDir = new File(dataFolder, "Localization");
         if (!localeDir.exists()) localeDir.mkdirs();
@@ -22,6 +24,7 @@ public class Localization {
             Configuration config = YamlConfiguration.loadConfiguration(ymlFile);
             localizationMap.put(ymlFile.getName().replace(".yml", ""), new Localization(config));
         }
+
     }
 
     public static Localization getLocalization(String locale) {

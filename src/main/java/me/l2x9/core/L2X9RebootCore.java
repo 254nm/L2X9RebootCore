@@ -121,6 +121,7 @@ public final class L2X9RebootCore extends JavaPlugin {
     @Override
     public void reloadConfig() {
         super.reloadConfig();
+        Localization.loadLocalizations(getDataFolder());
         getManagers().forEach(m -> {
             ConfigurationSection section = getConfig().getConfigurationSection(m.getName());
             if (section != null) m.reloadConfig(section);
