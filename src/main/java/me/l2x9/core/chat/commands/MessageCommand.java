@@ -22,16 +22,16 @@ public class MessageCommand extends ChatCommand {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
+            Player player = (Player) sender;
             if (args.length >= 2) {
-                Player player = (Player) sender;
                 Player target = Bukkit.getPlayer(args[0]);
                 if (Bukkit.getOnlinePlayers().contains(target)) {
                     ChatInfo senderInfo = manager.getInfo(player);
                     ChatInfo targetInfo = manager.getInfo(target);
                     String msg = ChatColor.stripColor(String.join(" ", Arrays.copyOfRange(args, 1, args.length)));
                     sendWhisper(player, senderInfo, target, targetInfo, msg);
-                } else Utils.sendMessage(player, "&cCould not find player " + args[0]);
-            } else Utils.sendMessage(sender, "&cPlease include a target and a message /msg <target> <message>");
+                } else Utils.sendLocalizedMessage(player, "msg_could_not_find_player", args[0]);
+            } else Utils.sendLocalizedMessage(player, "msg_command_syntax");
         } else Utils.sendMessage(sender, "&cYou must be a player");
         return true;
     }

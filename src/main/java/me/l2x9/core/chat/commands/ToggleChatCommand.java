@@ -18,10 +18,11 @@ public class ToggleChatCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            ChatInfo info = manager.getInfo((Player) sender);
+            Player player = (Player) sender;
+            ChatInfo info = manager.getInfo(player);
             if (info.isToggledChat()) {
-                Utils.sendMessage(sender, "&aEnabled chat!");
-            } else Utils.sendMessage(sender, "&cDisabled chat!");
+                Utils.sendLocalizedMessage(player, "togglechat_chat_enabled");
+            } else Utils.sendLocalizedMessage(player, "togglechat_chat_disabled");
             info.setToggledChat(!info.isToggledChat());
         } else Utils.sendMessage(sender, "&cYou must be a player");
         return true;

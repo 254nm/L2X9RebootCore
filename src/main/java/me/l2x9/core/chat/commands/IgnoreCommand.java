@@ -20,14 +20,15 @@ public class IgnoreCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
+            Player player = (Player) sender;
             if (args.length == 1) {
                 ChatInfo info = manager.getInfo((Player) sender);
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
                 if (!info.isIgnoring(target.getUniqueId())) {
                     info.ignorePlayer(target.getUniqueId());
-                    Utils.sendMessage(sender, "&3Successfully ignored player&r&a " + target.getName());
-                } else Utils.sendMessage(sender, "&cYou are already ignoring that player");
-            } else Utils.sendMessage(sender, "&cPlease include a player /ignore <playerName>");
+                    Utils.sendLocalizedMessage(player, "ignore_successful", target.getName());
+                } else Utils.sendLocalizedMessage(player, "already_ignoring");
+            } else Utils.sendMessage(player,"ignore_command_syntax");
         } else Utils.sendMessage(sender, "&cYou must be a player");
         return true;
     }

@@ -49,6 +49,7 @@ public final class L2X9RebootCore extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        Localization.loadLocalizations(getDataFolder());
         dispatcher = new PacketEventDispatcher(this);
         managers = new ArrayList<>();
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");

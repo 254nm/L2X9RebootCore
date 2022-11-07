@@ -3,15 +3,16 @@ package me.l2x9.core.util;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import me.l2x9.core.L2X9RebootCore;
+import me.l2x9.core.Localization;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.World;
 import org.bukkit.*;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerKickEvent;
 
 import java.io.File;
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.text.DecimalFormat;
 import java.util.logging.Level;
@@ -55,8 +56,19 @@ public class Utils {
      * @param obj     The recipient
      * @param message The message to be sent
      */
-    public static void sendMessage(Object obj, String message, Object... args) {
+    public static void sendMessage(CommandSender obj, String message, Object... args) {
         sendOptionalPrefixMessage(obj, message, true, args);
+    }
+
+    public static void sendLocalizedMessage(Player player, String key, Object... args) {
+        sendLocalizedMessage(player, key, true, args);
+    }
+
+    public static void sendLocalizedMessage(Player player, String key, boolean prefix, Object... args) {
+        Localization loc = Localization.getLocalization(player.getLocale().toLowerCase());
+        String msg = translateChars(String.format(loc.get(key), args));
+        if (prefix) msg = PREFIX.concat(" ").concat(msg);
+        player.sendMessage(msg);
     }
 
     public static void kick(Player player, String message) {
@@ -123,19 +135,14 @@ public class Utils {
         return PREFIX;
     }
 
-    public static void sendOptionalPrefixMessage(Object obj, String msg, boolean prefix, Object... args) {
+    public static void sendOptionalPrefixMessage(CommandSender obj, String msg, boolean prefix, Object... args) {
         if (prefix) msg = String.format("%s &7>>&r %s", PREFIX, msg);
         msg = String.format(translateChars(msg), args);
-        try {
-            Method method = obj.getClass().getMethod("sendMessage", String.class);
-            method.setAccessible(true);
-            method.invoke(obj, msg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        obj.sendMessage(msg);
     }
 
     public static void unpackResource(String resourceName, File file) {
+        if (file.exists()) return;
         try {
             InputStream is = L2X9RebootCore.class.getClassLoader().getResourceAsStream(resourceName);
             if (is == null)

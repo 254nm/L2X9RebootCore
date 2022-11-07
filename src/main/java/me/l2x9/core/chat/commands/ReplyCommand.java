@@ -19,8 +19,8 @@ public class ReplyCommand extends ChatCommand {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
+            Player player = (Player) sender;
             if (args.length >= 1) {
-                Player player = (Player) sender;
                 ChatInfo senderInfo = manager.getInfo(player);
                 if (senderInfo.getReplyTarget() != null) {
                     Player target = senderInfo.getReplyTarget();
@@ -28,9 +28,9 @@ public class ReplyCommand extends ChatCommand {
                         ChatInfo targetInfo = manager.getInfo(target);
                         String msg = ChatColor.stripColor(String.join(" ", args));
                         sendWhisper(player, senderInfo, target, targetInfo, msg);
-                    } else Utils.sendMessage(player, "&cThe player " + target.getName() + " is offline");
-                } else Utils.sendMessage(player, "&cYou have not messaged anyone yet");
-            } else Utils.sendMessage(sender, "&cPlease include a message /r <message>");
+                    } else Utils.sendLocalizedMessage(player, "reply_player_offline", target.getName());
+                } else Utils.sendLocalizedMessage(player, "reply_no_target");
+            } else Utils.sendLocalizedMessage(player, "reply_command_syntax");
         } else Utils.sendMessage(sender, "&cYou must be a player");
         return true;
     }
