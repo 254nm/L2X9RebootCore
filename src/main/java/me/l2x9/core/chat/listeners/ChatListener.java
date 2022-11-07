@@ -53,9 +53,7 @@ public class ChatListener implements Listener {
             return;
         }
         String playerName = player.getDisplayName();
-        String message = (ogMessage.startsWith(">"))
-                ? String.format("<%s>%s %s", ChatColor.GREEN, playerName, ogMessage) :
-                String.format("<%s> %s", playerName, ogMessage);
+        String message = (ogMessage.startsWith(">")) ? String.format("<%s>%s %s", playerName, ChatColor.GREEN, ogMessage) : String.format("<%s> %s", playerName, ogMessage);
         Bukkit.getLogger().info(message);
         for (Player online : Bukkit.getOnlinePlayers()) {
             ChatInfo info = manager.getInfo(online);
