@@ -60,28 +60,31 @@ public class Utils {
         sendOptionalPrefixMessage(obj, message, true, args);
     }
 
-    public static void sendLocalizedMessage(Player player, String key, Object... args) {
+    public static void sendPrefixedLocalizedMessage(Player player, String key, Object... args) {
         sendLocalizedMessage(player, key, true, args);
     }
 
     public static void sendLocalizedMessage(Player player, String key, boolean prefix, Object... args) {
         Localization loc = Localization.getLocalization(player.getLocale().toLowerCase());
-        String msg = translateChars(String.format(loc.get(key), args));
-        if (prefix) msg = PREFIX.concat(" ").concat(msg);
+        String msg = String.format(loc.get(key), args);
+        if (prefix) msg = PREFIX.concat(" &r&7>>&r ").concat(msg);
+        msg = translateChars(msg);
         player.sendMessage(msg);
     }
 
-    public static void kick(Player player, String message) {
-        message = String.format("%s &7>>&r %s", PREFIX, message);
-        message = translateChars(message);
+    public static void kick(Player player, String key, Object... args) {
+        Localization loc = Localization.getLocalization(player.getLocale().toLowerCase());
+        String msg = String.format(loc.get(key), args);
+        msg = String.format("%s &7>>&r %s", PREFIX, msg);
+        msg = translateChars(msg);
         if (L2X9RebootCore.getInstance().isDebug()) {
-            player.kickPlayer(message);
+            player.kickPlayer(msg);
         } else {
             ByteArrayDataOutput out = ByteStreams.newDataOutput();
             out.writeUTF("KickPlayer");
             out.writeUTF(player.getName());
-            out.writeUTF(message);
-            PlayerKickEvent pke = new PlayerKickEvent(player, message, String.format(translateChars("&e%s left the game"), player.getName()));
+            out.writeUTF(key);
+            PlayerKickEvent pke = new PlayerKickEvent(player, msg, String.format(translateChars("&e%s left the game"), player.getName()));
             Bukkit.getServer().getPluginManager().callEvent(pke);
             if (!pke.isCancelled()) {
                 player.sendPluginMessage(L2X9RebootCore.getInstance(), "BungeeCord", out.toByteArray());
@@ -91,7 +94,7 @@ public class Utils {
         String[] rawCallerName = element.getClassName().split("\\.");
         String callerName = rawCallerName[rawCallerName.length - 1];
         String executor = String.format("%s:%d", callerName, element.getLineNumber());
-        log("&7(&r&6%s&r&7)&r &3Kicking player&r&a %s&r&3 for&r&a \"%s\"&r", executor, player.getName(), message);
+        log("&7(&r&6%s&r&7)&r &3Kicking player&r&a %s&r&3 for&r&a \"%s\"&r", executor, player.getName(), msg);
     }
 
     public static void log(String format, Object... args) {

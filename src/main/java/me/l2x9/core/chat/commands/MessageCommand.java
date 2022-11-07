@@ -30,8 +30,8 @@ public class MessageCommand extends ChatCommand {
                     ChatInfo targetInfo = manager.getInfo(target);
                     String msg = ChatColor.stripColor(String.join(" ", Arrays.copyOfRange(args, 1, args.length)));
                     sendWhisper(player, senderInfo, target, targetInfo, msg);
-                } else Utils.sendLocalizedMessage(player, "msg_could_not_find_player", args[0]);
-            } else Utils.sendLocalizedMessage(player, "msg_command_syntax");
+                } else Utils.sendPrefixedLocalizedMessage(player, "msg_could_not_find_player", args[0]);
+            } else Utils.sendPrefixedLocalizedMessage(player, "msg_command_syntax");
         } else Utils.sendMessage(sender, "&cYou must be a player");
         return true;
     }

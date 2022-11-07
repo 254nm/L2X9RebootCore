@@ -23,7 +23,7 @@ public class ElytraSpeedLimit implements Listener {
         if (speed > 3) {
             event.setTo(event.getFrom());
             player.setGliding(false);
-            Utils.sendMessage(player, "&3You are going too fast with your elytra");
+            Utils.sendPrefixedLocalizedMessage(player, "elytra_too_fast");
             Utils.log("&3Prevented&r&a " + player.getName() + " &r&3from going too fast with an elytra");
         }
         if (disableTPS <= 0) return;
@@ -31,7 +31,7 @@ public class ElytraSpeedLimit implements Listener {
         if (tps < disableTPS) {
             event.setCancelled(true);
             player.setGliding(false);
-            Utils.sendMessage(player, "&3Elytras are currently disabled due to server lag. They should be back shortly");
+            Utils.sendPrefixedLocalizedMessage(player, "elytras_disabled");
             removeElytra(player);
         }
     }

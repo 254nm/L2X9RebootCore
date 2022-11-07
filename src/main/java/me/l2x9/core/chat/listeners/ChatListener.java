@@ -36,7 +36,7 @@ public class ChatListener implements Listener {
         int cooldown = manager.getConfig().getInt("Cooldown");
         ChatInfo ci = manager.getInfo(player);
         if (ci.isChatLock()) {
-            Utils.sendMessage(player, String.format("&3Please wait at least&r&a %d&r&3 seconds between chat messages", cooldown));
+            Utils.sendPrefixedLocalizedMessage(player, "chat_cooldown", cooldown);
             return;
         }
         ci.setChatLock(true);

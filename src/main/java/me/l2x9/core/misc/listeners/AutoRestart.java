@@ -15,11 +15,7 @@ public class AutoRestart {
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
         service.schedule(() -> {
             Bukkit.getScheduler().runTask(L2X9RebootCore.getInstance(), () -> {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (player.getLocale().toLowerCase().contains("es")) {
-                        Utils.kick(player, "El servidor se está reiniciando");
-                    } else Utils.kick(player, "The server is restarting");
-                }
+                for (Player player : Bukkit.getOnlinePlayers()) Utils.kick(player, "kick_restarting");
                 Bukkit.getServer().shutdown();
             });
         }, 1, TimeUnit.DAYS);

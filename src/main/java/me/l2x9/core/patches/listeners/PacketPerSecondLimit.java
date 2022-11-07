@@ -18,7 +18,7 @@ public class PacketPerSecondLimit extends ViolationManager implements PacketList
         int vls = getVLS(event.getPlayer().getUniqueId().hashCode());
         if (vls > PP_LIMIT) {
             remove(event.getPlayer().getUniqueId().hashCode());
-            Utils.run(() -> Utils.kick(event.getPlayer(), "&cYou are sending packets too fast!"));
+            Utils.run(() -> Utils.kick(event.getPlayer(), "kick_pps_limit"));
         }
     }
 

@@ -28,9 +28,9 @@ public class ReplyCommand extends ChatCommand {
                         ChatInfo targetInfo = manager.getInfo(target);
                         String msg = ChatColor.stripColor(String.join(" ", args));
                         sendWhisper(player, senderInfo, target, targetInfo, msg);
-                    } else Utils.sendLocalizedMessage(player, "reply_player_offline", target.getName());
-                } else Utils.sendLocalizedMessage(player, "reply_no_target");
-            } else Utils.sendLocalizedMessage(player, "reply_command_syntax");
+                    } else Utils.sendPrefixedLocalizedMessage(player, "reply_player_offline", target.getName());
+                } else Utils.sendPrefixedLocalizedMessage(player, "reply_no_target");
+            } else Utils.sendPrefixedLocalizedMessage(player, "reply_command_syntax");
         } else Utils.sendMessage(sender, "&cYou must be a player");
         return true;
     }

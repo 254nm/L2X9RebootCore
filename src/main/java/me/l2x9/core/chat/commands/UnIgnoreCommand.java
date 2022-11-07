@@ -20,14 +20,15 @@ public class UnIgnoreCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (sender instanceof Player) {
+            Player player = (Player) sender;
             if (args.length == 1) {
-                ChatInfo info = manager.getInfo((Player) sender);
+                ChatInfo info = manager.getInfo(player);
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
                 if (info.isIgnoring(target.getUniqueId())) {
                     info.unignorePlayer(target.getUniqueId());
-                    Utils.sendMessage(sender, "&3Successfully unignored player&r&a %s&r", target.getName());
-                } else Utils.sendMessage(sender, "&cYou arent ignoring " + target.getName());
-            } else Utils.sendMessage(sender, "&cPlease include a player /unignore <playerName>");
+                    Utils.sendPrefixedLocalizedMessage(player, "unignore_successful", target.getName());
+                } else Utils.sendPrefixedLocalizedMessage(player, "unignore_not_ignoring", target.getName());
+            } else Utils.sendPrefixedLocalizedMessage(player, "unignore_command_syntax");
         } else Utils.sendMessage(sender, "&cYou must be a player");
         return true;
     }

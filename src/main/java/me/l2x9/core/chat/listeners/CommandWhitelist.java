@@ -18,6 +18,6 @@ public class CommandWhitelist implements Listener {
         List<String> allowedCommands = main.getConfig().getStringList("CommandWhitelist");
         String command = event.getMessage().split(" ")[0];
         event.setCancelled(allowedCommands.stream().noneMatch(a -> a.equalsIgnoreCase(command)));
-        if (event.isCancelled()) Utils.sendLocalizedMessage(event.getPlayer(), "cmdwhitelist_cmd_not_allowed", true, command);
+        if (event.isCancelled()) Utils.sendPrefixedLocalizedMessage(event.getPlayer(), "cmdwhitelist_cmd_not_allowed", command);
     }
 }

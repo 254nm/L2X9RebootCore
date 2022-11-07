@@ -26,7 +26,7 @@ public class SetHomeCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (args.length < 1) {
-                Utils.sendMessage(player, "&3Please include a name for your new home");
+                Utils.sendPrefixedLocalizedMessage(player, "sethome_include_name");
                 return true;
             }
             Set<PermissionAttachmentInfo> perms = player.getEffectivePermissions();
@@ -36,18 +36,18 @@ public class SetHomeCommand implements CommandExecutor {
             if (homes == null) homes = new ArrayList<>();
             if (homes.stream().anyMatch(h -> h.getName().equals(args[0]))) {
                 Home home = homes.stream().filter(h -> h.getName().equals(args[0])).findAny().get();
-                Utils.sendMessage(sender, "&3A home by that name already exists.");
+                Utils.sendPrefixedLocalizedMessage(player, "sethome_home_already_exists");
                 main.getHomeIO().deleteHome(home);
             }
             if (homes.size() >= maxHomes && !player.isOp()) {
-                Utils.sendMessage(player, "&3Max number of homes reached!");
+                Utils.sendPrefixedLocalizedMessage(player, "sethome_max_reached");
                 return true;
             }
             File playerFolder = new File(main.getHomeIO().getHomesFolder(), player.getUniqueId().toString());
             if (!playerFolder.exists()) playerFolder.mkdir();
             Home home = new Home(args[0], player.getUniqueId(), player.getLocation());
             main.getHomeIO().save(playerFolder, home.getName() + ".map", home);
-            Utils.sendMessage(player, "&3Home&r&a " + home.getName() + " &r&3Set");
+            Utils.sendPrefixedLocalizedMessage(player, "sethome_success", home.getName());
         } else Utils.sendMessage(sender, "&3You must be a player to use this command");
         return true;
     }

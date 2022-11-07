@@ -21,22 +21,22 @@ public class DelHomeCommand implements TabExecutor {
             Player player = (Player) sender;
             List<Home> homes = main.getHomes().getOrDefault(player.getUniqueId(), null);
             if (homes == null) {
-                Utils.sendMessage(player, "&3You do not have any homes");
+                Utils.sendPrefixedLocalizedMessage(player, "delhome_no_homes");
                 return true;
             }
             if (args.length < 1) {
                 String names = String.join(", ", homes.stream().map(Home::getName).toArray(String[]::new));
-                Utils.sendMessage(player, String.format("&3Please include the name of a home to delete. Current homes: (&r&a%s&r&3)&r", names));
+                Utils.sendPrefixedLocalizedMessage(player, "delhome_specify_home", names);
                 return true;
             }
             Home home = homes.stream().filter(h -> h.getName().equals(args[0])).findFirst().orElse(null);
             if (home == null) {
-                Utils.sendMessage(player, "&3Home&r&a " + args[0] + "&r&3 was not found");
+                Utils.sendPrefixedLocalizedMessage(player, "delhome_home_not_found", args[0]);
                 return true;
             }
             if (main.getHomeIO().deleteHome(home)) {
-                Utils.sendMessage(player, "&3Home&r&a " + home.getName() + "&r&3 has been deleted");
-            } else Utils.sendMessage(player, "&3Could not delete&r&a " + home.getName());
+                Utils.sendPrefixedLocalizedMessage(player, "delhome_success", home.getName());
+            } else Utils.sendPrefixedLocalizedMessage(player, "delhome_fail", home.getName());
         } else Utils.sendMessage(sender, "&3You must be a player to use this command");
         return true;
     }

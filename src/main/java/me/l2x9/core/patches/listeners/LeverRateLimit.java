@@ -21,7 +21,7 @@ public class LeverRateLimit extends ViolationManager implements Listener {
             Player player = event.getPlayer();
             increment(player.hashCode());
             if (getVLS(player.hashCode()) > 20) {
-                Utils.kick(player, "&cYou are interacting too fast");
+                Utils.kick(player, "kick_lever_ratelimit");
                 remove(player.hashCode());
             }
         }
