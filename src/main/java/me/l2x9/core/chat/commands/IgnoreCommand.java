@@ -28,7 +28,7 @@ public class IgnoreCommand implements CommandExecutor {
                     info.ignorePlayer(target.getUniqueId());
                     Utils.sendPrefixedLocalizedMessage(player, "ignore_successful", target.getName());
                 } else Utils.sendPrefixedLocalizedMessage(player, "already_ignoring");
-            } else Utils.sendMessage(player,"ignore_command_syntax");
+            } else Utils.sendPrefixedLocalizedMessage(player,"ignore_command_syntax");
         } else Utils.sendMessage(sender, "&cYou must be a player");
         return true;
     }
