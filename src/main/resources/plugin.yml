@@ -7,6 +7,6 @@ authors: [ 254n_m ]
 description: All of the plugins for thr l2x9 reboot
 commands:
   msg:
-    aliases: [message, whisper, tell, w]
+    aliases: [message, whisper, tell, w, t]
   reply:
     aliases: [r]
