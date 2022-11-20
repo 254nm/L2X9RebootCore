@@ -24,7 +24,7 @@ public class EntityCheckTask implements Runnable {
                     Entity[] entities = Arrays.stream(chunk.getEntities()).filter(en -> en.getType() == e).collect(Collectors.toList()).toArray(Entity[]::new);
                     int amt = entities.length;
                     if (amt >= i) {
-                        Utils.log("&3Removed &r&a%d&r&3 entities from chunk&r&a %d,%d", amt-i, chunk.getX(), chunk.getZ());
+                        Utils.log("&3Removed &r&a%d&r&3 entities from chunk&r&a %d,%d&r&3 in world &r&a&s", amt-i, chunk.getX(), chunk.getZ(), chunk.getWorld().getName());
                         while (amt >= i) {
                             entities[0].remove();
                             amt--;
