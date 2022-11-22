@@ -1,5 +1,6 @@
 package me.l2x9.core.chat.listeners;
 
+import lombok.RequiredArgsConstructor;
 import me.l2x9.core.chat.ChatInfo;
 import me.l2x9.core.chat.ChatManager;
 import me.l2x9.core.event.CheckedChatEvent;
@@ -17,16 +18,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+@RequiredArgsConstructor
 public class ChatListener implements Listener {
     private final ChatManager manager;
     private final HashSet<String> tlds;
-    ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+    private final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
 
-
-    public ChatListener(ChatManager manager, HashSet<String> tlds) {
-        this.manager = manager;
-        this.tlds = tlds;
-    }
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
@@ -42,18 +39,18 @@ public class ChatListener implements Listener {
         ci.setChatLock(true);
         service.schedule(() -> ci.setChatLock(false), cooldown, TimeUnit.SECONDS);
         String ogMessage = event.getMessage();
+        String playerName = player.getDisplayName() + ChatColor.RESET;
+        String message = (ogMessage.startsWith(">")) ? String.format("<%s>%s %s", playerName, ChatColor.GREEN, ogMessage) : String.format("<%s> %s", playerName, ogMessage);
         if (blockedCheck(ogMessage)) {
-            player.sendMessage("<" + player.getDisplayName() + "> " + ogMessage);
+            player.sendMessage(message);
             Utils.log("&3Prevented&r&a %s&r&3 from sending a message that has banned words", player.getName());
             return;
         }
         if (domainCheck(ogMessage)) {
-            player.sendMessage("<" + player.getDisplayName() + "> " + ogMessage);
+            player.sendMessage(message);
             Utils.log("&3Prevented player&r&a %s&r&3 from sending a link / server ip", player.getName());
             return;
         }
-        String playerName = player.getDisplayName();
-        String message = (ogMessage.startsWith(">")) ? String.format("<%s>%s %s", playerName, ChatColor.GREEN, ogMessage) : String.format("<%s> %s", playerName, ogMessage);
         Bukkit.getLogger().info(message);
         for (Player online : Bukkit.getOnlinePlayers()) {
             ChatInfo info = manager.getInfo(online);
@@ -85,7 +82,7 @@ public class ChatListener implements Listener {
     private boolean blockedCheck(String message) {
         List<String> blocked = manager.getConfig().getStringList("Blocked");
         for (String blockedWord : blocked) {
-            if (message.toLowerCase().contains(blockedWord)) return true;
+            if (message.toLowerCase().contains(blockedWord.toLowerCase())) return true;
         }
         return false;
     }
