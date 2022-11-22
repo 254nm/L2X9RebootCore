@@ -44,7 +44,6 @@ public class SpawnCommand extends BaseTabCommand {
 
     @Override
     public List<String> onTab(String[] args) {
-        System.out.println(args.length);
         return entityTypes.stream().filter(s -> s.startsWith(args[0].toLowerCase())).collect(Collectors.toList());
     }
 }
