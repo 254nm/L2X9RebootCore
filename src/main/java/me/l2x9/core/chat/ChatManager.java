@@ -1,5 +1,6 @@
 package me.l2x9.core.chat;
 
+import lombok.Cleanup;
 import me.l2x9.core.chat.commands.*;
 import me.l2x9.core.chat.listeners.ChatListener;
 import me.l2x9.core.chat.listeners.CommandWhitelist;
@@ -58,9 +59,8 @@ public class ChatManager extends Manager {
     private HashSet<String> parseTLDS(File tldFile) {
         try {
             HashSet<String> buf = new HashSet<>();
-            BufferedReader reader = new BufferedReader(new FileReader(tldFile));
+            @Cleanup BufferedReader reader = new BufferedReader(new FileReader(tldFile));
             reader.lines().filter(l -> !l.startsWith("#")).forEach(s -> buf.add(s.toLowerCase()));
-            reader.close();
             return buf;
         } catch (Throwable t) {
             Utils.log("&cFailed to parse the TLD file please see the stacktrace below for more info!");

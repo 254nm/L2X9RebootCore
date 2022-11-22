@@ -1,21 +1,17 @@
 package me.l2x9.core.chat;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Cleanup;
+import lombok.Data;
 import me.l2x9.core.util.Utils;
 import org.bukkit.entity.Player;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
+@Data
 public class ChatInfo {
     private final Player player;
     private final HashSet<UUID> ignoring;
@@ -51,14 +47,12 @@ public class ChatInfo {
                 return;
             }
             if (!ignoreList.exists()) ignoreList.createNewFile();
-            OutputStream fos = new FileOutputStream(ignoreList, false);
-            OutputStreamWriter osw = new OutputStreamWriter(fos);
-            BufferedWriter writer = new BufferedWriter(osw);
+            @Cleanup OutputStream fos = new FileOutputStream(ignoreList, false);
+            @Cleanup OutputStreamWriter osw = new OutputStreamWriter(fos);
+            @Cleanup BufferedWriter writer = new BufferedWriter(osw);
             for (UUID id : ignoring) writer.write(id.toString().concat("\n"));
-            writer.close();
-            osw.close();
-            fos.close();
         } catch (Throwable t) {
+            Utils.log("&cFailed to save ignores for player &r&a%s&r&c please see the stacktrace below for more info", player.getName());
             t.printStackTrace();
         }
     }
@@ -67,16 +61,12 @@ public class ChatInfo {
         File ignoreList = new File(manager.getIgnoresFolder(), player.getName().concat(".lst"));
         if (!ignoreList.exists()) return new HashSet<>();
         try {
-            InputStream fis = Files.newInputStream(ignoreList.toPath());
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader reader = new BufferedReader(isr);
-            HashSet<UUID> buf = reader.lines().map(UUID::fromString).collect(Collectors.toCollection(HashSet::new));
-            reader.close();
-            isr.close();
-            fis.close();
-            return buf;
+            @Cleanup InputStream fis = Files.newInputStream(ignoreList.toPath());
+            @Cleanup InputStreamReader isr = new InputStreamReader(fis);
+            @Cleanup BufferedReader reader = new BufferedReader(isr);
+            return reader.lines().map(UUID::fromString).collect(Collectors.toCollection(HashSet::new));
         } catch (Throwable t) {
-            Utils.log("&cFailed to load ignores for player %s", player.getName());
+            Utils.log("&cFailed to load ignores for player&r&a %s&r", player.getName());
             t.printStackTrace();
             return new HashSet<>();
         }

@@ -1,5 +1,6 @@
 package me.l2x9.core.home.util;
 
+import lombok.Cleanup;
 import me.l2x9.core.home.Home;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -28,9 +29,9 @@ public class HomeIO {
 
     private Home parseHome(File mapFile) {
         try {
-            FileInputStream fis = new FileInputStream(mapFile);
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader reader = new BufferedReader(isr);
+            @Cleanup FileInputStream fis = new FileInputStream(mapFile);
+            @Cleanup InputStreamReader isr = new InputStreamReader(fis);
+            @Cleanup BufferedReader reader = new BufferedReader(isr);
             String[] lines = reader.lines().toArray(String[]::new);
             String[] locArray = lines[1].split("::");
             double x = Double.parseDouble(locArray[0]), y = Double.parseDouble(locArray[1]), z = Double.parseDouble(locArray[2]);
@@ -38,9 +39,6 @@ public class HomeIO {
             UUID owner = UUID.fromString(lines[0]);
             Location loc = new Location(world, x, y, z);
             String name = lines[2];
-            fis.close();
-            isr.close();
-            reader.close();
             return new Home(name, owner, loc);
         } catch (Throwable t) {
             t.printStackTrace();
@@ -74,7 +72,7 @@ public class HomeIO {
             UUID owner = home.getOwner();
             Location loc = home.getLocation();
             String name = home.getName();
-            FileWriter fw = new FileWriter(file);
+            @Cleanup FileWriter fw = new FileWriter(file);
             double x = loc.getX(), y = loc.getY(), z = loc.getZ();
             String world = loc.getWorld().getName();
             String[] serialized = new String[3];
@@ -88,7 +86,6 @@ public class HomeIO {
                 homes.replace(owner, homeList);
             } else homes.put(owner, new ArrayList<>(Collections.singletonList(home)));
             fw.flush();
-            fw.close();
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -113,9 +110,5 @@ public class HomeIO {
             return true;
         }
         return false;
-    }
-
-    public boolean hasHomes(Player player) {
-        return homes.containsKey(player.getUniqueId());
     }
 }

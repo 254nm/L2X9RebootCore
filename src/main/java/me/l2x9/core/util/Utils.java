@@ -2,6 +2,7 @@ package me.l2x9.core.util;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import lombok.Cleanup;
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Localization;
 import net.minecraft.server.v1_12_R1.*;
@@ -147,11 +148,9 @@ public class Utils {
     public static void unpackResource(String resourceName, File file) {
         if (file.exists()) return;
         try {
-            InputStream is = L2X9RebootCore.class.getClassLoader().getResourceAsStream(resourceName);
-            if (is == null)
-                throw new NullPointerException(String.format("Resource %s is not present in the jar", resourceName));
+           @Cleanup InputStream is = L2X9RebootCore.class.getClassLoader().getResourceAsStream(resourceName);
+            if (is == null) throw new NullPointerException(String.format("Resource %s is not present in the jar", resourceName));
             Files.copy(is, file.toPath());
-            is.close();
         } catch (Throwable t) {
             log("&cFailed to extract resource from jar due to &r&3 %s&r&c! Please see the stacktrace below for more info", t.getMessage());
             t.printStackTrace();
