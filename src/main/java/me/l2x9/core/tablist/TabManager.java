@@ -52,7 +52,6 @@ public class TabManager extends Manager {
     }
 
     private int getPing(Player player) {
-        EntityPlayer nmsPlayer = ((CraftPlayer) player).getHandle();
-        return nmsPlayer.ping;
+        return ((CraftPlayer) player).getHandle().ping;
     }
 }
