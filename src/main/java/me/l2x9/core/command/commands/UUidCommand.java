@@ -6,6 +6,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 
 import java.util.UUID;
 
@@ -22,7 +23,7 @@ public class UUidCommand extends BaseCommand {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length > 0) {
-            UUID uuid = UUID.nameUUIDFromBytes(args[0].getBytes());
+            UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + args[0]).getBytes());
             sendClickableMessage(
                     sender,
                     "&3The UUID of&r&a " + args[0] + "&r&3 is &r&a" + uuid,
