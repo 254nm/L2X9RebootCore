@@ -6,6 +6,7 @@ import me.l2x9.core.command.CommandManager;
 import me.l2x9.core.home.HomeManager;
 import me.l2x9.core.misc.MiscManager;
 import me.l2x9.core.patches.PatchManager;
+import me.l2x9.core.patches.listeners.LightLag;
 import me.l2x9.core.randomspawn.RandomSpawnManager;
 import me.l2x9.core.tablist.TabManager;
 import me.txmc.protocolapi.PacketEventDispatcher;
@@ -47,6 +48,11 @@ public final class L2X9RebootCore extends JavaPlugin {
     }
 
     @Override
+    public void onLoad() {
+        new LightLag();
+    }
+
+    @Override
     public void onEnable() {
         instance = this;
         Localization.loadLocalizations(getDataFolder());
@@ -61,6 +67,15 @@ public final class L2X9RebootCore extends JavaPlugin {
         registerManagers();
     }
 
+    @Override
+    public void onDisable() {
+        getServer().getMessenger().unregisterOutgoingPluginChannel(this, "BungeeCord");
+        managers.forEach(m -> m.destruct(this));
+        managers.clear();
+        violationManagers.clear();
+        executorService.shutdown();
+    }
+
     private void registerManagers() {
         registerManager(new TabManager());
         registerManager(new HomeManager());
@@ -72,6 +87,7 @@ public final class L2X9RebootCore extends JavaPlugin {
         managers.forEach(manager -> manager.init(this));
     }
 
+
     public void registerViolationManager(ViolationManager manager) {
         if (violationManagers.contains(manager)) return;
         violationManagers.add(manager);
@@ -81,14 +97,6 @@ public final class L2X9RebootCore extends JavaPlugin {
         managers.add(manager);
     }
 
-    @Override
-    public void onDisable() {
-        getServer().getMessenger().unregisterOutgoingPluginChannel(this, "BungeeCord");
-        managers.forEach(m -> m.destruct(this));
-        managers.clear();
-        violationManagers.clear();
-        executorService.shutdown();
-    }
 
     public void registerListener(Listener listener) {
         if (ClassProcessor.hasAnnotation(listener)) ClassProcessor.process(listener);

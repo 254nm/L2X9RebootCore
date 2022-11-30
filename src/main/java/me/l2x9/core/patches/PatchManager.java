@@ -43,7 +43,6 @@ public class PatchManager extends Manager {
         registerConfigurable(FakePlugins.class, PacketPlayInTabComplete.class);
 //        plugin.registerListener(new LargePacketListener());
         plugin.registerListener(new LeverRateLimit());
-        new LightLag();
         plugin.registerListener(new MapLag(this), PacketPlayOutMap.class);
         plugin.registerListener(new NoCom(), PacketPlayOutBlockChange.class, PacketPlayInBlockDig.class);
         plugin.registerListener(new PacketFly(), PacketPlayInFlying.class, PacketPlayInFlying.PacketPlayInPosition.class, PacketPlayInFlying.PacketPlayInPositionLook.class);
@@ -54,7 +53,7 @@ public class PatchManager extends Manager {
     }
 
     @SafeVarargs
-    private final void registerConfigurable(Class<? extends PacketListener> listener, Class<? extends Packet<?>>... listeningFor) {
+    private void registerConfigurable(Class<? extends PacketListener> listener, Class<? extends Packet<?>>... listeningFor) {
         try {
             ConfigurationSection patchSection = config.getConfigurationSection(listener.getSimpleName());
             if (patchSection == null) throw new IllegalArgumentException("Missing configuration section for " + listener.getName());
