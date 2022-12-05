@@ -51,6 +51,7 @@ public class ChatInfo {
             @Cleanup OutputStreamWriter osw = new OutputStreamWriter(fos);
             @Cleanup BufferedWriter writer = new BufferedWriter(osw);
             for (UUID id : ignoring) writer.write(id.toString().concat("\n"));
+            writer.flush();
         } catch (Throwable t) {
             Utils.log("&cFailed to save ignores for player &r&a%s&r&c please see the stacktrace below for more info", player.getName());
             t.printStackTrace();
