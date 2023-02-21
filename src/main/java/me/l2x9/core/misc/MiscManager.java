@@ -1,5 +1,6 @@
 package me.l2x9.core.misc;
 
+import lombok.Getter;
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
 import me.l2x9.core.misc.epc.EntityCheckTask;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class MiscManager extends Manager {
-    private ConfigurationSection config;
+    @Getter private ConfigurationSection config;
     private HashMap<EntityType, Integer> entityPerChunk;
     public MiscManager() {
         super("Misc");
@@ -29,6 +30,7 @@ public class MiscManager extends Manager {
         plugin.registerListener(new OldSchoolKill());
         plugin.registerListener(new MoveListener());
         plugin.registerListener(new JoinMessages());
+        plugin.registerListener(new CrystalSlowdown(this));
         new AutoRestart();
     }
 

@@ -66,3 +66,4 @@ Misc:
     EntitiesPerChunk:
       - 'wither::20'
       - 'armor_stand::15'
+  ACSlowdown: 3 #How many ticks does a crystal have to be alive for it to be killed
