@@ -41,7 +41,9 @@ kick_lever_ratelimit: "&cYou are interacting too fast"
 kick_pps_limit: "&cYou are sending packets too fast!"
 kick_failed_to_inject: "&cFailed to inject"
 join_message: "&7%s joined"
+player_join_first_time: "&7%s joined for the first time"
 leave_message: "&7%s left"
+kick_message: "&7%s was kicked for \"%s\""
 #Complex messages
 HelpMessage:
   - "&6-----------------------------------------------------"
