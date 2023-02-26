@@ -30,6 +30,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public final class L2X9RebootCore extends JavaPlugin {
+    //TODO: Migrate all file storage to mysql
     @Getter
     private static L2X9RebootCore instance;
     @Getter
@@ -40,7 +41,6 @@ public final class L2X9RebootCore extends JavaPlugin {
     private List<ViolationManager> violationManagers;
     @Getter
     private List<Manager> managers;
-    //TODO: On chunk load scan for illegals and add to list of done chunks also ignore new chunks
 
     public boolean isDebug() {
         if (System.getProperty("l2x9coredebug") == null) return false;
