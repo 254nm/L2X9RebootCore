@@ -33,6 +33,7 @@ public class CommandHandler implements TabExecutor {
         addCommand(new UUidCommand());
         addCommand(new WorldSwitcher());
         addCommand(new TopEntity());
+        addCommand(new WhoIs());
     }
 
     private void addCommand(BaseCommand command) {
