@@ -57,9 +57,7 @@ public class HomeIO {
             }
             if (homes.containsKey(player.getUniqueId())) {
                 homes.replace(player.getUniqueId(), homeList);
-            } else {
-                homes.put(player.getUniqueId(), homeList);
-            }
+            } else homes.put(player.getUniqueId(), homeList);
             break;
         }
     }
