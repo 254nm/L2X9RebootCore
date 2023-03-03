@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import java.io.*;
 import java.util.*;
 
+//TODO: Rewrite this mess 🤓
 public class HomeIO {
     private final File homesFolder;
     private final HashMap<UUID, ArrayList<Home>> homes;
