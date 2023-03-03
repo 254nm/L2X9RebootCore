@@ -62,7 +62,7 @@ public class MiscManager extends Manager {
     @Override
     public void reloadConfig(ConfigurationSection config) {
         this.config = config;
-        entityPerChunk.clear();
+        if (entityPerChunk != null) entityPerChunk.clear();
         entityPerChunk = parseEntityConf();
     }
 }
