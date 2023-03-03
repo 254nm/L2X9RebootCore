@@ -2,13 +2,11 @@ package me.l2x9.core.patches.listeners;
 
 import me.l2x9.core.ViolationManager;
 import me.l2x9.core.util.Utils;
-import net.minecraft.server.v1_12_R1.DedicatedServer;
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPistonEvent;
+import org.bukkit.event.block.BlockEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockRedstoneEvent;
@@ -22,7 +20,6 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class Redstone extends ViolationManager implements Listener {
     private final ThreadLocalRandom random = ThreadLocalRandom.current();
-    private final int disableTPS = 13;
 
     public Redstone() {
         super(1, 300);
@@ -30,44 +27,38 @@ public class Redstone extends ViolationManager implements Listener {
 
     @EventHandler
     public void onRedstoneEvent(BlockRedstoneEvent event) {
-        Block block = event.getBlock();
-        increment(block.getChunk().hashCode());
-        if (Utils.getTPS() < disableTPS && getVLS(block.getChunk().hashCode()) > 70) {
-            event.setNewCurrent(0);
-            if (shouldBreakBlock()) block.breakNaturally();
-        } else {
-            int vls = getVLS(block.getChunk().hashCode());
-            if (vls > 20000) {
-                if (shouldBreakBlock()) event.getBlock().breakNaturally();
-                event.setNewCurrent(0);
-            }
-        }
+        process(event);
     }
 
     @EventHandler
     public void onPistonExtend(BlockPistonExtendEvent event) {
-        processPiston(event);
-    }
-    @EventHandler
-    public void onPistonRetract(BlockPistonRetractEvent event) {
-        processPiston(event);
+        process(event);
     }
 
-    private void processPiston(BlockPistonEvent event) {
+    @EventHandler
+    public void onPistonRetract(BlockPistonRetractEvent event) {
+        process(event);
+    }
+
+
+    private void process(BlockEvent event) {
+        if (!(event instanceof Cancellable)) return;
+        Cancellable c = (Cancellable) event;
         Block block = event.getBlock();
+        int disableTPS = 13;
+
         increment(block.getChunk().hashCode());
         if (Utils.getTPS() < disableTPS && getVLS(block.getChunk().hashCode()) > 70) {
-            event.setCancelled(true);
+            c.setCancelled(true);
             if (shouldBreakBlock()) block.breakNaturally();
         } else {
             int vls = getVLS(block.getChunk().hashCode());
             if (vls > 20000) {
                 if (shouldBreakBlock()) event.getBlock().breakNaturally();
-                event.setCancelled(true);
+                c.setCancelled(true);
             }
         }
     }
-
 
     private boolean shouldBreakBlock() {
         return random.nextInt(0, 10) == 1;
