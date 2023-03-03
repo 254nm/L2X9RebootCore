@@ -9,6 +9,7 @@ import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.World;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerKickEvent;
 
@@ -187,6 +188,9 @@ public class Utils {
             default:
                 return 0.0f;
         }
+    }
+    public static double getTPS() {
+        return ((CraftServer) Bukkit.getServer()).getHandle().getServer().recentTps[0];
     }
 }
 

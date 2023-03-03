@@ -1,6 +1,7 @@
 package me.l2x9.core.patches.listeners;
 
 import me.l2x9.core.ViolationManager;
+import me.l2x9.core.util.Utils;
 import net.minecraft.server.v1_12_R1.DedicatedServer;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -21,7 +22,6 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class Redstone extends ViolationManager implements Listener {
     private final ThreadLocalRandom random = ThreadLocalRandom.current();
-    private final DedicatedServer server = ((CraftServer) Bukkit.getServer()).getHandle().getServer();
     private final int disableTPS = 13;
 
     public Redstone() {
@@ -32,7 +32,7 @@ public class Redstone extends ViolationManager implements Listener {
     public void onRedstoneEvent(BlockRedstoneEvent event) {
         Block block = event.getBlock();
         increment(block.getChunk().hashCode());
-        if (server.recentTps[0] < disableTPS && getVLS(block.getChunk().hashCode()) > 70) {
+        if (Utils.getTPS() < disableTPS && getVLS(block.getChunk().hashCode()) > 70) {
             event.setNewCurrent(0);
             if (shouldBreakBlock()) block.breakNaturally();
         } else {
@@ -56,7 +56,7 @@ public class Redstone extends ViolationManager implements Listener {
     private void processPiston(BlockPistonEvent event) {
         Block block = event.getBlock();
         increment(block.getChunk().hashCode());
-        if (server.recentTps[0] < disableTPS && getVLS(block.getChunk().hashCode()) > 70) {
+        if (Utils.getTPS() < disableTPS && getVLS(block.getChunk().hashCode()) > 70) {
             event.setCancelled(true);
             if (shouldBreakBlock()) block.breakNaturally();
         } else {
@@ -67,6 +67,7 @@ public class Redstone extends ViolationManager implements Listener {
             }
         }
     }
+
 
     private boolean shouldBreakBlock() {
         return random.nextInt(0, 10) == 1;

@@ -27,7 +27,7 @@ public class ElytraSpeedLimit implements Listener {
             Utils.log("&3Prevented&r&a " + player.getName() + " &r&3from going too fast with an elytra");
         }
         if (disableTPS <= 0) return;
-        double tps = ((CraftServer) Bukkit.getServer()).getHandle().getServer().recentTps[0];
+        double tps = Utils.getTPS();
         if (tps < disableTPS) {
             event.setCancelled(true);
             player.setGliding(false);

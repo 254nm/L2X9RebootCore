@@ -43,7 +43,7 @@ public class TabManager extends Manager {
     }
 
     public String parsePlaceHolders(String input, Player player) {
-        double tps = ((CraftServer) Bukkit.getServer()).getServer().recentTps[0];
+        double tps = Utils.getTPS();
         String strTps = (tps >= 20) ? String.format("%s*20.0", ChatColor.GREEN) : String.format("%s%.2f", Utils.getTPSColor(tps), tps);
         String uptime = Utils.getFormattedInterval(System.currentTimeMillis() - startTime);
         String online = String.valueOf(Bukkit.getOnlinePlayers().size());
