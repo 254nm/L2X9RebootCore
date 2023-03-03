@@ -1,8 +1,11 @@
 package me.l2x9.core.patches.listeners;
 
+import lombok.RequiredArgsConstructor;
 import me.l2x9.core.ViolationManager;
+import me.l2x9.core.patches.PatchManager;
 import me.l2x9.core.util.Utils;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,10 +22,12 @@ import java.util.concurrent.ThreadLocalRandom;
  * This file was created as a part of L2X9RebootCore
  */
 public class Redstone extends ViolationManager implements Listener {
+    private final PatchManager main;
     private final ThreadLocalRandom random = ThreadLocalRandom.current();
 
-    public Redstone() {
+    public Redstone(PatchManager main) {
         super(1, 300);
+        this.main = main;
     }
 
     @EventHandler
@@ -43,17 +48,17 @@ public class Redstone extends ViolationManager implements Listener {
 
     private void process(BlockEvent event) {
         if (!(event instanceof Cancellable)) return;
+        ConfigurationSection config = main.getConfig().getConfigurationSection("Redstone");
         Cancellable c = (Cancellable) event;
         Block block = event.getBlock();
-        int disableTPS = 13;
+        int vls = getVLS(block.getChunk().hashCode());
 
         increment(block.getChunk().hashCode());
-        if (Utils.getTPS() < disableTPS && getVLS(block.getChunk().hashCode()) > 70) {
+        if (Utils.getTPS() < config.getInt("StrictTPS") && vls > config.getInt("StrictMaxVLS")) {
             c.setCancelled(true);
             if (shouldBreakBlock()) block.breakNaturally();
         } else {
-            int vls = getVLS(block.getChunk().hashCode());
-            if (vls > 20000) {
+            if (vls > config.getInt("RegularMaxVLS")) {
                 if (shouldBreakBlock()) event.getBlock().breakNaturally();
                 c.setCancelled(true);
             }

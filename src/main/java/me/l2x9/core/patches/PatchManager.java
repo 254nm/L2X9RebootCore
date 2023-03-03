@@ -34,6 +34,7 @@ public class PatchManager extends Manager {
         image = loadImage();
         config = plugin.getModuleConfig(this);
 //        plugin.registerListener(new PreLoginListener());
+        plugin.registerListener(new BlockPhysics(this));
         plugin.registerListener(new BoatFly());
         plugin.registerListener(new Damage());
         plugin.registerListener(new DispenserCrash());
@@ -49,7 +50,7 @@ public class PatchManager extends Manager {
         plugin.registerListener(new PacketPerSecondLimit(), (Class<? extends Packet<?>>) null); //null means that this listener receives every packet
         plugin.registerListener(new ProjectileCrash());
         plugin.registerListener(new ProjectileVelocity());
-        plugin.registerListener(new Redstone());
+        plugin.registerListener(new Redstone(this));
     }
 
     @SafeVarargs
@@ -61,18 +62,6 @@ public class PatchManager extends Manager {
             constructor.setAccessible(true);
             PacketListener packetListener = constructor.newInstance(patchSection, this);
             plugin.registerListener(packetListener, listeningFor);
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-    }
-    private void registerConfigurable(Class<? extends Listener> listener) {
-        try {
-            ConfigurationSection patchSection = config.getConfigurationSection(listener.getSimpleName());
-            if (patchSection == null) throw new IllegalArgumentException("Missing configuration section for " + listener.getName());
-            Constructor<? extends Listener> constructor = listener.getConstructor(ConfigurationSection.class, PatchManager.class);
-            constructor.setAccessible(true);
-            Listener packetListener = constructor.newInstance(patchSection, this);
-            plugin.registerListener(packetListener);
         } catch (Throwable t) {
             t.printStackTrace();
         }
