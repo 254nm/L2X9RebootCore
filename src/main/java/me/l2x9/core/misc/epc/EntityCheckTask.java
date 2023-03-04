@@ -32,12 +32,6 @@ public class EntityCheckTask implements Runnable {
                     if (amt >= i) {
                         Utils.log("&3Removed &r&a%d&r&3 entities from chunk&r&a %d,%d&r&3 in world &r&a&s", amt-i, chunk.getX(), chunk.getZ(), chunk.getWorld().getName());
                         while (amt >= i) {
-                            if (entities[0] instanceof EnderCrystal) { //The bukkit api cant remove ender crystals for some reason?
-                                EntityEnderCrystal crystal = ((CraftEnderCrystal)entities[0]).getHandle();
-                                crystal.damageEntity(DamageSource.GENERIC, 10);
-                                amt--;
-                                continue;
-                            }
                             entities[0].remove();
                             amt--;
                         }
