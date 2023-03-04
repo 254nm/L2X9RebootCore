@@ -47,22 +47,25 @@ public class Redstone extends ViolationManager implements Listener {
 
 
     private void process(BlockEvent event) {
-        if (!(event instanceof Cancellable)) return;
         ConfigurationSection config = main.getConfig().getConfigurationSection("Redstone");
-        Cancellable c = (Cancellable) event;
         Block block = event.getBlock();
         int vls = getVLS(block.getChunk().hashCode());
 
         increment(block.getChunk().hashCode());
         if (Utils.getTPS() < config.getInt("StrictTPS") && vls > config.getInt("StrictMaxVLS")) {
-            c.setCancelled(true);
+            cancelEvent(event);
             if (shouldBreakBlock()) block.breakNaturally();
         } else {
             if (vls > config.getInt("RegularMaxVLS")) {
                 if (shouldBreakBlock()) event.getBlock().breakNaturally();
-                c.setCancelled(true);
+                cancelEvent(event);
             }
         }
+    }
+    private void cancelEvent(BlockEvent event) {
+        if (event instanceof BlockRedstoneEvent) {
+            ((BlockRedstoneEvent)event).setNewCurrent(0);
+        } else ((Cancellable)event).setCancelled(true);
     }
 
     private boolean shouldBreakBlock() {
