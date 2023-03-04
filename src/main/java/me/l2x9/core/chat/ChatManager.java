@@ -1,7 +1,10 @@
 package me.l2x9.core.chat;
 
 import lombok.Cleanup;
+import lombok.Getter;
+import me.l2x9.core.IStorage;
 import me.l2x9.core.chat.commands.*;
+import me.l2x9.core.chat.io.ChatFileIO;
 import me.l2x9.core.chat.listeners.ChatListener;
 import me.l2x9.core.chat.listeners.CommandWhitelist;
 import me.l2x9.core.chat.listeners.JoinLeaveListener;
@@ -21,6 +24,7 @@ public class ChatManager extends Manager {
     private final HashMap<UUID, ChatInfo> map;
     private ConfigurationSection config;
     private File ignoresFolder;
+    @Getter private IStorage<ChatInfo, Player> chatInfoStore;
 
     public ChatManager() {
         super("ChatControl");
@@ -42,6 +46,7 @@ public class ChatManager extends Manager {
         File tldFile = new File(dataFolder, "tlds.txt");
         if (!tldFile.exists()) Utils.unpackResource("tlds.txt", tldFile);
         ignoresFolder = new File(dataFolder, "IgnoreLists");
+        chatInfoStore = new ChatFileIO(ignoresFolder, this); // Temp
         if (!ignoresFolder.exists()) ignoresFolder.mkdir();
         config = plugin.getModuleConfig(this);
         plugin.registerListener(new ChatListener(this, parseTLDS(tldFile)));
@@ -73,7 +78,7 @@ public class ChatManager extends Manager {
     public void destruct(L2X9RebootCore plugin) {
         Bukkit.getOnlinePlayers().forEach(p -> {
             ChatInfo ci = getInfo(p);
-            ci.saveIgnores();
+            ci.saveChatInfo();
         });
     }
 
@@ -83,10 +88,13 @@ public class ChatManager extends Manager {
     }
 
     public void registerPlayer(Player player) {
-        map.put(player.getUniqueId(), new ChatInfo(player, this));
+        map.put(player.getUniqueId(), chatInfoStore.load(player));
     }
 
     public void removePlayer(Player player) {
+        if (getInfo(player) != null) {
+            getInfo(player).saveChatInfo();
+        } else Utils.log("&cFailed to save chat info for&r&a %s&r", player.getName());
         map.remove(player.getUniqueId());
     }
 

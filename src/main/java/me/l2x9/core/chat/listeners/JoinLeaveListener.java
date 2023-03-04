@@ -22,17 +22,11 @@ public class JoinLeaveListener implements Listener {
 
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
-        ChatInfo info = manager.getInfo(event.getPlayer());
-        if (info == null) return;
-        info.saveIgnores();
         manager.removePlayer(event.getPlayer());
     }
 
     @EventHandler
     public void onKick(PlayerKickEvent event) {
-        ChatInfo info = manager.getInfo(event.getPlayer());
-        if (info == null) return;
-        info.saveIgnores();
         manager.removePlayer(event.getPlayer());
     }
 }
