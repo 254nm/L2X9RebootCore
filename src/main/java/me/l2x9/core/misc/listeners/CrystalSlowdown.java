@@ -22,7 +22,6 @@ public class CrystalSlowdown implements Listener {
     public void onAttack(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player) || !(event.getEntity() instanceof EnderCrystal)) return;
         EntityEnderCrystal crystal = ((CraftEnderCrystal)event.getEntity()).getHandle();
-        System.out.println(crystal.a);
         event.setCancelled(crystal.a < manager.getConfig().getInt("ACSlowdown"));
     }
     @EventHandler
