@@ -78,7 +78,7 @@ public class ChatManager extends Manager {
     public void destruct(L2X9RebootCore plugin) {
         Bukkit.getOnlinePlayers().forEach(p -> {
             ChatInfo ci = getInfo(p);
-            ci.saveChatInfo();
+            if (ci != null) ci.saveChatInfo();
         });
     }
 
@@ -92,9 +92,8 @@ public class ChatManager extends Manager {
     }
 
     public void removePlayer(Player player) {
-        if (getInfo(player) != null) {
-            getInfo(player).saveChatInfo();
-        } else Utils.log("&cFailed to save chat info for&r&a %s&r", player.getName());
+        ChatInfo ci = getInfo(player);
+        if (ci != null) ci.saveChatInfo();
         map.remove(player.getUniqueId());
     }
 
