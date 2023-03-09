@@ -2,6 +2,7 @@ package me.l2x9.core.misc.listeners;
 
 import me.l2x9.core.util.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,7 +34,7 @@ public class JoinMessages implements Listener {
     public void onKick(PlayerKickEvent event) {
         event.setLeaveMessage(null);
         Player player = event.getPlayer();
-        String reason = event.getReason();
+        String reason = ChatColor.stripColor(event.getReason());
         Bukkit.getOnlinePlayers().forEach(p -> Utils.sendLocalizedMessage(p, "kick_message", false, player.getName(), reason));
     }
 }
