@@ -35,6 +35,10 @@ ChatControl:
   Cooldown: 3
   #Blocked words
   Blocked: []
+  ChatTranslation: #Translate chat messages to the recipients language in real time using LibreTranslate
+    Enabled: true
+    URL: "http://127.0.0.1:5000"
+    APIKey: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
   CommandWhitelist:
     - "/ignore"
     - "/unignore"

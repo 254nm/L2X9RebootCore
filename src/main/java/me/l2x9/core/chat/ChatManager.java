@@ -10,6 +10,7 @@ import me.l2x9.core.chat.listeners.CommandWhitelist;
 import me.l2x9.core.chat.listeners.JoinLeaveListener;
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
+import me.l2x9.core.chat.translate.LibreTranslate;
 import me.l2x9.core.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -25,6 +26,7 @@ public class ChatManager extends Manager {
     private ConfigurationSection config;
     private File ignoresFolder;
     @Getter private IStorage<ChatInfo, Player> chatInfoStore;
+    @Getter private Translator translator;
 
     public ChatManager() {
         super("ChatControl");
@@ -49,15 +51,26 @@ public class ChatManager extends Manager {
         chatInfoStore = new ChatFileIO(ignoresFolder, this); // Temp
         if (!ignoresFolder.exists()) ignoresFolder.mkdir();
         config = plugin.getModuleConfig(this);
-        plugin.registerListener(new ChatListener(this, parseTLDS(tldFile)));
         plugin.registerListener(new JoinLeaveListener(this));
         plugin.registerListener(new CommandWhitelist(this));
         plugin.registerCommand ("ignore",new IgnoreCommand(this));
         plugin.getCommand("msg").setExecutor(new MessageCommand(this));
         plugin.getCommand("reply").setExecutor(new ReplyCommand(this));
         plugin.registerCommand("togglechat",new ToggleChatCommand(this));
+        plugin.registerCommand("toggletranslate",new ToggleTranslate(this));
         plugin.registerCommand("unignore",new UnIgnoreCommand(this));
         if (!Bukkit.getOnlinePlayers().isEmpty()) Bukkit.getOnlinePlayers().forEach(this::registerPlayer);
+
+        if (config.getBoolean("ChatTranslation.Enabled")) {
+            Translator tr = new LibreTranslate(config.getString("ChatTranslation.URL"), config.getString("ChatTranslation.APIKey"));
+            tr.checkFunctionality().thenAcceptAsync(working -> {
+               if (working) {
+                   translator = tr;
+                   Utils.log("&3Verified that the translator service is working correctly.");
+               } else Utils.log("&cThe translation service at&r&3 %s&r&c is not responding correctly.", config.getString("ChatTranslation.URL"));
+            });
+        }
+        plugin.registerListener(new ChatListener(this, parseTLDS(tldFile)));
 
     }
 

@@ -15,13 +15,15 @@ public class ChatInfo {
     private boolean toggledChat;
     private boolean joinMessages;
     private boolean chatLock;
+    private boolean autoTranslate = true;
 
-    public ChatInfo(Player player, ChatManager manager, HashSet<UUID> ignoring, boolean toggledChat, boolean joinMessages) {
+    public ChatInfo(Player player, ChatManager manager, HashSet<UUID> ignoring, boolean toggledChat, boolean joinMessages, boolean autoTranslate) {
         this.player = player;
         this.manager = manager;
         this.ignoring = ignoring;
         this.toggledChat = toggledChat;
         this.joinMessages = joinMessages;
+        this.autoTranslate = autoTranslate;
     }
 
     public ChatInfo(Player player, ChatManager manager) {
@@ -43,7 +45,7 @@ public class ChatInfo {
         ignoring.remove(player);
     }
     public boolean shouldNotSave() {
-        return ignoring.isEmpty() && !toggledChat && !joinMessages;
+        return ignoring.isEmpty() && !toggledChat && !joinMessages && autoTranslate;
     }
 
     public void saveChatInfo() {

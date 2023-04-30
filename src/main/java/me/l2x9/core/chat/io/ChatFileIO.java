@@ -37,6 +37,7 @@ public class ChatFileIO implements IStorage<ChatInfo, Player> {
             JsonObject obj = new JsonObject();
             obj.addProperty("togglechat", chatInfo.isToggledChat());
             obj.addProperty("togglejoinmessages", chatInfo.isJoinMessages());
+            obj.addProperty("autotranslate", chatInfo.isAutoTranslate());
             JsonArray arr = new JsonArray();
             chatInfo.getIgnoring().forEach(u -> arr.add(u.toString()));
             obj.add("ignores", arr);
@@ -60,9 +61,10 @@ public class ChatFileIO implements IStorage<ChatInfo, Player> {
 
                 boolean toggleChat = obj.has("togglechat") && obj.get("togglechat").getAsBoolean();
                 boolean toggleJoinMessages = obj.has("togglejoinmessages") && obj.get("togglejoinmessages").getAsBoolean();
+                boolean autoTranslate = obj.has("autotranslate") && obj.get("autotranslate").getAsBoolean();
                 HashSet<UUID> ignores = (obj.has("ignores")) ? parse(obj.get("ignores").getAsJsonArray()) : new HashSet<>();
 
-                return new ChatInfo(player, cm, ignores, toggleChat, toggleJoinMessages);
+                return new ChatInfo(player, cm, ignores, toggleChat, toggleJoinMessages, autoTranslate);
             } else return new ChatInfo(player, cm);
         } catch (Throwable t) {
             Utils.log("&cFailed to parse&r&a %s&r&c. This is most likely due to malformed json", player.getUniqueId());

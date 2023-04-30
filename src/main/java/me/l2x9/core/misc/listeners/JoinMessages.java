@@ -1,5 +1,6 @@
 package me.l2x9.core.misc.listeners;
 
+import me.l2x9.core.Localization;
 import me.l2x9.core.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,6 +19,8 @@ public class JoinMessages implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         event.setJoinMessage(null);
         Player player = event.getPlayer();
+        Localization loc = Localization.getLocalization(player.getLocale());
+        Utils.sendPrefixedLocalizedMessage(player, loc.get("welcome_message"));
         String key = (!player.hasPlayedBefore()) ? "player_join_first_time" : "join_message";
         Bukkit.getOnlinePlayers().forEach(p -> Utils.sendLocalizedMessage(p, key, false, player.getName()));
     }
