@@ -9,9 +9,9 @@ import java.util.concurrent.CompletableFuture;
  * This file was created as a part of L2X9RebootCore
  */
 public interface Translator {
-    CompletableFuture<String> translate(String toTranslate, String targetLang);
+    CompletableFuture<String> translate(String toTranslate, String targetLang, boolean safeFail);
 
-    CompletableFuture<String> translate(String toTranslate, String sourceLang, String targetLang);
+    CompletableFuture<String> translate(String toTranslate, String sourceLang, String targetLang, boolean safeFail);
 
     CompletableFuture<String> detectLanguage(String str);
 

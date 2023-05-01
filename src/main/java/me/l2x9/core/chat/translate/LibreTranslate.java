@@ -1,6 +1,7 @@
 package me.l2x9.core.chat.translate;
 
 import com.google.gson.*;
+import lombok.Cleanup;
 import me.l2x9.core.Localization;
 import me.l2x9.core.chat.Translator;
 import me.l2x9.core.util.Utils;
@@ -41,7 +42,6 @@ public class LibreTranslate implements Translator {
                 JsonObject object = jsonElement.getAsJsonObject();
                 buf.add(object.get("code").getAsString());
             }
-            System.out.println(buf);
             supportedLanguages = buf;
         } catch (Throwable t) {
             t.printStackTrace();
@@ -49,12 +49,12 @@ public class LibreTranslate implements Translator {
     }
 
     @Override
-    public CompletableFuture<String> translate(String toTranslate, String targetLang) {
-        return translate(toTranslate, "auto", targetLang);
+    public CompletableFuture<String> translate(String toTranslate, String targetLang, boolean safeFail) {
+        return translate(toTranslate, "auto", targetLang, safeFail);
     }
 
     @Override
-    public CompletableFuture<String> translate(String toTranslate, String sourceLang, String targetLang) {
+    public CompletableFuture<String> translate(String toTranslate, String sourceLang, String targetLang, boolean safeFail) {
         return CompletableFuture.supplyAsync(() -> {
             try {
 
@@ -71,7 +71,7 @@ public class LibreTranslate implements Translator {
             } catch (Throwable t) {
                 Utils.log("&cFailed to connect to the translator service. Please see stacktrace below for more info");
                 t.printStackTrace();
-                return String.format(Localization.getLocalization(targetLang).get("could_not_translate_message"), t.getClass().getName());
+                return safeFail ? toTranslate : String.format(Localization.getLocalization(targetLang).get("could_not_translate_message"), t.getClass().getName());
             }
         });
     }
@@ -103,7 +103,7 @@ public class LibreTranslate implements Translator {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 detectLanguage("hola").join();
-                String translation = translate("hola", "es", "en").get();
+                String translation = translate("hola", "es", "en", true).get();
                 return translation.equals("hello");
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
@@ -129,14 +129,12 @@ public class LibreTranslate implements Translator {
         conn.getOutputStream().flush();
         conn.getOutputStream().close();
 
-        InputStream responseStream = conn.getInputStream();
+        @Cleanup InputStream responseStream = conn.getInputStream();
         if (responseStream.available() == 0) {
             Utils.log("&3The request to&r&a %s&r&3 failed retrying...", endpoint);
             responseStream.close();
             return makeRequest(endpoint, args);
         }
-        JsonElement response = gson.fromJson(new InputStreamReader(conn.getInputStream()), JsonElement.class);
-        responseStream.close();
-        return response;
+        return gson.fromJson(new InputStreamReader(conn.getInputStream()), JsonElement.class);
     }
 }

@@ -65,6 +65,7 @@ public class ChatListener implements Listener {
             if (info.isIgnoring(sender.getUniqueId()) || info.isToggledChat()) continue;
 
             String recipientLocale = recipient.getLocale().split("_")[0];
+
             if (manager.getTranslator() != null &&
                     info.isAutoTranslate() && manager.getTranslator().getSupportedLanguages().contains(recipientLocale) &&
                     !messageLanguage.equalsIgnoreCase(recipientLocale)) {
@@ -72,7 +73,7 @@ public class ChatListener implements Listener {
                 Localization recipientLocalization = Localization.getLocalization(recipient.getLocale());
                 String translatedText;
                 if (!translationCache.containsKey(recipientLocale)) {
-                    translatedText = manager.getTranslator().translate(ogMessage, recipientLocale).join();
+                    translatedText = manager.getTranslator().translate(ogMessage, recipientLocale, true).join();
                     translationCache.put(recipientLocale, translatedText);
                 } else translatedText = translationCache.get(recipientLocale);
                 TextComponent msg = new TextComponent(format(translatedText, playerName));
