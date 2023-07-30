@@ -31,16 +31,12 @@ import java.util.concurrent.TimeUnit;
 
 public final class L2X9RebootCore extends JavaPlugin {
     //TODO: Migrate all file storage to mysql
-    @Getter
-    private static L2X9RebootCore instance;
-    @Getter
-    private final long startTime = System.currentTimeMillis();
+    @Getter private static L2X9RebootCore instance;
+    @Getter private final long startTime = System.currentTimeMillis();
     private PacketEventDispatcher dispatcher;
-    @Getter
-    private ScheduledExecutorService executorService;
+    @Getter private ScheduledExecutorService executorService;
     private List<ViolationManager> violationManagers;
-    @Getter
-    private List<Manager> managers;
+    @Getter private List<Manager> managers;
 
     public boolean isDebug() {
         if (System.getProperty("l2x9coredebug") == null) return false;
