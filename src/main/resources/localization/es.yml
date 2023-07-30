@@ -48,7 +48,7 @@ leave_message: "&7%s se salió del servidor"
 kick_message: "&7%s fue pateado para \"%s\""
 could_not_translate_message: "Error al traducir el mensaje debido a %s"
 message_auto_translated: "Este mensaje se ha traducido automáticamente.\n\nTexto original: %s"
-welcome_message: "&3Ten en cuenta que este servidor traducirá&r&aautomáticamente&r&3 tus mensajes de chat. Esto puede desactivarse ejecutando&r&a /toggletranslate&r"
+welcome_message: "&3Por favor, ten en cuenta que este servidor traducirá automáticamente tus mensajes de chat. Esto se puede desactivar ejecutando&r&a /toggletranslate."
 #Complex messages
 HelpMessage:
   - "&6-----------------------------------------------------"

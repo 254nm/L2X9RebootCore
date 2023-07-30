@@ -19,8 +19,9 @@ public class JoinMessages implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         event.setJoinMessage(null);
         Player player = event.getPlayer();
-        Localization loc = Localization.getLocalization(player.getLocale());
-        Utils.sendPrefixedLocalizedMessage(player, loc.get("welcome_message"));
+
+        Utils.sendLocalizedMessage(player, "welcome_message", true);
+
         String key = (!player.hasPlayedBefore()) ? "player_join_first_time" : "join_message";
         Bukkit.getOnlinePlayers().forEach(p -> Utils.sendLocalizedMessage(p, key, false, player.getName()));
     }
