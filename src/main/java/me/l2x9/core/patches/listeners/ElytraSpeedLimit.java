@@ -40,9 +40,9 @@ public class ElytraSpeedLimit implements Listener {
     private double calcSpeed(PlayerMoveEvent event) {
         Location from = event.getFrom();
         Location to = event.getTo();
-        double hypotX = to.getX() - from.getX();
-        double hypotZ = to.getZ() - from.getZ();
-        return Math.hypot(hypotX, hypotZ);
+        double deltaX = to.getX() - from.getX();
+        double deltaZ = to.getZ() - from.getZ();
+        return Math.hypot(deltaX, deltaZ);
     }
 
     private void removeElytra(Player player) {
