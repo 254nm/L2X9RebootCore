@@ -21,7 +21,6 @@ public class PlayerVoteListener implements VoteListener {
         if (player != null) Utils.sendPrefixedLocalizedMessage(player, "vote_thanks");
 
         Bukkit.getOnlinePlayers().stream().filter(p -> !p.getName().equals(vote.getUsername())).forEach(p -> {
-            System.out.println(p.getName());
             Utils.sendPrefixedLocalizedMessage(p, "vote_announcement", vote.getUsername(), vote.getServiceName());
         });
     }
