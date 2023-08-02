@@ -85,7 +85,7 @@ public class Utils {
             ByteArrayDataOutput out = ByteStreams.newDataOutput();
             out.writeUTF("KickPlayer");
             out.writeUTF(player.getName());
-            out.writeUTF(key);
+            out.writeUTF(msg);
             PlayerKickEvent pke = new PlayerKickEvent(player, msg, String.format(translateChars("&e%s left the game"), player.getName()));
             Bukkit.getServer().getPluginManager().callEvent(pke);
             if (!pke.isCancelled()) {
