@@ -49,6 +49,8 @@ kick_message: "&7%s fue pateado para \"%s\""
 could_not_translate_message: "Error al traducir el mensaje debido a %s"
 message_auto_translated: "Este mensaje se ha traducido automáticamente.\n\nTexto original: %s"
 welcome_message: "&3Por favor, ten en cuenta que este servidor traducirá automáticamente tus mensajes de chat. Esto se puede desactivar ejecutando&r&a /toggletranslate."
+vote_announcement: "&a%s&r&3 Acabo de votar por L2X9 en&r&a %s"
+vote_thanks: "&3Gracias por votar. Has recibido una casa extra&r&a 2&r&3"
 #Complex messages
 HelpMessage:
   - "&6-----------------------------------------------------"

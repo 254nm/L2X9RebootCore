@@ -31,7 +31,7 @@ public class SetHomeCommand implements CommandExecutor {
             }
             Set<PermissionAttachmentInfo> perms = player.getEffectivePermissions();
             List<Integer> maxL = perms.stream().map(PermissionAttachmentInfo::getPermission).filter(p -> p.startsWith("l2x9core.home.max.")).map(s -> Integer.parseInt(s.substring(s.lastIndexOf('.') + 1))).collect(Collectors.toList());
-            int maxHomes = (maxL.size() > 1) ? Collections.max(maxL) : main.getConfig().getInt("MaxHomes");
+            int maxHomes = (!maxL.isEmpty()) ? Collections.max(maxL) : main.getConfig().getInt("MaxHomes");
             List<Home> homes = main.getHomes().getOrDefault(player.getUniqueId(), null);
             if (homes == null) homes = new ArrayList<>();
             if (homes.stream().anyMatch(h -> h.getName().equals(args[0]))) {
@@ -52,3 +52,4 @@ public class SetHomeCommand implements CommandExecutor {
         return true;
     }
 }
+

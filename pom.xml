@@ -85,6 +85,10 @@
             <id>TXMC Repository</id>
             <url>https://repo.txmc.me/releases</url>
         </repository>
+        <repository>
+            <id>local-repo</id>
+            <url>file://${project.basedir}/local-repo</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -92,6 +96,12 @@
             <groupId>com.destroystokyo.paper</groupId>
             <artifactId>paper-jar</artifactId>
             <version>1.12.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.vexsoftware</groupId>
+            <artifactId>votifier</artifactId>
+            <version>1.9</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -1,5 +1,6 @@
 package me.l2x9.core.misc;
 
+import com.vexsoftware.votifier.Votifier;
 import lombok.Getter;
 import me.l2x9.core.L2X9RebootCore;
 import me.l2x9.core.Manager;
@@ -32,6 +33,11 @@ public class MiscManager extends Manager {
         plugin.registerListener(new JoinMessages());
         plugin.registerListener(new CrystalSlowdown(this));
         new AutoRestart();
+
+        if (plugin.getServer().getPluginManager().getPlugin("Votifier") != null) {
+            Votifier.getInstance().getListeners().add(new PlayerVoteListener());
+            Utils.log("&3Successfully registered a Votifier listener");
+        }
     }
 
     private HashMap<EntityType, Integer> parseEntityConf() {

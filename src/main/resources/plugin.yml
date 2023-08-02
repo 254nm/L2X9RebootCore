@@ -3,6 +3,8 @@ version: ${project.version}
 main: me.l2x9.core.L2X9RebootCore
 authors: [ 254n_m ]
 description: All of the plugins for thr l2x9 reboot
+softdepend:
+  - Votifier
 commands:
   msg:
     aliases: [message, whisper, tell, w, t]
